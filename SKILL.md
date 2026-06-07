@@ -100,6 +100,38 @@ Be direct and specific:
 - If verification fails, report the failure and the next useful step.
 - If no code was changed, say that clearly.
 
+## Git Commit Rules
+
+When creating git commits, use one bracketed change key followed by one or more feature points:
+
+```text
+[key]
+1. feature point
+2. feature point
+```
+
+Choose the key from the actual staged change set:
+
+- `[add]`: Use only when the commit contains added files or added functionality, with no deletions or modifications to existing behavior.
+- `[del]`: Use only when the commit contains deletions, with no additions or modifications.
+- `[upd]`: Use when the commit contains any modification, or when additions/deletions are mixed with other changes.
+
+Keep the feature-point list concise:
+
+- Use numbered items.
+- Include at most 10 items.
+- Merge small related changes into one item instead of listing file-by-file edits.
+- Describe user-visible or maintenance-relevant changes, not implementation trivia.
+
+Example:
+
+```text
+[upd]
+1. expand coding workflow rules
+2. add Spring Boot backend layering constraints
+3. document commit message format
+```
+
 When finishing, report:
 
 1. What actually changed.
