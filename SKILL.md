@@ -126,9 +126,9 @@ Keep the feature-point list concise:
 Example:
 
 ```text
-[upd] 1. expand coding workflow rules
-      2. add Spring Boot backend layering constraints
-      3. document commit message format
+[upd] : 1. expand coding workflow rules
+        2. add Spring Boot backend layering constraints
+        3. document commit message format
 ```
 
 When finishing, report:
