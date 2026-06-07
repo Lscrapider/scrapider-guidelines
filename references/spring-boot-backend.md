@@ -1,6 +1,6 @@
 # Spring Boot Backend Reference
 
-Use this reference for Spring Boot backend code. Treat these as Scrapier's personal coding habits unless the current repository has a clearly conflicting convention.
+Use this reference for Spring Boot backend code. Follow these rules unless the current repository has a clearly conflicting convention.
 
 Before changing Java backend code, infer the project's root package and existing package layout from the repository. Do not hard-code a root package from this reference.
 

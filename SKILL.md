@@ -1,13 +1,13 @@
 ---
 name: scrapier-guidelines
-description: Apply Scrapier's personal coding habits and Karpathy-style engineering discipline when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, and Spring Boot backend layering conventions.
+description: Apply Scrapier coding guidelines when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, and Spring Boot backend layering conventions.
 ---
 
 # Scrapier Guidelines
 
-Use this skill to make Codex follow Scrapier's personal coding style: state the plan before editing, keep changes minimal, preserve existing project style, respect Spring Boot layering, and verify the result before claiming success.
+Use this skill to constrain Codex's coding behavior: think before changing code, explain the implementation logic, keep edits minimal, preserve existing project style, respect Spring Boot layering, and verify the result before claiming success.
 
-## Operating Rules
+## Before Coding
 
 Before editing code, tell the user:
 
@@ -18,16 +18,40 @@ Before editing code, tell the user:
 
 If the request is ambiguous or has multiple reasonable interpretations, stop and ask. Do not guess silently.
 
-## Karpathy-Style Discipline
+When multiple solutions are possible, prefer the simpler one and briefly explain the tradeoff. If the requested design is risky, say why before implementing.
 
-- State assumptions and tradeoffs before implementation.
-- Prefer the minimum code that solves the requested problem.
-- Avoid speculative abstractions, unused flexibility, and "future-proof" code.
-- Touch only files and lines that directly serve the request.
-- Match the repository's existing structure, style, helpers, and naming.
-- Remove unused code introduced by the current change.
-- Mention unrelated issues instead of fixing them opportunistically.
-- Define verifiable success criteria and loop until they are checked.
+## Engineering Discipline
+
+### Think First
+
+- State assumptions and uncertainty before implementation.
+- Do not hide confusion. Ask when the missing information changes the design.
+- Do not silently choose between conflicting interpretations.
+- Push back on unnecessary complexity, broad rewrites, or vague requirements.
+
+### Simplicity First
+
+- Write the minimum code that solves the current request.
+- Do not add speculative features, configuration, extension points, or abstractions.
+- Do not add defensive branches for impossible states unless the codebase already requires that pattern.
+- If a change grows large, re-check whether a smaller direct change would solve the same problem.
+
+### Surgical Changes
+
+- Touch only files and lines that directly serve the user's request.
+- Match the repository's existing structure, style, helpers, naming, and dependency choices.
+- Do not refactor adjacent code just because it could be better.
+- Do not reformat unrelated code.
+- Remove imports, variables, functions, classes, or config that the current change made unused.
+- Mention unrelated dead code or design issues instead of fixing them opportunistically.
+
+### Verification Mindset
+
+- Define success criteria before or during implementation.
+- For bug fixes, prefer a focused reproduction or failing test before changing behavior.
+- For behavior changes, add or update focused tests when the repository has a test pattern.
+- Run the narrowest useful verification first, then broader checks only when risk warrants it.
+- Do not claim success without command output, test results, or a clear explanation of why verification could not run.
 
 ## Coding Workflow
 
@@ -38,6 +62,43 @@ When implementing:
 3. Use project-local helpers and framework conventions before adding new utilities.
 4. Add or update tests when behavior changes or risk is non-trivial.
 5. Run the most focused useful verification command available.
+
+## Debugging Workflow
+
+When fixing bugs:
+
+1. Reproduce or localize the failure before proposing a fix.
+2. Identify the smallest code path that explains the symptom.
+3. Fix the cause, not only the visible symptom.
+4. Add a regression check when practical.
+5. Verify the failing path and any nearby affected path.
+
+## Refactoring Rules
+
+Refactor only when the user asks for it or when it is required to make the requested change cleanly.
+
+- Keep behavior unchanged unless behavior change is explicitly requested.
+- Preserve public APIs, request/response shapes, and database semantics unless told otherwise.
+- Move code in small steps and verify after meaningful changes.
+- Do not introduce a new abstraction for one call site.
+
+## Review Rules
+
+When reviewing code, lead with concrete findings:
+
+- Prioritize correctness, regressions, data loss, security, API contract breaks, and missing tests.
+- Use file and line references when available.
+- Separate confirmed issues from questions or assumptions.
+- Keep style preferences secondary unless they affect maintainability or consistency.
+
+## Communication Rules
+
+Be direct and specific:
+
+- Say what changed, where it changed, and why.
+- Name verification commands and results.
+- If verification fails, report the failure and the next useful step.
+- If no code was changed, say that clearly.
 
 When finishing, report:
 

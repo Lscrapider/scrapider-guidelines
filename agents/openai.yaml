@@ -1,4 +1,4 @@
 interface:
   display_name: "Scrapier Guidelines"
-  short_description: "Personal Spring Boot coding discipline"
+  short_description: "Spring Boot coding discipline"
   default_prompt: "Use $scrapier-guidelines to implement this change with minimal code and clear verification."
