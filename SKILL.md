@@ -1,9 +1,9 @@
 ---
-name: scrapier-guidelines
-description: Apply Scrapier coding guidelines when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, and Spring Boot backend layering conventions.
+name: scrapider-guidelines
+description: Apply Scrapider coding guidelines when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, and Spring Boot backend layering conventions.
 ---
 
-# Scrapier Guidelines
+# Scrapider Guidelines
 
 Use this skill to constrain Codex's coding behavior: think before changing code, explain the implementation logic, keep edits minimal, preserve existing project style, respect Spring Boot layering, and verify the result before claiming success.
 
