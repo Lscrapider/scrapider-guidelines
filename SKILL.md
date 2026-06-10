@@ -45,6 +45,16 @@ When multiple solutions are possible, prefer the simpler one and briefly explain
 - Remove imports, variables, functions, classes, or config that the current change made unused.
 - Mention unrelated dead code or design issues instead of fixing them opportunistically.
 
+### Business Contract Preservation
+
+- Treat existing default values, thresholds, enums, and strategy parameters as business contracts.
+- Prefer reusing existing constants, configuration properties, or enums for new functionality.
+- Do not redefine equivalent parameters under new names.
+- Do not hard-code magic numbers or magic values when an existing constant, config value, or enum already represents the concept.
+- Do not change existing defaults without explicit confirmation.
+- When a new requirement conflicts with an existing default or threshold, stop and clarify whether the change is global, scenario-specific, or still expected to reuse the existing contract.
+- If a different value is required, explain the reason and wait for confirmation before changing or introducing it.
+
 ### Verification Mindset
 
 - Define success criteria before or during implementation.
