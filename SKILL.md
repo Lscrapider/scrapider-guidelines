@@ -112,12 +112,11 @@ Be direct and specific:
 
 ## Git Commit Rules
 
-When creating git commits, use one bracketed change key followed by one or more feature points:
+When creating git commits, use one bracketed change key followed by a colon and one or more numbered feature points:
 
 ```text
-[key]
-1. feature point
-2. feature point
+[key] : 1. feature point
+        2. feature point
 ```
 
 Choose the key from the actual staged change set:

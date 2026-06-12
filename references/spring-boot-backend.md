@@ -16,15 +16,19 @@ Before changing Java backend code, infer the project's root package and existing
 - `domain.param`: Request parameter objects for frontend query, create, and update input.
 - `domain.po`: Persistence objects that usually map one-to-one to database tables and are used by `mapper`.
 - `domain.vo`: View objects returned to the frontend. Do not return PO objects directly.
+- `handler`: Optional service-supporting strategy handlers for strategy, type, event, or rule branches. See Optional Service-Supporting Layers.
+- `listener`: Message queue consumers for inbound messages. See Message Queue Layers.
 - `manage`: MyBatis Plus management classes, usually extending `ServiceImpl`. Keep this layer focused on simple database operations.
 - `mapper`: MyBatis or MyBatis Plus database access interfaces.
+- `provider`: Optional service-supporting data providers based on Java abstract classes. See Optional Service-Supporting Layers.
+- `publisher`: Message queue publishers for outbound messages. See Message Queue Layers.
 - `service.impl`: Service implementation classes. Put main business logic here.
 - `task`: Scheduled jobs or background tasks, such as external data synchronization or periodic maintenance work.
 - `<Project>Application`: Spring Boot application entry point, named according to the current project.
 
 ## Layering Rules
 
-Standard call chain:
+Standard synchronous request call chain:
 
 ```text
 Controller -> Service -> Manage / API / Mapper -> Domain
@@ -53,3 +57,25 @@ Follow these rules when adding or changing backend features:
 19. Controller request bodies must use `domain.param` Param objects. Do not use weakly typed `Map` or `JsonNode` request bodies.
 20. Keep code simple, clean, and direct. Add functions or classes only when there is real duplication, related repeated code, or a block is long enough to hurt readability. Avoid meaningless method wrappers.
 21. For object copying, object-to-Map, or Map-to-object conversions, prefer existing project dependencies or framework utilities. If existing tools do not match the business semantics, create a clear converter class in a `converter` package. Do not scatter manual conversion logic through `service` or `serviceImpl`.
+22. `handler` and `provider` are optional `service`-supporting layers, not default required layers. Introduce them only when they clearly reduce strategy-branch complexity or data-provider complexity in `service`.
+23. Do not create layers for their own sake. Simple CRUD, single-branch logic, and short workflows should stay directly in `service`.
+24. For message queues, use `listener` for inbound messages and `publisher` for outbound messages. `listener` should call `service`; business workflows should call `publisher` through `service` orchestration.
+
+## Optional Service-Supporting Layers
+
+`handler` and `provider` are not required layers in the standard call chain. Use them only when they create a clear boundary and reduce `service` complexity.
+
+- `handler`: Use for strategy patterns, strategy branches, type branches, event branches, or rule branches. Organize handlers by business package, such as `handler/rag`, `handler/order`, or `handler/message`. Each handler should process one clear strategy or branch, serve `service`, and must not replace `service` as the business orchestration layer.
+- `provider`: Use Java abstract classes for provider contracts. Use providers when different data sources provide the same type of data, or when different business objects in one processing chain provide the same return type. Define shared behavior, template methods, and return contracts in an abstract provider class; implement source-specific or object-specific providers under business packages. Providers serve `service`; they may call `api`, `manage`, cache, or other infrastructure. Prefer `manage` for database access; call `mapper` directly only when the mapper rules allow it. Providers must not return VO objects or assemble controller-facing responses.
+- Pass `domain.dto` DTO objects between `service` and `handler` / `provider`. Do not pass `Param`, `VO`, or `PO` across these boundaries.
+- Do not create `handler` or `provider` for simple CRUD, single-branch logic, or short workflows.
+- If the goal is only to reuse a small stateless code block, prefer a private method or ordinary component instead of introducing `handler` or `provider`.
+
+## Message Queue Layers
+
+Use `listener` and `publisher` only for message queue boundaries.
+
+- `listener`: Receive MQ messages, handle message annotations or subscription configuration, deserialize payloads, perform lightweight validation, convert payloads to `domain.dto` DTO objects, and call `service`. Do not put business orchestration, persistence logic, or VO assembly in listeners.
+- `publisher`: Send MQ messages, encapsulate topic names, routing keys, tags, message payload construction, and MQ client calls. Keep business decisions in `service`; publishers should only execute the outbound message send.
+- Keep MQ payload objects and internal service DTOs separated when their contracts differ. Convert message payloads to DTOs before entering `service`.
+- Do not call `manage`, `mapper`, or database APIs directly from `listener` or `publisher`.
