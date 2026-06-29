@@ -18,7 +18,7 @@ Before changing Java backend code, infer the project's root package and existing
 - `domain.vo`: View objects returned to the frontend. Do not return PO objects directly.
 - `handler`: Optional service-supporting strategy handlers for strategy, type, event, or rule branches. See Optional Service-Supporting Layers.
 - `listener`: Message queue consumers for inbound messages. See Message Queue Layers.
-- `manage`: MyBatis Plus management classes, usually extending `ServiceImpl`. Keep this layer focused on simple database operations.
+- `manage`: Concrete MyBatis Plus management classes, usually extending `ServiceImpl`. Keep this layer focused on simple database operations. Do not create `manage.impl` or mirror the `service` / `service.impl` split under `manage`.
 - `mapper`: MyBatis or MyBatis Plus database access interfaces.
 - `provider`: Optional service-supporting data providers based on Java abstract classes. See Optional Service-Supporting Layers.
 - `publisher`: Message queue publishers for outbound messages. See Message Queue Layers.
@@ -47,19 +47,20 @@ Follow these rules when adding or changing backend features:
 9. Do not return `PO` objects directly to the frontend.
 10. Do not call `Mapper` directly from `Controller`; controllers should call `Service`.
 11. Prefer database query, insert, update, and delete operations through `manage` with MyBatis Plus. Keep business logic in `service` or `service.impl`.
-12. When a Java class calls its own method, use explicit `this`.
-13. Prefer lambda style for collection processing, callbacks, and functional interface logic.
-14. When building a `PO` from `JsonNode`, third-party responses, DTOs, or intermediate data, prefer a static factory on the target entity, such as `UserPO.fromApiResponse(...)` or `OrderPO.fromDto(...)`. Do not scatter this logic across `task`, `service`, or `manage`.
-15. Prefer Hutool utilities for common null checks, string handling, collection checks, number conversion, and date conversion, such as `Objects`, `StrUtil`, `CollUtil`, `NumberUtil`, and `DateUtil`. Do not rewrite common utility logic unless Hutool does not fit the scenario.
-16. Remove unused code promptly, including unused classes, methods, fields, local variables, imports, configuration, and dependencies. Do not keep dead code for possible future use.
-17. Use `pageSize` and `pageNum` for paginated query APIs. Use GET for query APIs and POST for submit APIs.
-18. Do not write local `@ExceptionHandler` methods in controllers. Use module-level or global `@RestControllerAdvice`, and log exception objects to preserve full stack traces.
-19. Controller request bodies must use `domain.param` Param objects. Do not use weakly typed `Map` or `JsonNode` request bodies.
-20. Keep code simple, clean, and direct. Add functions or classes only when there is real duplication, related repeated code, or a block is long enough to hurt readability. Avoid meaningless method wrappers.
-21. For object copying, object-to-Map, or Map-to-object conversions, prefer existing project dependencies or framework utilities. If existing tools do not match the business semantics, create a clear converter class in a `converter` package. Do not scatter manual conversion logic through `service` or `serviceImpl`.
-22. `handler` and `provider` are optional `service`-supporting layers, not default required layers. Introduce them only when they clearly reduce strategy-branch complexity or data-provider complexity in `service`.
-23. Do not create layers for their own sake. Simple CRUD, single-branch logic, and short workflows should stay directly in `service`.
-24. For message queues, use `listener` for inbound messages and `publisher` for outbound messages. `listener` should call `service`; business workflows should call `publisher` through `service` orchestration.
+12. Do not create `manage.impl` packages or `Manage` interface plus `ManageImpl` pairs unless the existing repository already uses that convention. A `manage` class should normally be a concrete MyBatis Plus helper used by `service`.
+13. When a Java class calls its own method, use explicit `this`.
+14. Prefer lambda style for collection processing, callbacks, and functional interface logic.
+15. When building a `PO` from `JsonNode`, third-party responses, DTOs, or intermediate data, prefer a static factory on the target entity, such as `UserPO.fromApiResponse(...)` or `OrderPO.fromDto(...)`. Do not scatter this logic across `task`, `service`, or `manage`.
+16. Prefer Hutool utilities for common null checks, string handling, collection checks, number conversion, and date conversion, such as `Objects`, `StrUtil`, `CollUtil`, `NumberUtil`, and `DateUtil`. Do not rewrite common utility logic unless Hutool does not fit the scenario.
+17. Remove unused code promptly, including unused classes, methods, fields, local variables, imports, configuration, and dependencies. Do not keep dead code for possible future use.
+18. Use `pageSize` and `pageNum` for paginated query APIs. Use GET for query APIs and POST for submit APIs.
+19. Do not write local `@ExceptionHandler` methods in controllers. Use module-level or global `@RestControllerAdvice`, and log exception objects to preserve full stack traces.
+20. Controller request bodies must use `domain.param` Param objects. Do not use weakly typed `Map` or `JsonNode` request bodies.
+21. Keep code simple, clean, and direct. Add functions or classes only when there is real duplication, related repeated code, or a block is long enough to hurt readability. Avoid meaningless method wrappers.
+22. For object copying, object-to-Map, or Map-to-object conversions, prefer existing project dependencies or framework utilities. If existing tools do not match the business semantics, create a clear converter class in a `converter` package. Do not scatter manual conversion logic through `service` or `serviceImpl`.
+23. `handler` and `provider` are optional `service`-supporting layers, not default required layers. Introduce them only when they clearly reduce strategy-branch complexity or data-provider complexity in `service`.
+24. Do not create layers for their own sake. Simple CRUD, single-branch logic, and short workflows should stay directly in `service`.
+25. For message queues, use `listener` for inbound messages and `publisher` for outbound messages. `listener` should call `service`; business workflows should call `publisher` through `service` orchestration.
 
 ## Optional Service-Supporting Layers
 
