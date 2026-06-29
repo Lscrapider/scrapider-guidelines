@@ -1,6 +1,6 @@
 ---
 name: scrapider-guidelines
-description: Apply Scrapider coding guidelines when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, and Spring Boot backend layering conventions.
+description: Apply Scrapider coding guidelines when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, Spring Boot backend layering conventions, and Python AI/agent/training project organization.
 ---
 
 # Scrapider Guidelines
@@ -151,3 +151,9 @@ When finishing, report:
 When working in any Spring Boot backend, follow the layered architecture and object placement rules in `references/spring-boot-backend.md`.
 
 Load that reference before generating, changing, refactoring, or reviewing Java Spring Boot backend code.
+
+## Python Code Organization
+
+When working on Python code, follow the package and module organization rules in `references/python-code-organization.md`.
+
+Load that reference before generating, changing, refactoring, or reviewing Python code.
