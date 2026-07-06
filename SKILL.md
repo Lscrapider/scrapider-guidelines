@@ -1,6 +1,6 @@
 ---
 name: scrapider-guidelines
-description: Apply Scrapider coding guidelines when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, Spring Boot backend layering conventions, and Python AI/agent/training project organization.
+description: Apply Scrapider coding guidelines when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, Spring Boot backend layering conventions, Python AI/agent/training project organization, and Android Kotlin/Jetpack Compose UI rules.
 ---
 
 # Scrapider Guidelines
@@ -157,3 +157,13 @@ Load that reference before generating, changing, refactoring, or reviewing Java 
 When working on Python code, follow the package and module organization rules in `references/python-code-organization.md`.
 
 Load that reference before generating, changing, refactoring, or reviewing Python code.
+
+## Android Kotlin Compose
+
+When working on Android code, follow the Kotlin, Jetpack Compose, UI data mapping, and error handling rules in `references/android-kotlin-compose.md`.
+
+Load that reference before generating, changing, refactoring, or reviewing Android code.
+
+When implementing Android UI from a screenshot, mockup, design image, or existing product UI, also load `references/android-ui-implementation-from-design.md`.
+
+When designing or generating Android product UI without a fixed design image, also load `references/android-product-ui-design.md`.
