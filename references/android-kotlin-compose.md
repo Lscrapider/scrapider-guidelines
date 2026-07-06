@@ -18,6 +18,42 @@ For Android product UI design or screen generation without a fixed design image,
 - Keep Composables focused on UI rendering and UI events. Put business logic in ViewModel, state holders, use cases, or existing project layers.
 - Do not pass raw network DTOs directly into Composables. Map backend responses to UI state or UI models first.
 
+## Android Architecture
+
+Use MVVM plus Repository plus unidirectional data flow as the default architecture for Jetpack Compose features unless the repository already has a clear conflicting pattern.
+
+Before creating Kotlin files, assign each file to one responsibility:
+
+- `XxxScreen.kt`: Compose entry and screen-level UI composition.
+- `XxxViewModel.kt`: screen state, event handling, and lightweight orchestration.
+- `XxxUiState.kt`: immutable state exposed from ViewModel to UI.
+- `XxxUiEvent.kt`: user actions sent from UI to ViewModel when events are non-trivial.
+- `XxxUiEffect.kt`: one-shot navigation, toast, snackbar, permission, or dialog effects when needed.
+- `XxxRepository.kt`: feature or domain data aggregation.
+- `XxxDataSource.kt`, `XxxApi.kt`, or SDK wrapper files: concrete backend, local store, cache, map, location, weather, or persistence access.
+- `XxxMapper.kt`: DTO, entity, SDK object, domain model, or UI model conversion when conversion is not trivial.
+- `XxxUseCase.kt` or domain files: complex business rules, cross-feature reuse, or orchestration too large for a ViewModel.
+
+Use this dependency direction:
+
+```text
+Screen / Composable -> ViewModel -> Repository / UseCase -> DataSource / Api / SDK / Local Store
+```
+
+Use this UI state flow:
+
+```text
+ViewModel exposes UiState -> UI renders UiState -> UI emits Event -> ViewModel handles Event -> ViewModel updates UiState
+```
+
+- Keep `Screen` and Composable files in the view layer only.
+- Do not call backend APIs, map SDKs, location SDKs, weather SDKs, databases, or persistence APIs from Composables.
+- Do not put DTO mapping, SDK result parsing, repository calls, navigation decisions, or persistence logic directly in Composables.
+- Keep ViewModel as the page interaction entry point.
+- Keep repositories and data sources out of the UI package unless the repository already uses that structure.
+- Do not create pass-through files, empty layers, or architecture folders only for appearance.
+- Add a file or layer only when it owns real state, behavior, mapping, data access, orchestration, or reuse.
+
 ## Backend Field And UI Copy Rules
 
 - Do not show raw backend field names, raw enum values, protocol values, debug fields, trace IDs, request IDs, stack traces, or development-only negotiation fields on user-facing screens.
