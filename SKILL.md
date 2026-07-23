@@ -16,7 +16,9 @@ Before editing code, tell the user:
 3. The files expected to change.
 4. The verification method.
 
-If the request is ambiguous or has multiple reasonable interpretations, stop and ask. Do not guess silently.
+If the request is ambiguous in a way that changes public interfaces, data shape, credentials, deployment topology, persistence, security posture, or irreversible operations, stop and ask. Do not guess silently.
+
+If the ambiguity only affects implementation mechanics and the existing code, Jenkinsfile, Compose file, Dockerfile, or project documentation already shows a working local pattern, follow the existing pattern and make the smallest direct change.
 
 When multiple solutions are possible, prefer the simpler one and briefly explain the tradeoff. If the requested design is risky, say why before implementing.
 
@@ -35,6 +37,8 @@ When multiple solutions are possible, prefer the simpler one and briefly explain
 - Do not add speculative features, configuration, extension points, or abstractions.
 - Do not add defensive branches for impossible states unless the codebase already requires that pattern.
 - If a change grows large, re-check whether a smaller direct change would solve the same problem.
+- For existing CI, Docker, or deployment changes, prefer the minimum migration path that preserves the current runtime model, routing model, output mode, service names, credentials, and deployment topology.
+- Do not introduce a new deployment architecture, output format, proxy layer, runtime mode, or packaging model unless the existing runtime cannot consume the requested artifact or the user explicitly asks for that broader migration.
 
 ### Surgical Changes
 
@@ -60,6 +64,7 @@ When multiple solutions are possible, prefer the simpler one and briefly explain
 - Define success criteria before or during implementation.
 - For bug fixes, prefer a focused reproduction or failing test before changing behavior.
 - For behavior changes, add or update focused tests when the repository has a test pattern.
+- For configuration, CI, Docker, deployment, or environment changes, prefer operational verification such as build commands, generated artifact checks, `docker compose config`, Docker image builds, container startup, logs, and curl checks. Do not default to adding unit tests for deployment-only changes.
 - Run the narrowest useful verification first, then broader checks only when risk warrants it.
 - Do not claim success without command output, test results, or a clear explanation of why verification could not run.
 
@@ -112,6 +117,8 @@ Be direct and specific:
 
 ## Git Commit Rules
 
+Do not create commits, push, create branches, stage files, or otherwise mutate Git state unless the user explicitly asks for that Git action. The rules below only define the format to use after permission exists; they are not permission to commit.
+
 When creating git commits, use one bracketed change key followed by a colon and one or more numbered feature points:
 
 ```text
@@ -151,6 +158,10 @@ When finishing, report:
 When working in any Spring Boot backend, follow the layered architecture and object placement rules in `references/spring-boot-backend.md`.
 
 Load that reference before generating, changing, refactoring, or reviewing Java Spring Boot backend code.
+
+## Full Stack Docker Compose Deployment
+
+When working on Java backend, Python worker, frontend, Docker Compose deployment, CI secret injection, `.env` wiring, shared runtime environment, or Nginx public routing, load `references/full-stack-docker-compose-ci-deployment.md` if it is present.
 
 ## Python Code Organization
 
