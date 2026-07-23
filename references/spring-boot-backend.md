@@ -1,82 +1,243 @@
 # Spring Boot Backend Reference
 
-Use this reference for Spring Boot backend code. Follow these rules unless the current repository has a clearly conflicting convention.
+## Scope and Repository Precedence
 
-Before changing Java backend code, infer the project's root package and existing package layout from the repository. Do not hard-code a root package from this reference.
+Follow this reference by default for Spring Boot backend code. If the current repository has an
+unambiguous convention that conflicts with a rule here, follow the repository for that point.
 
-## Package Responsibilities
+Before changing Java backend code, inspect the project's root package and existing package layout.
+Do not copy or hard-code a root package from this reference.
 
-- `api`: External API clients, such as third-party service calls, remote data fetching, and integration clients.
-- `config`: Spring configuration, such as `RestTemplate`, MyBatis Plus, Redis, Swagger, and thread pools.
-- `controller`: HTTP entry points. Receive requests, validate parameters, call `service`, and return results. Do not put complex business logic or direct database access here.
-- `domain`: Business data objects.
-- `domain.constant`: Business constants, such as status values, cache key prefixes, and default settings.
-- `domain.dto`: Data transfer objects for internal layer transfer or third-party response mapping.
-- `domain.enums`: Business enums, such as status, type, risk level, and business category.
-- `domain.param`: Request parameter objects for frontend query, create, and update input.
-- `domain.po`: Persistence objects that usually map one-to-one to database tables and are used by `mapper`.
-- `domain.vo`: View objects returned to the frontend. Do not return PO objects directly.
-- `handler`: Optional service-supporting strategy handlers for strategy, type, event, or rule branches. See Optional Service-Supporting Layers.
-- `listener`: Message queue consumers for inbound messages. See Message Queue Layers.
-- `manage`: Concrete MyBatis Plus management classes, usually extending `ServiceImpl`. Keep this layer focused on simple database operations. Do not create `manage.impl` or mirror the `service` / `service.impl` split under `manage`.
-- `mapper`: MyBatis or MyBatis Plus database access interfaces.
-- `provider`: Optional service-supporting data providers based on Java abstract classes. See Optional Service-Supporting Layers.
-- `publisher`: Message queue publishers for outbound messages. See Message Queue Layers.
-- `service.impl`: Service implementation classes. Put main business logic here.
-- `task`: Scheduled jobs or background tasks, such as external data synchronization or periodic maintenance work.
-- `<Project>Application`: Spring Boot application entry point, named according to the current project.
+## Contents
 
-## Layering Rules
+- [Package Map](#package-map)
+- [Core Layered Architecture](#core-layered-architecture)
+- [HTTP and Controller Boundary](#http-and-controller-boundary)
+- [Domain Objects and Conversion](#domain-objects-and-conversion)
+- [Persistence and External Integration](#persistence-and-external-integration)
+- [Optional Service-Supporting Layers](#optional-service-supporting-layers)
+- [Message Queue Boundaries](#message-queue-boundaries)
+- [Java and Spring Coding Conventions](#java-and-spring-coding-conventions)
 
-Standard synchronous request call chain:
+## Package Map
+
+| Package or class | Responsibility |
+| --- | --- |
+| `api` | External API clients for third-party calls, remote data fetching, and integrations. |
+| `config` | Spring configuration for components such as `RestTemplate`, MyBatis Plus, Redis, Swagger, and thread pools. |
+| `controller` | HTTP entry points that receive and validate requests, call `service`, and return responses. |
+| `converter` | Explicit type conversions that existing framework or project utilities cannot express correctly. |
+| `domain` | Business data objects and their specialized subpackages. |
+| `domain.constant` | Business constants, including status values, cache key prefixes, and default settings. |
+| `domain.dto` | Data transfer objects for internal boundaries or third-party response mapping. |
+| `domain.enums` | Business enums for status, type, risk level, and business category. |
+| `domain.param` | Request parameter objects for query, create, and update input. |
+| `domain.po` | Persistence objects that normally map one-to-one to database tables and are used by `mapper`. |
+| `domain.vo` | View objects returned to the frontend. |
+| `handler` | Optional strategy, type, event, or rule-branch handlers that support `service`. |
+| `listener` | Inbound message queue consumers. |
+| `manage` | Concrete MyBatis Plus helpers for simple database operations. |
+| `mapper` | MyBatis or MyBatis Plus database access interfaces. |
+| `provider` | Optional data providers that support `service` through a shared abstract contract. |
+| `publisher` | Outbound message queue publishers. |
+| `service` | Business service interfaces and contracts used by controllers, listeners, tasks, and other entry points. |
+| `service.impl` | Service implementations that contain the main business logic. |
+| `task` | Scheduled jobs and background tasks, such as external data synchronization or periodic maintenance. |
+| `<Project>Application` | The Spring Boot application entry point, named for the current project. |
+
+## Core Layered Architecture
+
+Use this standard synchronous package flow:
 
 ```text
-Controller -> Service -> Manage / API / Mapper -> Domain
+controller -> service -> (manage / api / mapper) -> domain
 ```
 
-Follow these rules when adding or changing backend features:
+- Keep `controller` as the request entry layer. Do not put complex business logic or direct
+  database access in controllers.
+- Put business logic and workflow orchestration in `service` and `service.impl`.
+- Make controllers call `service`; never call `mapper` directly from a controller.
+- Do not create layers for their own sake. Keep simple CRUD, single-branch logic, and short
+  workflows directly in `service`.
 
-1. Keep `Controller` as the request entry layer only; do not write complex business logic there.
-2. Put business logic in `Service` and `service.impl`.
-3. Keep `Manage` limited to minimal database operation wrappers based on MyBatis Plus. Do not put business orchestration, parameter normalization, or VO conversion there.
-4. Keep `Mapper` focused on database access. Write custom SQL only when MyBatis Plus functional queries cannot express the query or are clearly unsuitable.
-5. Keep `api` classes focused on third-party data access. Do not put business orchestration, business decisions, or persistence there. Keep the same third-party data source in one API class when practical; split only by third-party module or resource type if the class grows too large.
-6. Use `Param` objects for request input.
-7. Use `VO` objects for frontend responses.
-8. Use `PO` objects for database persistence.
-9. Do not return `PO` objects directly to the frontend.
-10. Do not call `Mapper` directly from `Controller`; controllers should call `Service`.
-11. Prefer database query, insert, update, and delete operations through `manage` with MyBatis Plus. Keep business logic in `service` or `service.impl`.
-12. Do not create `manage.impl` packages or `Manage` interface plus `ManageImpl` pairs unless the existing repository already uses that convention. A `manage` class should normally be a concrete MyBatis Plus helper used by `service`.
-13. When a Java class calls its own method, use explicit `this`.
-14. Prefer lambda style for collection processing, callbacks, and functional interface logic.
-15. When building a `PO` from `JsonNode`, third-party responses, DTOs, or intermediate data, prefer a static factory on the target entity, such as `UserPO.fromApiResponse(...)` or `OrderPO.fromDto(...)`. Do not scatter this logic across `task`, `service`, or `manage`.
-16. Prefer Hutool utilities for common null checks, string handling, collection checks, number conversion, and date conversion, such as `Objects`, `StrUtil`, `CollUtil`, `NumberUtil`, and `DateUtil`. Do not rewrite common utility logic unless Hutool does not fit the scenario.
-17. Remove unused code promptly, including unused classes, methods, fields, local variables, imports, configuration, and dependencies. Do not keep dead code for possible future use.
-18. Use `pageSize` and `pageNum` for paginated query APIs. Use GET for query APIs and POST for submit APIs.
-19. Do not write local `@ExceptionHandler` methods in controllers. Use module-level or global `@RestControllerAdvice`, and log exception objects to preserve full stack traces.
-20. Controller request bodies must use `domain.param` Param objects. Do not use weakly typed `Map` or `JsonNode` request bodies.
-21. Keep code simple, clean, and direct. Add functions or classes only when there is real duplication, related repeated code, or a block is long enough to hurt readability. Avoid meaningless method wrappers.
-22. For object copying, object-to-Map, or Map-to-object conversions, prefer existing project dependencies or framework utilities. If existing tools do not match the business semantics, create a clear converter class in a `converter` package. Do not scatter manual conversion logic through `service` or `serviceImpl`.
-23. `handler` and `provider` are optional `service`-supporting layers, not default required layers. Introduce them only when they clearly reduce strategy-branch complexity or data-provider complexity in `service`.
-24. Do not create layers for their own sake. Simple CRUD, single-branch logic, and short workflows should stay directly in `service`.
-25. For message queues, use `listener` for inbound messages and `publisher` for outbound messages. `listener` should call `service`; business workflows should call `publisher` through `service` orchestration.
+## HTTP and Controller Boundary
+
+- Use `Param` objects for request input.
+- Use `domain.param` Param objects for controller request bodies. Do not use weakly typed `Map` or
+  `JsonNode` request bodies.
+- Use `VO` objects for frontend responses. Never return `PO` objects directly to the frontend.
+- For paginated query APIs, name the pagination parameters `pageSize` and `pageNum`.
+- Use `GET` for query APIs and `POST` for submit APIs.
+- Do not define local `@ExceptionHandler` methods in controllers. Use module-level or global
+  `@RestControllerAdvice`.
+- When logging an exception, pass the exception object to the logger so the full stack trace is
+  preserved.
+
+## Domain Objects and Conversion
+
+### Object Boundaries
+
+- Use `PO` objects for database persistence.
+- Use `DTO` objects for internal layer transfer and third-party response mapping.
+- Keep conversion logic free of business orchestration and persistence.
+
+### Creating Persistence Objects
+
+- When building a `PO` from `JsonNode`, a third-party response, a DTO, or other intermediate data,
+  prefer a static factory on the target persistence object.
+- Use names such as `UserPO.fromApiResponse(...)` or `OrderPO.fromDto(...)`.
+- Do not scatter this construction logic across `task`, `service`, or `manage`.
+
+### Bean and Object Conversion
+
+- Before implementing bean copying, object-to-Map conversion, or Map-to-object conversion, inspect
+  the project's existing dependencies.
+- Prefer an existing framework or project utility. For bean copying, use Spring `BeanUtils`,
+  Hutool `BeanUtil` when Hutool is available, or another approved utility.
+- If no suitable utility is available, ask the user whether adding a dependency is acceptable
+  before writing repetitive field-copying code.
+- Use a converter class in `converter` only when generic copying cannot represent the required
+  business mapping semantics.
+- Do not scatter manual conversion logic across `service` or `service.impl`.
+
+## Persistence and External Integration
+
+### Manage
+
+- Keep `manage` focused on minimal database operation wrappers based on MyBatis Plus.
+- Keep business orchestration, parameter normalization, and VO conversion out of `manage`.
+- Prefer query, insert, update, and delete operations through `manage`. Keep the related business
+  logic in `service` or `service.impl`.
+- Use a concrete `manage` class, normally extending `ServiceImpl`.
+- Do not create a `manage.impl` package or a `Manage` interface plus `ManageImpl` pair unless the
+  existing repository already follows that convention.
+
+### Mapper
+
+- Keep `mapper` focused on database access.
+- Prefer MyBatis Plus functional queries. Write custom SQL only when those queries cannot express
+  the operation or are clearly unsuitable.
+- For MyBatis Plus query and update construction, prefer lambda wrappers such as
+  `LambdaQueryWrapper` and `LambdaUpdateWrapper` over raw string column names.
+
+### API Clients
+
+- Keep `api` classes focused on third-party data access.
+- Keep business orchestration, business decisions, and persistence out of `api`.
+- By default, keep integrations with the same third-party data source in one API class.
+- If that class becomes too large, split it only by third-party module or resource type.
 
 ## Optional Service-Supporting Layers
 
-`handler` and `provider` are not required layers in the standard call chain. Use them only when they create a clear boundary and reduce `service` complexity.
+`handler` and `provider` are optional layers that support `service`. Introduce them only when they
+create a clear boundary and reduce complexity in `service`.
 
-- `handler`: Use for strategy patterns, strategy branches, type branches, event branches, or rule branches. Organize handlers by business package, such as `handler/rag`, `handler/order`, or `handler/message`. Each handler should process one clear strategy or branch, serve `service`, and must not replace `service` as the business orchestration layer.
-- `provider`: Use Java abstract classes for provider contracts. Use providers when different data sources provide the same type of data, or when different business objects in one processing chain provide the same return type. Define shared behavior, template methods, and return contracts in an abstract provider class; implement source-specific or object-specific providers under business packages. Providers serve `service`; they may call `api`, `manage`, cache, or other infrastructure. Prefer `manage` for database access; call `mapper` directly only when the mapper rules allow it. Providers must not return VO objects or assemble controller-facing responses.
-- Pass `domain.dto` DTO objects between `service` and `handler` / `provider`. Do not pass `Param`, `VO`, or `PO` across these boundaries.
-- Do not create `handler` or `provider` for simple CRUD, single-branch logic, or short workflows.
-- If the goal is only to reuse a small stateless code block, prefer a private method or ordinary component instead of introducing `handler` or `provider`.
+### Handler
 
-## Message Queue Layers
+- Use handlers for strategy patterns and for strategy, type, event, or rule branches.
+- Organize handlers by business package, such as `handler/rag`, `handler/order`, or
+  `handler/message`.
+- Make each handler process one clearly defined strategy or branch and support `service`.
+- Do not let a handler replace `service` as the business orchestration layer.
 
-Use `listener` and `publisher` only for message queue boundaries.
+### Provider
 
-- `listener`: Receive MQ messages, handle message annotations or subscription configuration, deserialize payloads, perform lightweight validation, convert payloads to `domain.dto` DTO objects, and call `service`. Do not put business orchestration, persistence logic, or VO assembly in listeners.
-- `publisher`: Send MQ messages, encapsulate topic names, routing keys, tags, message payload construction, and MQ client calls. Keep business decisions in `service`; publishers should only execute the outbound message send.
-- Keep MQ payload objects and internal service DTOs separated when their contracts differ. Convert message payloads to DTOs before entering `service`.
+- Use a Java abstract class as the provider contract.
+- Introduce providers when multiple data sources supply the same type of data, or when multiple
+  business objects in one processing chain produce the same return type.
+- Define shared behavior, template methods, and return contracts in the abstract provider class.
+- Place source-specific or object-specific implementations under business packages.
+- Use providers to support `service`. Providers may call `api`, `manage`, caches, or other
+  infrastructure.
+- Prefer `manage` for database access. Call `mapper` directly only when the mapper rules permit it.
+- Do not return VO objects or assemble controller-facing responses in providers.
+
+### Shared Boundaries
+
+- Pass `domain.dto` DTO objects between `service` and `handler` or `provider`.
+- Do not pass `Param`, `VO`, or `PO` objects across these boundaries.
+- Do not create a handler or provider for simple CRUD, single-branch logic, or a short workflow.
+- To reuse a small stateless code block, prefer a private method or ordinary component.
+
+## Message Queue Boundaries
+
+Use `listener` for inbound messages and `publisher` for outbound messages.
+
+### Listener
+
+- Receive messages, own message annotations or subscription configuration, deserialize payloads,
+  and perform lightweight validation in `listener`.
+- Convert message payloads to `domain.dto` DTO objects before calling `service`.
+- Keep business orchestration, persistence logic, and VO assembly out of listeners.
+
+### Publisher
+
+- Encapsulate topic names, routing keys, tags, message payload construction, and MQ client calls in
+  `publisher`.
+- Keep business decisions in `service`. Call publishers through service orchestration.
+
+### Shared Boundaries
+
+- Keep MQ payload objects separate from internal service DTOs when their contracts differ.
 - Do not call `manage`, `mapper`, or database APIs directly from `listener` or `publisher`.
+
+## Java and Spring Coding Conventions
+
+### Dependency Injection, Configuration, and Lombok
+
+- Use constructor injection for required Spring dependencies, and declare injected fields `final`.
+- If Lombok is already available and its use matches the repository, `@RequiredArgsConstructor`
+  is acceptable.
+- Do not add Lombok solely for dependency injection. Avoid `@Autowired` field injection.
+- Bind related configuration values through typed `@ConfigurationProperties` classes, following
+  the repository's existing configuration pattern.
+- Reserve `@Value` for isolated values when a dedicated properties class would add no clarity.
+- Use Lombok only when it is already a project dependency and follows the established style.
+- Prefer focused Lombok annotations such as `@Getter`, `@Setter`, and
+  `@RequiredArgsConstructor`.
+- Avoid broad `@Data` when generated setters, `equals`, `hashCode`, or `toString` are not all part
+  of the intended contract.
+
+### Logging
+
+- Use the project's existing logging framework.
+- If Lombok is already available, `@Slf4j` is acceptable.
+- Use parameterized log messages instead of string concatenation.
+- Do not use `System.out`, `System.err`, or `printStackTrace`.
+- Pass exception objects to the logger to preserve full stack traces.
+
+### Utilities and Value Handling
+
+- Inspect existing dependencies and project utility packages before choosing a utility.
+- Use JDK `java.util.Objects` for null checks and object equality.
+- For string operations, use Hutool `StrUtil` when Hutool is already available. Otherwise, use an
+  existing project-approved utility.
+- Follow the same dependency-first approach for common collection, number, and date operations.
+  Hutool examples include `CollUtil`, `NumberUtil`, and `DateUtil`.
+- If no suitable utility exists, ask the user before adding a dependency.
+- Do not reimplement functionality that an available utility already provides.
+- Invoke static utility methods through their declaring class, such as `Objects.nonNull(...)` or
+  `StrUtil.isBlank(...)`, instead of static-importing them.
+- Return empty collections instead of `null`. Choose an empty collection whose mutability matches
+  the method contract.
+- For nullable boxed booleans, use `Boolean.TRUE.equals(value)` or
+  `Boolean.FALSE.equals(value)`.
+- Compare enum constants with `==`. Do not compare enums by ordinal or ad hoc string values.
+- Use `java.time` for new date and time code. Reuse the project's existing date-time utilities and
+  serialization conventions.
+- Introduce `Date` or `Calendar` only when required by a legacy API, and convert at that boundary.
+
+### Style and Naming
+
+- When a Java class calls its own method, use explicit `this`.
+- Prefer lambda style for collection processing, callbacks, and functional interface logic.
+- Remove unused classes, methods, fields, local variables, imports, configuration, and
+  dependencies. Do not keep dead code for possible future use.
+- Keep code simple, clean, and direct.
+- Extract a function or class only to remove genuine duplication or when a code block is long
+  enough to impair readability.
+- Do not add method wrappers that merely forward a call.
+- Keep class names aligned with their package roles, such as `UserController`, `UserService`,
+  `UserServiceImpl`, `UserManage`, `UserMapper`, `UserParam`, `UserDTO`, `UserVO`, and `UserPO`.
+- Do not invent alternate suffixes for the same role.
+- Do not use wildcard imports.
