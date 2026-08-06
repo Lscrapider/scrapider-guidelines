@@ -2,11 +2,23 @@
 
 ## Scope and Repository Precedence
 
-Follow this reference by default for Spring Boot backend code. If the current repository has an
-unambiguous convention that conflicts with a rule here, follow the repository for that point.
+Use this reference as the package-responsibility baseline for a single-module Spring Boot backend.
+A Maven multi-module backend normally distributes the same responsibilities across modules; when
+multiple modules are present, also load `spring-boot-multi-module.md` before choosing a target file.
+
+Apply rules in this order:
+
+1. The user's explicit instruction.
+2. Repository instructions such as `AGENTS.md` or `CLAUDE.md`.
+3. Architecture documents and established business contracts.
+4. Existing POMs, package layout, configuration, code, and tests.
+5. This reference.
+6. Examples in this reference.
 
 Before changing Java backend code, inspect the project's root package and existing package layout.
-Do not copy or hard-code a root package from this reference.
+Do not copy or hard-code a root package from this reference. If the repository has an unambiguous
+convention that conflicts with this reference, follow the repository for that point. Do not create
+missing layers merely to make the repository match this package map.
 
 ## Contents
 
@@ -17,6 +29,7 @@ Do not copy or hard-code a root package from this reference.
 - [Persistence and External Integration](#persistence-and-external-integration)
 - [Optional Service-Supporting Layers](#optional-service-supporting-layers)
 - [Message Queue Boundaries](#message-queue-boundaries)
+- [Configuration, Contracts, and Credentials](#configuration-contracts-and-credentials)
 - [Java and Spring Coding Conventions](#java-and-spring-coding-conventions)
 
 ## Package Map
@@ -47,16 +60,23 @@ Do not copy or hard-code a root package from this reference.
 
 ## Core Layered Architecture
 
-Use this standard synchronous package flow:
+Use the repository's established synchronous flow. When the project has a `manage` layer, use:
 
 ```text
-controller -> service -> (manage / api / mapper) -> domain
+controller -> service (implemented by service.impl) -> manage -> mapper -> domain.po
 ```
+
+When the project does not have a `manage` layer, keep its existing `service -> repository` or
+`service -> mapper` boundary instead of introducing `manage` solely to match this reference.
+External API clients support service orchestration and do not replace the persistence flow.
 
 - Keep `controller` as the request entry layer. Do not put complex business logic or direct
   database access in controllers.
-- Put business logic and workflow orchestration in `service` and `service.impl`.
+- Put business logic, workflow orchestration, and transaction boundaries in `service` and
+  `service.impl`.
 - Make controllers call `service`; never call `mapper` directly from a controller.
+- In a project with an established `manage` layer, make business services use `manage` rather than
+  injecting or calling `mapper` directly.
 - Do not create layers for their own sake. Keep simple CRUD, single-branch logic, and short
   workflows directly in `service`.
 
@@ -104,10 +124,17 @@ controller -> service -> (manage / api / mapper) -> domain
 
 ### Manage
 
-- Keep `manage` focused on minimal database operation wrappers based on MyBatis Plus.
-- Keep business orchestration, parameter normalization, and VO conversion out of `manage`.
-- Prefer query, insert, update, and delete operations through `manage`. Keep the related business
-  logic in `service` or `service.impl`.
+- Apply these rules only when the repository already has a `manage` layer or the user explicitly
+  asks to introduce one.
+- Keep `manage` focused on MyBatis Plus data access; keep business orchestration, state transitions,
+  transaction ownership, parameter normalization, and VO conversion in `service` or `service.impl`.
+- Let services use inherited operations such as `getById`, `getOne`, `list`, `page`, `save`,
+  `saveBatch`, `updateById`, `removeById`, `lambdaQuery`, and `lambdaUpdate` directly through the
+  corresponding manage class.
+- Do not add a named manage method that merely forwards one straightforward inherited operation.
+- Add a dedicated manage method only for reusable complex access, custom mapper SQL, stable named
+  data semantics, locking, batch behavior, or complex shared conditions that should hide ORM or SQL
+  details from services.
 - Use a concrete `manage` class, normally extending `ServiceImpl`.
 - Do not create a `manage.impl` package or a `Manage` interface plus `ManageImpl` pair unless the
   existing repository already follows that convention.
@@ -180,6 +207,29 @@ Use `listener` for inbound messages and `publisher` for outbound messages.
 
 - Keep MQ payload objects separate from internal service DTOs when their contracts differ.
 - Do not call `manage`, `mapper`, or database APIs directly from `listener` or `publisher`.
+- Carry task context, execution parameters, and object-storage addresses in messages. Do not place
+  PDFs, images, large text, complete datasets, or other large binary payloads directly in messages.
+
+## Configuration, Contracts, and Credentials
+
+Before introducing a value or policy, search existing constants, configuration properties, enums,
+POMs, environment templates, documentation, and code. Treat established defaults, thresholds,
+enums, and strategy parameters as business contracts.
+
+Do not invent or change any of these without an existing contract or explicit user confirmation:
+
+- Default or maximum page sizes and overflow behavior.
+- Logical deletion, automatic field filling, or audit-field semantics.
+- Exchange, queue, routing key, TTL, dead-letter, retry, acknowledgement, concurrency, or prefetch
+  policies.
+- Object-storage bucket categories, retention, cleanup, or access policies.
+- Token lifetime, refresh, concurrent-login, password, or authorization policies.
+- Database schemas, indexes, status enums, or state-transition rules.
+
+Keep credentials in controlled environment variables or ignored local configuration. Do not put
+real credentials in committed configuration, Java constants, documentation, logs, or scripts. Never
+expose object-storage access keys or secret keys to a frontend; generate authorized presigned URLs
+at the backend boundary when temporary direct access is required.
 
 ## Java and Spring Coding Conventions
 
@@ -226,6 +276,17 @@ Use `listener` for inbound messages and `publisher` for outbound messages.
 - Use `java.time` for new date and time code. Reuse the project's existing date-time utilities and
   serialization conventions.
 - Introduce `Date` or `Calendar` only when required by a legacy API, and convert at that boundary.
+
+### File and API Documentation
+
+- Before creating a Java file, inspect equivalent files and repository instructions for a required
+  file-level JavaDoc template, author, date, language, and description format.
+- Follow an established template exactly. Do not infer an author name or impose a template from an
+  example when the repository has no such rule.
+- For service interfaces, follow the repository's method-level JavaDoc convention, including its
+  parameter and return tags. Do not add duplicate interface comments to implementations unless the
+  implementation has behavior that needs additional explanation.
+- Do not rewrite file headers in existing Java files solely to make them match a preferred format.
 
 ### Style and Naming
 
