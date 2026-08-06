@@ -1,11 +1,11 @@
 ---
 name: scrapider-guidelines
-description: Apply Scrapider coding guidelines when Codex writes, edits, refactors, debugs, or reviews code. Use for code tasks that need upfront implementation logic, explicit assumptions, minimal surgical changes, verification criteria, Spring Boot backend layering conventions, Python AI/agent/training project organization, and Android Kotlin/Jetpack Compose UI rules.
+description: Use when a coding agent writes, edits, refactors, debugs, or reviews code, especially for minimal changes, verification, Spring Boot single-module or Maven multi-module layering, Python project organization, and Android Kotlin or Jetpack Compose rules.
 ---
 
 # Scrapider Guidelines
 
-Use this skill to constrain Codex's coding behavior: think before changing code, explain the implementation logic, keep edits minimal, preserve existing project style, respect Spring Boot layering, and verify the result before claiming success.
+Use this skill to constrain a coding agent's behavior: think before changing code, explain the implementation logic, keep edits minimal, preserve existing project style, respect Spring Boot layering, and verify the result before claiming success.
 
 ## Before Coding
 
@@ -155,13 +155,18 @@ When finishing, report:
 
 ## Spring Boot Backend
 
-When working in any Spring Boot backend, follow the layered architecture and object placement rules in `references/spring-boot-backend.md`.
+When working in any Spring Boot backend, follow the package responsibilities, layered architecture, and object placement rules in `references/spring-boot-backend.md`.
 
 Load that reference before generating, changing, refactoring, or reviewing Java Spring Boot backend code.
 
+When the repository has multiple Maven modules, or the task involves parent and aggregator POMs, module responsibilities, cross-module dependencies, module splitting, or deciding which module owns a Java file or Spring configuration, also load `references/spring-boot-multi-module.md`. Treat the single-module package map as the responsibility baseline; the multi-module reference explains how those responsibilities are distributed across modules without overriding the repository's established architecture.
+
 ## Full Stack Docker Compose Deployment
 
-When working on Java backend, Python worker, frontend, Docker Compose deployment, CI secret injection, `.env` wiring, shared runtime environment, or Nginx public routing, load `references/full-stack-docker-compose-ci-deployment.md` if it is present.
+When working on full-stack Docker Compose deployment, host-side builds, CI secret injection,
+`.env` wiring, runtime images, shared networks, or Nginx public routing for Java backend, Python
+worker, or frontend services, load `references/full-stack-docker-compose-ci-deployment.md` if it is
+present.
 
 ## Python Code Organization
 
