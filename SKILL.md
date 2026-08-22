@@ -1,15 +1,16 @@
 ---
 name: scrapider-guidelines
-description: Use when a coding agent writes, edits, refactors, debugs, or reviews code, especially for minimal changes, verification, Spring Boot single-module or Maven multi-module layering, Python project organization, and Android Kotlin or Jetpack Compose rules.
+description: Use when a coding agent writes, edits, refactors, debugs, or reviews code under Scrapider engineering rules, especially for Spring Boot, Python, Android Kotlin, Jetpack Compose, or standards-conformance reviews.
 ---
 
 # Scrapider Guidelines
 
-Use this skill to constrain a coding agent's behavior: think before changing code, explain the implementation logic, keep edits minimal, preserve existing project style, respect Spring Boot layering, and verify the result before claiming success.
+Use this skill to keep implementation and review simple, minimally scoped, aligned with the project,
+safe for existing contracts, and verifiable. Load only the references routed by the task.
 
 ## Before Coding
 
-Before editing code, tell the user:
+Before editing code, state material assumptions or uncertainty and tell the user:
 
 1. The problem or goal being solved.
 2. The implementation approach.
@@ -20,16 +21,11 @@ If the request is ambiguous in a way that changes public interfaces, data shape,
 
 If the ambiguity only affects implementation mechanics and the existing code, Jenkinsfile, Compose file, Dockerfile, or project documentation already shows a working local pattern, follow the existing pattern and make the smallest direct change.
 
-When multiple solutions are possible, prefer the simpler one and briefly explain the tradeoff. If the requested design is risky, say why before implementing.
+When multiple solutions are possible, prefer the simpler one and briefly explain the tradeoff. Push
+back on unnecessary complexity, broad rewrites, vague requirements, or risky designs before
+implementing them.
 
 ## Engineering Discipline
-
-### Think First
-
-- State assumptions and uncertainty before implementation.
-- Do not hide confusion. Ask when the missing information changes the design.
-- Do not silently choose between conflicting interpretations.
-- Push back on unnecessary complexity, broad rewrites, or vague requirements.
 
 ### Simplicity First
 
@@ -40,6 +36,21 @@ When multiple solutions are possible, prefer the simpler one and briefly explain
 - For existing CI, Docker, or deployment changes, prefer the minimum migration path that preserves the current runtime model, routing model, output mode, service names, credentials, and deployment topology.
 - Do not introduce a new deployment architecture, output format, proxy layer, runtime mode, or packaging model unless the existing runtime cannot consume the requested artifact or the user explicitly asks for that broader migration.
 
+### Reuse Before Rebuild
+
+- Before adding a helper, wrapper, validator, or query, search the repository, language standard library, framework, and approved dependencies for an equivalent capability.
+- Reuse an existing capability only when its behavior and contract are equivalent. Do not replace a stricter domain validation with a generic utility that changes its semantics.
+- Do not load a full collection and filter it in memory when an existing precise query expresses the same ordering and conditions. Keep the full read when the caller truly needs the full collection or equivalence cannot be proven.
+
+### No Accidental Layers
+
+- Add an architectural layer, module, class, or call-path wrapper only when it owns a distinct domain contract or technical boundary: domain invariant, transaction, authorization, state transition, conversion boundary, external-system boundary, or stable multi-step operation.
+- A small private function or method inside an existing file is not an architectural layer. Extract one only when it removes verified duplication or materially improves readability without creating a new cross-file abstraction.
+- Do not introduce a layer merely to rename or forward a call, perform a trivial null/empty check, or make a short method look organized. Avoid wrapper chains such as `A -> B -> C` when the intermediate layer owns no contract.
+- During refactoring, trace callers of replaced code. Migrate callers and remove wrappers, imports, and files that no longer own behavior.
+- Preserve a wrapper only for a meaningful contract or required public compatibility. If removal would break external callers, explain the impact instead of adding another layer around it.
+- Do not split a cohesive implementation into additional files solely for theoretical extensibility.
+
 ### Surgical Changes
 
 - Touch only files and lines that directly serve the user's request.
@@ -48,6 +59,22 @@ When multiple solutions are possible, prefer the simpler one and briefly explain
 - Do not reformat unrelated code.
 - Remove imports, variables, functions, classes, or config that the current change made unused.
 - Mention unrelated dead code or design issues instead of fixing them opportunistically.
+
+### Validation and Error Boundaries
+
+#### Assign Every Validation an Owner
+
+- Validate an invariant at its first untrusted boundary: request input, external event, deserialization, cross-process response, persistence result, or public reusable entry point.
+- Once a trusted caller has established an invariant, downstream methods must not repeat the identical validation merely to produce a different error message.
+- Repeat a validation only when the callee is independently reachable from an untrusted caller, a process or storage boundary has been crossed, concurrent state may have changed, security or data integrity depends on it, or the caller needs a genuinely different recovery path.
+- Preserve conditional database updates and state-machine guards when they protect a transition or detect concurrent changes; these are not redundant checks.
+
+#### Use Exceptions by Meaning, Not by Possibility
+
+- Use a specific business or validation exception only when the caller, API consumer, or workflow can correct, retry, branch on, or must distinguish that condition.
+- For unexpected internal invariant violations with no local recovery, use the project's existing global exception and logging policy instead of adding defensive branches or repeated exception translation at every layer.
+- Do not catch and immediately rethrow the same exception, or wrap it without actionable context, recovery behavior, or a required contract translation.
+- Never use this rule to suppress authorization, security, external-input, data-integrity, or state-transition validation.
 
 ### Business Contract Preservation
 
@@ -63,7 +90,9 @@ When multiple solutions are possible, prefer the simpler one and briefly explain
 
 - Define success criteria before or during implementation.
 - For bug fixes, prefer a focused reproduction or failing test before changing behavior.
-- For behavior changes, add or update focused tests when the repository has a test pattern.
+- Follow repository instructions such as `AGENTS.md` and explicit user direction to determine whether new tests may be created. This skill does not independently grant or deny test-creation permission.
+- When new tests are allowed or required, follow the repository's existing test pattern when one exists, and add or update focused tests for behavior changes.
+- When new tests are not allowed or not appropriate, use existing tests plus the closest reproducible, static, build, integration, interface, or manual verification available, and report remaining risk.
 - For configuration, CI, Docker, deployment, or environment changes, prefer operational verification such as build commands, generated artifact checks, `docker compose config`, Docker image builds, container startup, logs, and curl checks. Do not default to adding unit tests for deployment-only changes.
 - Run the narrowest useful verification first, then broader checks only when risk warrants it.
 - Do not claim success without command output, test results, or a clear explanation of why verification could not run.
@@ -74,9 +103,10 @@ When implementing:
 
 1. Inspect the existing code and tests before choosing an approach.
 2. Make the smallest coherent change.
-3. Use project-local helpers and framework conventions before adding new utilities.
-4. Add or update tests when behavior changes or risk is non-trivial.
-5. Run the most focused useful verification command available.
+3. Search project-local, language-standard-library, framework, and approved-library capabilities before adding a helper, wrapper, validator, or query.
+4. Identify the owner of each new validation and exception: boundary validation, business or state validation, or global unexpected-error handling. Do not duplicate a condition already guaranteed by the trusted call path.
+5. Follow the repository's test-creation policy, then choose the narrowest verification that proves the changed behavior.
+6. Run the most focused useful verification command available.
 
 ## Debugging Workflow
 
@@ -85,7 +115,7 @@ When fixing bugs:
 1. Reproduce or localize the failure before proposing a fix.
 2. Identify the smallest code path that explains the symptom.
 3. Fix the cause, not only the visible symptom.
-4. Add a regression check when practical.
+4. Follow the repository's test-creation policy; add a regression test when required or permitted, otherwise use the closest reproducible regression check.
 5. Verify the failing path and any nearby affected path.
 
 ## Refactoring Rules
@@ -96,15 +126,27 @@ Refactor only when the user asks for it or when it is required to make the reque
 - Preserve public APIs, request/response shapes, and database semantics unless told otherwise.
 - Move code in small steps and verify after meaningful changes.
 - Do not introduce a new abstraction for one call site.
+- Keep handlers, strategies, and stage-specific classes separate when they represent distinct current business semantics, dispatch identities, state keys, or lifecycle stages, even if their current bodies are identical.
+- If code, documentation, tests, and call sites do not establish whether identical handlers are intentional semantic entry points or accidental duplication, ask one focused question only when the choice would materially affect registered or dispatched identities, lifecycle stages, public APIs, business contracts, or a repository-established extension boundary. Briefly explain the concrete keep-versus-merge tradeoff before asking.
+- When the choice affects only local implementation mechanics, preserve the current structure or make the smallest direct change without asking. Do not ask when existing evidence or explicit user direction already decides.
+- When shared behavior is stable and extraction actually reduces complexity, extract only the smallest shared implementation. Keep distinct semantic entry points and do not add another dispatch or wrapper layer.
 
-## Review Rules
+## Standards Review
 
-When reviewing code, lead with concrete findings:
+When reviewing code with this skill, load and follow
+`references/shared/standards-review.md` as the sole review procedure and output contract. The review
+must cover every applicable rule in this `SKILL.md` and every reference routed by the actual scope,
+not a remembered shortlist.
 
-- Prioritize correctness, regressions, data loss, security, API contract breaks, and missing tests.
-- Use file and line references when available.
-- Separate confirmed issues from questions or assumptions.
-- Keep style preferences secondary unless they affect maintainability or consistency.
+- If assigned the `scrapider-standards-reviewer` role, perform the review directly and never
+  delegate; this is a leaf role.
+- Otherwise, when the host supports subagents, dispatch exactly one read-only standards reviewer.
+  This skill does not launch additional review roles; other review workflows are governed elsewhere.
+- Without subagent support, perform the same review directly and state that it could not be isolated.
+- Give the reviewer the repository path, exact scope or diff range, relevant user request, and known
+  project-instruction paths. Do not provide conclusions or expected findings.
+- Return the report to the primary agent. The primary agent decides how to use it with other
+  evidence or reviewers; this skill does not arbitrate conflicts.
 
 ## Communication Rules
 
@@ -113,6 +155,7 @@ Be direct and specific:
 - Say what changed, where it changed, and why.
 - Name verification commands and results.
 - If verification fails, report the failure and the next useful step.
+- Name any verification that could not be completed and explain why.
 - If no code was changed, say that clearly.
 
 ## Git Commit Rules
@@ -147,39 +190,36 @@ Example:
         3. document commit message format
 ```
 
-When finishing, report:
+## Reference Routing
 
-1. What actually changed.
-2. The verification command and result.
-3. Any verification that could not be completed, with the reason.
+### Spring Boot Backend
 
-## Spring Boot Backend
-
-When working in any Spring Boot backend, follow the package responsibilities, layered architecture, and object placement rules in `references/spring-boot-backend.md`.
+When working in any Spring Boot backend, follow the package responsibilities, layered architecture, and object placement rules in `references/java/spring-boot-backend.md`.
 
 Load that reference before generating, changing, refactoring, or reviewing Java Spring Boot backend code.
 
-When the repository has multiple Maven modules, or the task involves parent and aggregator POMs, module responsibilities, cross-module dependencies, module splitting, or deciding which module owns a Java file or Spring configuration, also load `references/spring-boot-multi-module.md`. Treat the single-module package map as the responsibility baseline; the multi-module reference explains how those responsibilities are distributed across modules without overriding the repository's established architecture.
+When the repository has multiple Maven modules, or the task involves parent and aggregator POMs, module responsibilities, cross-module dependencies, module splitting, or deciding which module owns a Java file or Spring configuration, also load `references/java/spring-boot-multi-module.md`. Treat the single-module package map as the responsibility baseline; the multi-module reference explains how those responsibilities are distributed across modules without overriding the repository's established architecture.
 
-## Full Stack Docker Compose Deployment
+### Local Full Stack Docker Compose Deployment
 
-When working on full-stack Docker Compose deployment, host-side builds, CI secret injection,
-`.env` wiring, runtime images, shared networks, or Nginx public routing for Java backend, Python
-worker, or frontend services, load `references/full-stack-docker-compose-ci-deployment.md` if it is
-present.
+When creating, adopting, changing, or reviewing the user's local deployment profile that combines
+Jenkins host builds, runtime-only Docker images, Docker Compose, CI secret files, and optional Nginx
+routing, load `references/shared/full-stack-docker-compose-ci-deployment.md` if present. Do not load
+it solely because another deployment uses Docker, Compose, CI, or Nginx. This reference is
+user-local; its absence must not block the task.
 
-## Python Code Organization
+### Python Code Organization
 
-When working on Python code, follow the package and module organization rules in `references/python-code-organization.md`.
+When working on Python code, follow the package and module organization rules in `references/python/python-code-organization.md`.
 
 Load that reference before generating, changing, refactoring, or reviewing Python code.
 
-## Android Kotlin Compose
+### Android Kotlin Compose
 
-When working on Android code, follow the Kotlin, Jetpack Compose, UI data mapping, and error handling rules in `references/android-kotlin-compose.md`.
+When working on Android code, follow the Kotlin, Jetpack Compose, UI data mapping, and error handling rules in `references/android/android-kotlin-compose.md`.
 
 Load that reference before generating, changing, refactoring, or reviewing Android code.
 
-When implementing Android UI from a screenshot, mockup, design image, or existing product UI, also load `references/android-ui-implementation-from-design.md`.
+When implementing Android UI from a screenshot, mockup, design image, or existing product UI, also load `references/android/android-ui-implementation-from-design.md`.
 
-When designing or generating Android product UI without a fixed design image, also load `references/android-product-ui-design.md`.
+When designing or generating Android product UI without a fixed design image, also load `references/android/android-product-ui-design.md`.

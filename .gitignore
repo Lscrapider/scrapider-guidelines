@@ -1,4 +1,4 @@
 .idea/
 .DS_Store
 *.log
-references/full-stack-docker-compose-ci-deployment.md
+references/shared/full-stack-docker-compose-ci-deployment.md

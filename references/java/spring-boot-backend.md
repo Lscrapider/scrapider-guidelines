@@ -82,12 +82,15 @@ External API clients support service orchestration and do not replace the persis
 
 ## HTTP and Controller Boundary
 
-- Use `Param` objects for request input.
-- Use `domain.param` Param objects for controller request bodies. Do not use weakly typed `Map` or
-  `JsonNode` request bodies.
+- Use typed `domain.param` Param objects for complex request bodies or query contracts when that
+  matches the repository. Simple identifiers and filters may use path variables or request
+  parameters without creating a one-field Param class.
+- Do not use weakly typed `Map` or `JsonNode` request bodies when a stable typed contract exists.
 - Use `VO` objects for frontend responses. Never return `PO` objects directly to the frontend.
-- For paginated query APIs, name the pagination parameters `pageSize` and `pageNum`.
-- Use `GET` for query APIs and `POST` for submit APIs.
+- Reuse the repository's established pagination parameter names and response shape; do not rename
+  an existing API contract only to prefer `pageSize` or `pageNum`.
+- Choose HTTP methods from the existing API contract and HTTP semantics. Do not change a method
+  only for stylistic consistency.
 - Do not define local `@ExceptionHandler` methods in controllers. Use module-level or global
   `@RestControllerAdvice`.
 - When logging an exception, pass the exception object to the logger so the full stack trace is
@@ -103,10 +106,12 @@ External API clients support service orchestration and do not replace the persis
 
 ### Creating Persistence Objects
 
-- When building a `PO` from `JsonNode`, a third-party response, a DTO, or other intermediate data,
-  prefer a static factory on the target persistence object.
-- Use names such as `UserPO.fromApiResponse(...)` or `OrderPO.fromDto(...)`.
-- Do not scatter this construction logic across `task`, `service`, or `manage`.
+- Follow the repository's established conversion boundary. A static factory on a `PO`, such as
+  `OrderPO.fromDto(...)`, is suitable for simple local construction that does not couple the
+  persistence object to transport or third-party types.
+- Keep external payload, `JsonNode`, and third-party mapping in an existing converter, adapter, or
+  integration boundary rather than importing those contracts into the `PO`.
+- Do not scatter the same construction logic across `task`, `service`, or `manage`.
 
 ### Bean and Object Conversion
 
@@ -114,8 +119,9 @@ External API clients support service orchestration and do not replace the persis
   the project's existing dependencies.
 - Prefer an existing framework or project utility. For bean copying, use Spring `BeanUtils`,
   Hutool `BeanUtil` when Hutool is available, or another approved utility.
-- If no suitable utility is available, ask the user whether adding a dependency is acceptable
-  before writing repetitive field-copying code.
+- Do not add a dependency without approval. If no suitable utility exists, implement the narrowest
+  explicit conversion that follows project style; ask only when the dependency choice or mapping
+  contract cannot be decided from the repository.
 - Use a converter class in `converter` only when generic copying cannot represent the required
   business mapping semantics.
 - Do not scatter manual conversion logic across `service` or `service.impl`.
@@ -169,10 +175,11 @@ create a clear boundary and reduce complexity in `service`.
 
 ### Provider
 
-- Use a Java abstract class as the provider contract.
 - Introduce providers when multiple data sources supply the same type of data, or when multiple
   business objects in one processing chain produce the same return type.
-- Define shared behavior, template methods, and return contracts in the abstract provider class.
+- Follow the repository's provider convention. Use an interface for a pure contract; use an
+  abstract class only when implementations genuinely share state, a template method, or common
+  implementation.
 - Place source-specific or object-specific implementations under business packages.
 - Use providers to support `service`. Providers may call `api`, `manage`, caches, or other
   infrastructure.
@@ -181,8 +188,12 @@ create a clear boundary and reduce complexity in `service`.
 
 ### Shared Boundaries
 
-- Pass `domain.dto` DTO objects between `service` and `handler` or `provider`.
-- Do not pass `Param`, `VO`, or `PO` objects across these boundaries.
+- Use `domain.dto` DTO objects for stable multi-field or evolving contracts between `service` and
+  `handler` or `provider` when that matches the repository.
+- Pass a semantic identifier, enum, or small value object directly when a DTO would only wrap
+  arguments without owning a distinct contract.
+- Do not leak controller-facing `Param` or `VO` objects, or persistence `PO` objects, across these
+  boundaries.
 - Do not create a handler or provider for simple CRUD, single-branch logic, or a short workflow.
 - To reuse a small stateless code block, prefer a private method or ordinary component.
 
@@ -268,8 +279,9 @@ at the backend boundary when temporary direct access is required.
 - Do not reimplement functionality that an available utility already provides.
 - Invoke static utility methods through their declaring class, such as `Objects.nonNull(...)` or
   `StrUtil.isBlank(...)`, instead of static-importing them.
-- Return empty collections instead of `null`. Choose an empty collection whose mutability matches
-  the method contract.
+- For new APIs where absence means “no elements,” return an empty collection whose mutability
+  matches the method contract. Preserve `null` when it is an established distinct state; change an
+  existing nullable contract only after proving caller and serialization equivalence.
 - For nullable boxed booleans, use `Boolean.TRUE.equals(value)` or
   `Boolean.FALSE.equals(value)`.
 - Compare enum constants with `==`. Do not compare enums by ordinal or ad hoc string values.
@@ -290,10 +302,12 @@ at the backend boundary when temporary direct access is required.
 
 ### Style and Naming
 
-- When a Java class calls its own method, use explicit `this`.
-- Prefer lambda style for collection processing, callbacks, and functional interface logic.
-- Remove unused classes, methods, fields, local variables, imports, configuration, and
-  dependencies. Do not keep dead code for possible future use.
+- Follow the repository's established style for explicit `this`, loops, streams, lambdas, and
+  callbacks. Do not rewrite equivalent code only to impose a preferred syntax.
+- Remove imports, local variables, private code, configuration, and dependencies made unused by
+  the current change. Before removing broader or pre-existing code, check Spring wiring,
+  reflection, serialization, generated configuration, and public compatibility; report unrelated
+  dead code instead of deleting it opportunistically.
 - Keep code simple, clean, and direct.
 - Extract a function or class only to remove genuine duplication or when a code block is long
   enough to impair readability.

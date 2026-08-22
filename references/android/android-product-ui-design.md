@@ -47,10 +47,7 @@ Do not start with colors, gradients, or decorative cards before the information 
 ## Icon, Illustration, And Motion Strategy
 
 - Use icons and illustrations as product identity, not filler.
-- Keep icons from one source or one generated asset set.
-- Do not hand-draw VectorDrawable, inline SVG, or Compose vector paths for product icons.
-- Do not use Material Icons as a default fallback when they do not match the product tone.
-- Generate or request bitmap assets for important navigation icons, city/map imagery, empty states, success feedback, route, map, warning, favorite, like, and dislike visuals when no approved asset set exists.
+- Follow the shared icon and visual asset rules in `android-kotlin-compose.md`.
 - Use motion to explain state: location changed, system working, result completed, action confirmed.
 - Do not add motion only to make the page look busy.
 
@@ -61,4 +58,3 @@ Do not start with colors, gradients, or decorative cards before the information 
 - Collapse or defer secondary filters and actions when space is tight.
 - Do not copy desktop horizontal density into mobile screens.
 - Design detail pages, failed states, empty states, confirmation dialogs, and edit flows with the same product quality as the first screen.
-

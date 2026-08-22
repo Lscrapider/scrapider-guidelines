@@ -2,12 +2,23 @@
 
 Use this reference for Python code. Python projects may be agents, RAG systems, training pipelines, inference jobs, data processing jobs, CLIs, workers, experiments, or web services. Do not assume an HTTP backend structure unless the repository clearly uses one.
 
+## Contents
+
+- [Core Rules](#core-rules)
+- [Business Module Boundaries](#business-module-boundaries)
+- [Common Python Package Roles](#common-python-package-roles)
+- [Flat Directory Anti-Patterns](#flat-directory-anti-patterns)
+- [Splitting Rules](#splitting-rules)
+- [Naming Rules](#naming-rules)
+- [Import Rules](#import-rules)
+- [Tests](#tests)
+
 ## Core Rules
 
 - Inspect the existing Python project structure before adding files.
 - Do not place many unrelated `.py` files in the same directory.
 - Group code by business domain, capability, lifecycle stage, runtime role, or domain responsibility.
-- Prefer small packages with clear ownership over large flat directories.
+- Prefer cohesive packages with clear ownership over large flat directories. Do not split a cohesive area merely to keep files or packages small.
 - Do not create Java/Spring-style layers such as `controller`, `service`, `manage`, or `mapper` unless the project already uses that pattern.
 - Do not create packages for their own sake; keep simple scripts simple.
 - If a one-off script grows shared logic, move reusable logic into packages and keep the script as a thin entry point.
