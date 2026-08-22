@@ -1,4 +1,4 @@
 interface:
   display_name: "Scrapider Guidelines"
-  short_description: "Coding discipline and project rules"
-  default_prompt: "Use $scrapider-guidelines to implement this change with minimal code and clear verification."
+  short_description: "Coding discipline and standards reviews"
+  default_prompt: "Use $scrapider-guidelines to implement, refactor, debug, or review this code under the project's rules."

@@ -44,12 +44,9 @@ Do not write an approximate version first and rely on later visual corrections.
 ## Icon And Visual Asset Rules
 
 - Treat icons as part of UI fidelity, not as minor implementation details.
-- Use one consistent icon source for the same screen or feature.
-- Do not hand-draw VectorDrawable, inline SVG, or Compose vector paths for product icons.
-- Do not use Material Icons as a casual fallback. Use Material Icons only when the existing app design system already uses them and the target icon matches the required style.
-- Do not mix icon styles, stroke widths, corner styles, filled/outlined styles, or visual weights in the same feature.
-- For key product icons such as favorite, like, dislike, route, map, warning, navigation, empty state, and success feedback, prefer existing approved app assets or generated bitmap assets as a matched set.
-- If the design image shows custom icons and no matching asset exists, stop and ask whether to generate bitmap assets or choose a specific icon library.
+- Follow the shared icon and visual asset rules in `android-kotlin-compose.md`.
+- For key product icons, inspect the target design before choosing an existing asset or simplified
+  substitute; do not infer fidelity from a semantically similar name alone.
 
 ## Mobile Layout Quality
 
@@ -59,4 +56,3 @@ Do not write an approximate version first and rely on later visual corrections.
 - Preserve enough visual area for the primary scene, such as map, content, camera, or editor surface.
 - Do not let text, badges, icons, or dynamic content resize controls unexpectedly.
 - Verify that text fits and aligns on realistic mobile widths.
-

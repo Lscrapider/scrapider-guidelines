@@ -1,28 +1,40 @@
 # Android Kotlin Compose Reference
 
-Use this reference for Android code. Prefer Kotlin for Android development. When the user does not specify a UI technology, use Jetpack Compose instead of XML/View-based UI.
+Use this reference for Android code. Follow the repository's existing UI technology first. For a greenfield Android UI or a feature with no established UI convention, prefer Kotlin and Jetpack Compose unless the user asks otherwise.
 
-When implementing or reviewing Compose UI, use `$compose-expert` first.
+When implementing or reviewing Compose UI, use an available Compose-specific expert skill or
+capability first. If the host provides none, apply this reference directly.
 
 For Android UI implementation from screenshots, mockups, design images, or existing product UI, also load `android-ui-implementation-from-design.md`.
 
 For Android product UI design or screen generation without a fixed design image, also load `android-product-ui-design.md`.
+
+## Contents
+
+- [Core Rules](#core-rules)
+- [Android Architecture](#android-architecture)
+- [Backend Field And UI Copy Rules](#backend-field-and-ui-copy-rules)
+- [Backend Error Handling](#backend-error-handling)
+- [Icon And Visual Asset Rules](#icon-and-visual-asset-rules)
+- [Compose Rules](#compose-rules)
+- [Feature Modularization](#feature-modularization)
+- [File Organization](#file-organization)
 
 ## Core Rules
 
 - Inspect the existing Android project structure before adding files.
 - Follow the repository's existing architecture, such as MVVM, MVI, clean architecture, feature modules, or package-by-feature.
 - Use Kotlin for new Android code unless the repository is explicitly Java-only or the user asks for Java.
-- Use Jetpack Compose by default when UI technology is not specified.
-- Do not introduce XML layouts, ViewBinding, or legacy View UI for new screens unless the project already uses that pattern or the user asks for it.
+- Follow the existing UI stack for changes to an established feature. Do not introduce Compose into a View/XML feature merely because the request leaves UI technology unspecified.
+- For a greenfield feature with no repository convention, prefer Jetpack Compose over introducing a legacy View/XML stack.
 - Keep Composables focused on UI rendering and UI events. Put business logic in ViewModel, state holders, use cases, or existing project layers.
 - Do not pass raw network DTOs directly into Composables. Map backend responses to UI state or UI models first.
 
 ## Android Architecture
 
-Use MVVM plus Repository plus unidirectional data flow as the default architecture for Jetpack Compose features unless the repository already has a clear conflicting pattern.
+Follow the repository's established feature architecture first. For a new Compose feature with no project pattern, use ViewModel plus unidirectional data flow when the feature owns non-trivial UI state. Add a Repository only for a real data-access or data-aggregation boundary, and add a UseCase only for complex or reused domain rules.
 
-Before creating Kotlin files, assign each file to one responsibility:
+Choose only the files whose responsibilities actually exist. Related small state, event, and effect types may remain together when that is clearer than creating one file per type:
 
 - `XxxScreen.kt`: Compose entry and screen-level UI composition.
 - `XxxViewModel.kt`: screen state, event handling, and lightweight orchestration.
@@ -89,6 +101,17 @@ fun BackendError.toUiError(): UiError =
     }
 ```
 
+## Icon And Visual Asset Rules
+
+- Prefer the existing design system or approved asset set, and keep one compatible visual family
+  within a feature.
+- Reuse matching VectorDrawable, SVG, Compose vector, or Material assets. Do not hand-draw ad hoc
+  vector paths to approximate custom branding.
+- Generate or request a custom bitmap or vector only when the product or target design needs a
+  unique visual and no approved match exists.
+- Ask about asset direction only when the choice would materially affect visual identity or design
+  fidelity; otherwise follow the established design system.
+
 ## Compose Rules
 
 - Use state hoisting and immutable UI state where practical.
@@ -104,10 +127,11 @@ fun BackendError.toUiError(): UiError =
 - Prefer feature modules or feature packages for independent product areas instead of concentrating unrelated screens and logic in the app module.
 - Keep shared infrastructure in explicit shared modules or packages, such as `core`, `common`, `designsystem`, `network`, or `data`, following the repository's existing naming.
 - Do not create new Gradle modules only for appearance. Add a module only when it has a clear feature boundary, dependency boundary, build boundary, or reuse reason.
-- Keep one Kotlin file focused on one responsibility: screen entry, UI state, ViewModel, mapper, route/navigation, reusable component, or domain model.
-- Do not put a full feature's screen, state model, event model, ViewModel logic, DTO mapping, fake data, and reusable components into one Kotlin file.
-- Split large Compose screens into private section Composables, feature components, state models, and mapper files when the file starts mixing unrelated responsibilities.
-- Avoid file growth that makes review, navigation, or targeted changes difficult. Treat oversized Kotlin files as a design smell and split them by responsibility before extending them.
+- Keep each Kotlin file cohesive around one primary responsibility. Small related types may remain in the same file when separating them would add navigation without clarifying ownership.
+- A small cohesive feature may keep its Screen, state, event, effect, and lightweight ViewModel
+  together when that matches the repository and is easier to navigate.
+- Split a file when it mixes unrelated rendering, orchestration, DTO mapping, fake data, or reusable
+  components, or when its size materially impairs review, navigation, or targeted changes.
 
 ## File Organization
 
