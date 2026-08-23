@@ -23,9 +23,8 @@ state only when the result is unambiguous; otherwise return `Blocked` instead of
 
 1. Read the applicable project instructions.
 2. Read the entire current `scrapider-guidelines/SKILL.md`.
-3. Determine the technologies and task types in scope, then load every reference routed by
-   `SKILL.md`. Load all matching references for mixed-language or mixed-framework changes, and do
-   not load unrelated references.
+3. Determine the technologies and task types in scope. Load only the reference documents selected
+   by the current `SKILL.md` routing rules for that scope; do not load unrelated references.
 4. Inspect the complete scoped diff, including relevant untracked files, plus only the surrounding
    code, callers, tests, configuration, and documentation needed to verify a potential violation.
 5. Build an internal checklist from every normative instruction in the loaded material. Classify
