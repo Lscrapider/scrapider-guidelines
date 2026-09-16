@@ -65,6 +65,10 @@ implementing them.
 #### Assign Every Validation an Owner
 
 - Validate an invariant at its first untrusted boundary: request input, external event, deserialization, cross-process response, persistence result, or public reusable entry point.
+- Add a validation or conditional branch only when a failure would change a meaningful outcome: it protects security, authorization, privacy, data integrity, a state transition, resource safety, a required public contract, or enables a real recovery path. Do not guard a condition solely because it is theoretically possible.
+- Do not reject or error on input that the current operation neither reads nor persists. In particular, do not require a JSON object's key set to exactly match the fields consumed by the handler; ignore irrelevant additional fields by default so callers can evolve independently.
+- Treat unknown fields as errors only when accepting them would create a concrete risk or contract violation—for example mass assignment, unsafe polymorphic deserialization, persistence of an invalid schema, an explicit closed-schema API, or a typo that must be reported to the caller. State the concrete consequence before adding the check.
+- Before adding an `if`, identify the observable difference between its branches. If the normal path already handles the value safely, or both branches produce the same result, omit the branch.
 - Once a trusted caller has established an invariant, downstream methods must not repeat the identical validation merely to produce a different error message.
 - Repeat a validation only when the callee is independently reachable from an untrusted caller, a process or storage boundary has been crossed, concurrent state may have changed, security or data integrity depends on it, or the caller needs a genuinely different recovery path.
 - Preserve conditional database updates and state-machine guards when they protect a transition or detect concurrent changes; these are not redundant checks.
