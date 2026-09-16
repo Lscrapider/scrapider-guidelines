@@ -31,7 +31,7 @@ implementing them.
 
 - Write the minimum code that solves the current request.
 - Do not add speculative features, configuration, extension points, or abstractions.
-- Do not add defensive branches for impossible states unless the codebase already requires that pattern.
+- Add defensive checks only for concrete failure modes in the current code path; follow the validation rules below.
 - If a change grows large, re-check whether a smaller direct change would solve the same problem.
 - For existing CI, Docker, or deployment changes, prefer the minimum migration path that preserves the current runtime model, routing model, output mode, service names, credentials, and deployment topology.
 - Do not introduce a new deployment architecture, output format, proxy layer, runtime mode, or packaging model unless the existing runtime cannot consume the requested artifact or the user explicitly asks for that broader migration.
@@ -62,13 +62,17 @@ implementing them.
 
 ### Validation and Error Boundaries
 
+#### Justify Defensive Checks Before Adding Them
+
+- Before adding a defensive check, identify a condition reachable through the actual inputs or call path, the concrete incorrect outcome without the check, and why existing guarantees or handling do not already cover it. If there is no such outcome, omit the check. "Just in case" and "the input comes from the frontend" are not sufficient reasons on their own.
+- Do not guard states already excluded by enforced types, deserialization, or control flow. A frontend convention is not an enforced server-side guarantee. Retain checks needed for correctness, authorization, security, data integrity, or concurrency even when the failure is rare.
+- Let normal operations handle harmless cases naturally. For example, do not check whether a collection is empty before iterating when zero iterations already give the required result. Avoid defensive `if` branches, early returns, and fallback values that do not change required behavior. Ordinary business branches are not subject to a blanket ban on `if`.
+- Validate the fields and constraints the operation depends on; do not invent restrictions merely to make input match an example payload. For a JSON list of objects, read the required fields and ignore unused extra keys by default. Do not require an exact `keySet` or field count unless an explicit closed-schema contract or a concrete effect of those extra fields requires rejection. Verify that extra fields are actually ignored rather than automatically bound, forwarded, or persisted.
+- Use these rules when adding or changing validation within the requested scope. Before removing an existing check, establish what contract or behavior it protects; do not loosen an established API contract or silently replace a meaningful error with a default value.
+
 #### Assign Every Validation an Owner
 
-- Validate an invariant at its first untrusted boundary: request input, external event, deserialization, cross-process response, persistence result, or public reusable entry point.
-- Add a validation or conditional branch only when a failure would change a meaningful outcome: it protects security, authorization, privacy, data integrity, a state transition, resource safety, a required public contract, or enables a real recovery path. Do not guard a condition solely because it is theoretically possible.
-- Do not reject or error on input that the current operation neither reads nor persists. In particular, do not require a JSON object's key set to exactly match the fields consumed by the handler; ignore irrelevant additional fields by default so callers can evolve independently.
-- Treat unknown fields as errors only when accepting them would create a concrete risk or contract violation—for example mass assignment, unsafe polymorphic deserialization, persistence of an invalid schema, an explicit closed-schema API, or a typo that must be reported to the caller. State the concrete consequence before adding the check.
-- Before adding an `if`, identify the observable difference between its branches. If the normal path already handles the value safely, or both branches produce the same result, omit the branch.
+- Enforce each necessary invariant at its first untrusted boundary, using existing deserialization, framework, or database guarantees where they already provide the required behavior instead of duplicating them manually.
 - Once a trusted caller has established an invariant, downstream methods must not repeat the identical validation merely to produce a different error message.
 - Repeat a validation only when the callee is independently reachable from an untrusted caller, a process or storage boundary has been crossed, concurrent state may have changed, security or data integrity depends on it, or the caller needs a genuinely different recovery path.
 - Preserve conditional database updates and state-machine guards when they protect a transition or detect concurrent changes; these are not redundant checks.
@@ -78,7 +82,7 @@ implementing them.
 - Use a specific business or validation exception only when the caller, API consumer, or workflow can correct, retry, branch on, or must distinguish that condition.
 - For unexpected internal invariant violations with no local recovery, use the project's existing global exception and logging policy instead of adding defensive branches or repeated exception translation at every layer.
 - Do not catch and immediately rethrow the same exception, or wrap it without actionable context, recovery behavior, or a required contract translation.
-- Never use this rule to suppress authorization, security, external-input, data-integrity, or state-transition validation.
+- This exception policy does not remove necessary authorization, security, external-input, data-integrity, or state-transition validation; determine necessity using the rules above.
 
 ### Business Contract Preservation
 
@@ -108,7 +112,7 @@ When implementing:
 1. Inspect the existing code and tests before choosing an approach.
 2. Make the smallest coherent change.
 3. Search project-local, language-standard-library, framework, and approved-library capabilities before adding a helper, wrapper, validator, or query.
-4. Identify the owner of each new validation and exception: boundary validation, business or state validation, or global unexpected-error handling. Do not duplicate a condition already guaranteed by the trusted call path.
+4. Establish the concrete need for each new defensive check, then identify the owner of necessary validation and exception handling. Do not duplicate a condition already guaranteed by the trusted call path.
 5. Follow the repository's test-creation policy, then choose the narrowest verification that proves the changed behavior.
 6. Run the most focused useful verification command available.
 
