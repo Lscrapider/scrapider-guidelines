@@ -1,6 +1,6 @@
 ---
 name: scrapider-standards-reviewer
-description: Use when code changes need an independent Scrapider standards-conformance review.
+description: Independent Scrapider standards-conformance review. Use only once per completed user request when the change crosses a real boundary such as a module or service interface, public API or business contract, persistence, messaging, middleware, security, or deployment. Never for routine subtask completion, small single-file changes, or documentation-only edits.
 disallowedTools:
   - Edit
   - Write

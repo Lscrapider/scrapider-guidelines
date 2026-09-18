@@ -17,6 +17,8 @@ Before editing code, state material assumptions or uncertainty and tell the user
 3. The files expected to change.
 4. The verification method.
 
+For small, unambiguous changes, state these in one or two sentences instead of a full plan.
+
 If the request is ambiguous in a way that changes public interfaces, data shape, credentials, deployment topology, persistence, security posture, or irreversible operations, stop and ask. Do not guess silently.
 
 If the ambiguity only affects implementation mechanics and the existing code, Jenkinsfile, Compose file, Dockerfile, or project documentation already shows a working local pattern, follow the existing pattern and make the smallest direct change.
@@ -31,7 +33,7 @@ implementing them.
 
 - Write the minimum code that solves the current request.
 - Do not add speculative features, configuration, extension points, or abstractions.
-- Add defensive checks only for concrete failure modes in the current code path; follow the validation rules below.
+- Add defensive checks only under the validation and error-boundary rules below.
 - If a change grows large, re-check whether a smaller direct change would solve the same problem.
 - For existing CI, Docker, or deployment changes, prefer the minimum migration path that preserves the current runtime model, routing model, output mode, service names, credentials, and deployment topology.
 - Do not introduce a new deployment architecture, output format, proxy layer, runtime mode, or packaging model unless the existing runtime cannot consume the requested artifact or the user explicitly asks for that broader migration.
@@ -62,19 +64,35 @@ implementing them.
 
 ### Validation and Error Boundaries
 
+A check earns its place only where a guarantee ends. The question is not "could this value be
+null, empty, or invalid" but "what still enforces that it is not, and what concretely breaks here
+if it is". Omitting a check is the default; add one only when you can state in one sentence which
+reachable path it covers and which concrete outcome it prevents.
+
 #### Justify Defensive Checks Before Adding Them
 
-- Before adding a defensive check, identify a condition reachable through the actual inputs or call path, the concrete incorrect outcome without the check, and why existing guarantees or handling do not already cover it. If there is no such outcome, omit the check. "Just in case" and "the input comes from the frontend" are not sufficient reasons on their own.
-- Do not guard states already excluded by enforced types, deserialization, or control flow. A frontend convention is not an enforced server-side guarantee. Retain checks needed for correctness, authorization, security, data integrity, or concurrency even when the failure is rare.
-- Let normal operations handle harmless cases naturally. For example, do not check whether a collection is empty before iterating when zero iterations already give the required result. Avoid defensive `if` branches, early returns, and fallback values that do not change required behavior. Ordinary business branches are not subject to a blanket ban on `if`.
-- Validate the fields and constraints the operation depends on; do not invent restrictions merely to make input match an example payload. For a JSON list of objects, read the required fields and ignore unused extra keys by default. Do not require an exact `keySet` or field count unless an explicit closed-schema contract or a concrete effect of those extra fields requires rejection. Verify that extra fields are actually ignored rather than automatically bound, forwarded, or persisted.
-- Use these rules when adding or changing validation within the requested scope. Before removing an existing check, establish what contract or behavior it protects; do not loosen an established API contract or silently replace a meaningful error with a default value.
+Do not guard states that an existing guarantee already excludes, for example:
+
+- A field enforced non-null by the type system, a `NOT NULL` column, or required deserialization; use it directly instead of re-checking it.
+- A request payload already enforced by a typed schema or the entry boundary's validation, such as a Pydantic model, proto definition, or Bean Validation on a `@Valid` DTO; downstream methods consume the typed fields without repeating the same null, empty, or range checks.
+- A value already narrowed by earlier control flow, or a loop over a collection where zero iterations already gives the required result; likewise avoid early returns and fallback values that do not change required behavior.
+- Extra JSON keys or fields the operation does not depend on; do not invent restrictions to make input match an example payload, and do not require an exact `keySet` or field count without an explicit closed-schema contract. Verify that extra fields are actually ignored rather than automatically bound, forwarded, or persisted.
+
+Add a check only where a real gap exists: at the first untrusted boundary of external input, or
+where a repeat is justified under the ownership rules below. Ordinary business branches over
+status, eligibility, or routing are normal code, not defensive checks; this section does not
+restrict them.
+
+"Just in case", "the input comes from the frontend" (a frontend convention is not an enforced
+server-side guarantee), and symmetry with a check elsewhere are not sufficient reasons. Before
+removing an existing check, establish what contract or behavior it protects; do not loosen an
+established API contract or silently replace a meaningful error with a default value.
 
 #### Assign Every Validation an Owner
 
-- Enforce each necessary invariant at its first untrusted boundary, using existing deserialization, framework, or database guarantees where they already provide the required behavior instead of duplicating them manually.
+- Enforce each necessary invariant at its first untrusted boundary — for example, HTTP parameters and bodies from outside the system, MQ consumer payloads, file imports, and third-party API responses — using existing deserialization, framework, or database guarantees where they already provide the required behavior instead of duplicating them manually.
 - Once a trusted caller has established an invariant, downstream methods must not repeat the identical validation merely to produce a different error message.
-- Repeat a validation only when the callee is independently reachable from an untrusted caller, a process or storage boundary has been crossed, concurrent state may have changed, security or data integrity depends on it, or the caller needs a genuinely different recovery path.
+- Repeat a validation only when the callee is independently reachable from an untrusted caller, a process or storage boundary has been crossed, concurrent state may have changed, security or data integrity depends on it (retain these even when the failure is rare), or the caller needs a genuinely different recovery path.
 - Preserve conditional database updates and state-machine guards when they protect a transition or detect concurrent changes; these are not redundant checks.
 
 #### Use Exceptions by Meaning, Not by Possibility
@@ -102,7 +120,9 @@ implementing them.
 - When new tests are allowed or required, follow the repository's existing test pattern when one exists, and add or update focused tests for behavior changes.
 - When new tests are not allowed or not appropriate, use existing tests plus the closest reproducible, static, build, integration, interface, or manual verification available, and report remaining risk.
 - For configuration, CI, Docker, deployment, or environment changes, prefer operational verification such as build commands, generated artifact checks, `docker compose config`, Docker image builds, container startup, logs, and curl checks. Do not default to adding unit tests for deployment-only changes.
-- Run the narrowest useful verification first, then broader checks only when risk warrants it.
+- Verification is sufficient once the narrowest check that covers the changed behavior passes; run broader checks only when the change's risk warrants them.
+- Comment-, rename-, constant-, and documentation-only changes need no runtime verification; say so instead of inventing one.
+- Do not run extra checks merely to make the report look complete.
 - Do not claim success without command output, test results, or a clear explanation of why verification could not run.
 
 ## Coding Workflow
@@ -112,9 +132,8 @@ When implementing:
 1. Inspect the existing code and tests before choosing an approach.
 2. Make the smallest coherent change.
 3. Search project-local, language-standard-library, framework, and approved-library capabilities before adding a helper, wrapper, validator, or query.
-4. Establish the concrete need for each new defensive check, then identify the owner of necessary validation and exception handling. Do not duplicate a condition already guaranteed by the trusted call path.
-5. Follow the repository's test-creation policy, then choose the narrowest verification that proves the changed behavior.
-6. Run the most focused useful verification command available.
+4. Apply the validation and error-boundary rules above.
+5. Follow the repository's test-creation policy, then run the narrowest verification that proves the changed behavior.
 
 ## Debugging Workflow
 
@@ -135,13 +154,41 @@ Refactor only when the user asks for it or when it is required to make the reque
 - Move code in small steps and verify after meaningful changes.
 - Do not introduce a new abstraction for one call site.
 - Keep handlers, strategies, and stage-specific classes separate when they represent distinct current business semantics, dispatch identities, state keys, or lifecycle stages, even if their current bodies are identical.
-- If code, documentation, tests, and call sites do not establish whether identical handlers are intentional semantic entry points or accidental duplication, ask one focused question only when the choice would materially affect registered or dispatched identities, lifecycle stages, public APIs, business contracts, or a repository-established extension boundary. Briefly explain the concrete keep-versus-merge tradeoff before asking.
-- When the choice affects only local implementation mechanics, preserve the current structure or make the smallest direct change without asking. Do not ask when existing evidence or explicit user direction already decides.
+- When identical handlers could be either intentional semantic entry points or accidental duplication, decide from code, documentation, tests, and call sites first. Do not ask when existing evidence or explicit user direction already decides.
+- When the choice affects only local implementation mechanics, preserve the current structure or make the smallest direct change without asking.
+- Ask one focused question only when the choice would materially affect registered or dispatched identities, lifecycle stages, public APIs, business contracts, or a repository-established extension boundary. Briefly explain the concrete keep-versus-merge tradeoff before asking.
 - When shared behavior is stable and extraction actually reduces complexity, extract only the smallest shared implementation. Keep distinct semantic entry points and do not add another dispatch or wrapper layer.
 
 ## Standards Review
 
-When reviewing code with this skill, load and follow
+A standards review is a full pass over the applicable rules, so it is expensive. Decide whether that cost is
+worth it by judging the change's blast radius yourself; the question is not "did code change" but
+"can a mistake here escape this file and reach other code, data, or systems".
+
+Run one review per completed user request when the change crosses such a boundary:
+
+- Module, service, or team boundary: other modules, services, or configurations call, import, or depend on the changed code.
+- Public or business contract: HTTP endpoints, request/response shapes, published APIs, error codes, enums, defaults, or thresholds that other code depends on.
+- Persistence or transactions: schema, SQL semantics, transaction boundaries, or data migration.
+- Messaging or middleware: MQ producers or consumers, scheduled jobs, Redis, auth, or config integration.
+- Concurrency, authorization, or data-integrity-sensitive logic.
+- CI, Docker, Compose, or deployment topology.
+- Coordinated multi-file or multi-module changes that must stay consistent with each other.
+
+Do not review when no such boundary is crossed, for example:
+
+- A few lines inside a single file with no interface change, such as a log message, typo, exception text, or local refactor.
+- A rename, comment, Javadoc, or documentation-only change.
+- A new private helper, constant, or branch with a single caller in the same file.
+- A one- or two-file fix whose files are not called from outside their module and cross none of the boundaries above.
+
+If the user explicitly asks for a review, review regardless of size. If no listed boundary applies
+but the change is still risky for another concrete reason, review it anyway. Do not stretch a listed
+boundary to justify reviewing a low-risk change, and do not skip a review by ignoring a boundary
+that is clearly crossed. Subtask boundaries inside a larger request are not review points. After
+applying review fixes, re-check only the fixed points; do not run a second full review.
+
+When a review runs, load and follow
 `references/shared/standards-review.md` as the sole review procedure and output contract. The review
 must cover every applicable rule in this `SKILL.md` and every reference routed by the actual scope,
 not a remembered shortlist.
@@ -163,7 +210,7 @@ Be direct and specific:
 - Say what changed, where it changed, and why.
 - Name verification commands and results.
 - If verification fails, report the failure and the next useful step.
-- Name any verification that could not be completed and explain why.
+- Mention verification you could not run only when it leaves a material risk uncovered.
 - If no code was changed, say that clearly.
 
 ## Git Commit Rules
