@@ -270,15 +270,15 @@ at the backend boundary when temporary direct access is required.
 ### Utilities and Value Handling
 
 - Inspect existing dependencies and project utility packages before choosing a utility.
-- Use JDK `java.util.Objects` for null checks and object equality.
+- Use JDK `java.util.Objects` for null checks and object equality when a check is warranted at all; values already guaranteed non-null by the type system, deserialization, or an upstream validated boundary are used directly.
 - For string operations, use Hutool `StrUtil` when Hutool is already available. Otherwise, use an
   existing project-approved utility.
 - Follow the same dependency-first approach for common collection, number, and date operations.
   Hutool examples include `CollUtil`, `NumberUtil`, and `DateUtil`.
 - If no suitable utility exists, ask the user before adding a dependency.
 - Do not reimplement functionality that an available utility already provides.
-- Invoke static utility methods through their declaring class, such as `Objects.nonNull(...)` or
-  `StrUtil.isBlank(...)`, instead of static-importing them.
+- Invoke static utility methods through their declaring class, such as `StrUtil.isBlank(...)`,
+  instead of static-importing them.
 - For new APIs where absence means “no elements,” return an empty collection whose mutability
   matches the method contract. Preserve `null` when it is an established distinct state; change an
   existing nullable contract only after proving caller and serialization equivalence.

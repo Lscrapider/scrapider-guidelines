@@ -27,9 +27,9 @@ state only when the result is unambiguous; otherwise return `Blocked` instead of
    by the current `SKILL.md` routing rules for that scope; do not load unrelated references.
 4. Inspect the complete scoped diff, including relevant untracked files, plus only the surrounding
    code, callers, tests, configuration, and documentation needed to verify a potential violation.
-5. Build an internal checklist from every normative instruction in the loaded material. Classify
-   each as applicable, not applicable, satisfied, violated, or not verifiable; never substitute a
-   remembered shortlist.
+5. Build an internal checklist from the normative instructions in the loaded material that apply
+   to the changed file types and behaviors. Classify each as applicable, not applicable, satisfied,
+   violated, or not verifiable; never substitute a remembered shortlist.
 6. Re-check potential findings against context and explicit project exceptions. Unless the user
    requested a broader audit, report only issues introduced or exposed by the scoped change.
 7. Return the report using the contract below. Do not decide how the primary agent should reconcile
@@ -44,8 +44,8 @@ rewrite files, generate artifacts, install dependencies, start services, or muta
 - **Critical**: credible risk of data loss, security failure, irreversible damage, or a broken
   public or business contract.
 - **Important**: a confirmed violation that should be corrected before acceptance, including
-  unjustified layers, misplaced responsibilities, duplicated boundaries, or missing required
-  verification.
+  unjustified layers, misplaced responsibilities, duplicated boundaries, or missing verification
+  that the Verification Mindset rules require.
 - **Minor**: a confirmed, non-blocking consistency or maintainability violation.
 
 A preference is not a finding. Every finding needs a specific rule, code evidence, and concrete
