@@ -5,6 +5,7 @@ Use this reference for Python code. Python projects may be agents, RAG systems, 
 ## Contents
 
 - [Core Rules](#core-rules)
+- [Classes, Inheritance, and Wrappers](#classes-inheritance-and-wrappers)
 - [Business Module Boundaries](#business-module-boundaries)
 - [Common Python Package Roles](#common-python-package-roles)
 - [Flat Directory Anti-Patterns](#flat-directory-anti-patterns)
@@ -22,6 +23,16 @@ Use this reference for Python code. Python projects may be agents, RAG systems, 
 - Do not create Java/Spring-style layers such as `controller`, `service`, `manage`, or `mapper` unless the project already uses that pattern.
 - Do not create packages for their own sake; keep simple scripts simple.
 - If a one-off script grows shared logic, move reusable logic into packages and keep the script as a thin entry point.
+
+## Classes, Inheritance, and Wrappers
+
+- Prefer plain functions and direct calls. Introduce a class only when it owns state, implements a protocol, or groups several methods sharing that state; do not create `XManager`, `XService`, `XHelper`, or `XWrapper` classes around logic that works as functions.
+- Do not write forwarding wrappers — a class or function whose body only calls another existing class or function. Call the target directly, re-export it for namespacing, or pass it as a callable.
+- When a new type genuinely specializes an existing class with a stable, project-controlled base, inherit explicitly instead of wrapping and forwarding.
+- Prefer composition over inheritance when the base is a third-party or fast-moving class, such as an SDK or model client; do not inherit from those unless the project already does.
+- Allow a wrapper only at a real boundary it owns: adapting an external SDK, payload, or protocol to internal objects. A wrapper around our own code is an accidental layer.
+- Do not create an abstract base class or Protocol for a single concrete implementation unless the project already uses that pattern.
+- Reuse Pydantic models, dataclasses, or plain dicts for data; do not wrap a single payload in a hand-written class of getters and setters.
 
 ## Business Module Boundaries
 
