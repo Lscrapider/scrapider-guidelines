@@ -110,6 +110,7 @@ established API contract or silently replace a meaningful error with a default v
 - Treat existing default values, thresholds, enums, and strategy parameters as business contracts.
 - Prefer reusing existing constants, configuration properties, or enums for new functionality.
 - Do not redefine equivalent parameters under new names.
+- When consolidating a duplicated value into a single definition, first search the whole system — including components in other languages or repositories that speak the same protocol (for example a Python worker or an Android app) — for independently defined copies of the same value. Migrate only the copies the task covers, keep the remaining copies' values byte-identical, and name the cross-language linkage and its synchronization responsibility in the delivery.
 - Do not hard-code magic numbers or magic values when an existing constant, config value, or enum already represents the concept.
 - Do not change existing defaults without explicit confirmation. When the request itself already confirms the change, execute it directly; blocking a confirmed change with another round of confirmation is a violation, not caution.
 - When a new requirement conflicts with an existing default or threshold, stop and clarify whether the change is global, scenario-specific, or still expected to reuse the existing contract.
@@ -250,6 +251,8 @@ Example:
 ```
 
 ## Reference Routing
+
+For plain Java code outside a Spring Boot backend, follow the repository's own conventions and contributing guide.
 
 ### Spring Boot Backend
 
