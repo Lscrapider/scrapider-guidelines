@@ -25,7 +25,10 @@ If the ambiguity only affects implementation mechanics and the existing code, Je
 
 When multiple solutions are possible, prefer the simpler one and briefly explain the tradeoff. Push
 back on unnecessary complexity, broad rewrites, vague requirements, or risky designs before
-implementing them.
+implementing them. A pushback states the concrete technical reason and the simpler alternative, and
+covers every high-risk item named in the request. When the user still insists, implement as
+requested, record the objection once in the delivery, and neither silently shrink the change nor
+refuse to deliver.
 
 ## Engineering Discipline
 
@@ -108,7 +111,7 @@ established API contract or silently replace a meaningful error with a default v
 - Prefer reusing existing constants, configuration properties, or enums for new functionality.
 - Do not redefine equivalent parameters under new names.
 - Do not hard-code magic numbers or magic values when an existing constant, config value, or enum already represents the concept.
-- Do not change existing defaults without explicit confirmation.
+- Do not change existing defaults without explicit confirmation. When the request itself already confirms the change, execute it directly; blocking a confirmed change with another round of confirmation is a violation, not caution.
 - When a new requirement conflicts with an existing default or threshold, stop and clarify whether the change is global, scenario-specific, or still expected to reuse the existing contract.
 - If a different value is required, explain the reason and wait for confirmation before changing or introducing it.
 
@@ -121,7 +124,7 @@ established API contract or silently replace a meaningful error with a default v
 - When new tests are not allowed or not appropriate, use existing tests plus the closest reproducible, static, build, integration, interface, or manual verification available, and report remaining risk.
 - For configuration, CI, Docker, deployment, or environment changes, prefer operational verification such as build commands, generated artifact checks, `docker compose config`, Docker image builds, container startup, logs, and curl checks. Do not default to adding unit tests for deployment-only changes.
 - Verification is sufficient once the narrowest check that covers the changed behavior passes; run broader checks only when the change's risk warrants them.
-- Comment-, rename-, constant-, and documentation-only changes need no runtime verification; say so instead of inventing one.
+- Comment-, rename-, constant-, and documentation-only changes need no runtime verification; say so instead of inventing one, and do not cite a full test-suite run as their verification.
 - Do not run extra checks merely to make the report look complete.
 - Do not claim success without command output, test results, or a clear explanation of why verification could not run.
 
@@ -167,7 +170,7 @@ worth it by judging the change's blast radius yourself; the question is not "did
 
 Run one review per completed user request when the change crosses such a boundary:
 
-- Module, service, or team boundary: other modules, services, or configurations call, import, or depend on the changed code.
+- Module, service, or team boundary: another module or package calls, imports, or depends on the changed code; same-package callers do not count.
 - Public or business contract: HTTP endpoints, request/response shapes, published APIs, error codes, enums, defaults, or thresholds that other code depends on.
 - Persistence or transactions: schema, SQL semantics, transaction boundaries, or data migration.
 - Messaging or middleware: MQ producers or consumers, scheduled jobs, Redis, auth, or config integration.
@@ -181,6 +184,7 @@ Do not review when no such boundary is crossed, for example:
 - A rename, comment, Javadoc, or documentation-only change.
 - A new private helper, constant, or branch with a single caller in the same file.
 - A one- or two-file fix whose files are not called from outside their module and cross none of the boundaries above.
+- A purely additive public surface with no existing callers; review it once only when it establishes defaults, error styles, or naming conventions that later code will copy.
 
 If the user explicitly asks for a review, review regardless of size. If no listed boundary applies
 but the change is still risky for another concrete reason, review it anyway. Do not stretch a listed
