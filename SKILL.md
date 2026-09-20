@@ -67,43 +67,32 @@ refuse to deliver.
 
 ### Validation and Error Boundaries
 
-A check earns its place only where a guarantee ends. The question is not "could this value be
-null, empty, or invalid" but "what still enforces that it is not, and what concretely breaks here
-if it is". Omitting a check is the default; add one only when you can state in one sentence which
-reachable path it covers and which concrete outcome it prevents.
+Apply these rules while writing the first implementation, not only during cleanup or review.
+Use the guarantees already provided by actual callers, types, deserialization, frameworks, and
+storage. Add a check only for a business-required condition that is not already guaranteed and
+needs meaningful handling at this point. Think about necessity before choosing validation syntax;
+do not output a per-field rationale or checklist unless requested.
 
-#### Justify Defensive Checks Before Adding Them
+- Consume the fields the operation needs. Unrelated extra JSON fields are not errors; a DTO,
+  field list, or example payload does not establish a closed schema.
+- Do not hand-write field-set gates with `TSet`, `Set`, `keySet`, set differences, field counts,
+  or equivalent loops and chains of `if`. Do not introduce unknown-field rejection merely for
+  strictness. Normal business uses of sets and conditionals are unaffected.
+- Trust established guarantees along the current call path. Do not repeat upstream checks in
+  downstream functions or invent hypothetical callers to justify defensive code.
+- Prefer direct use and the existing exception boundary when a pre-check adds no required
+  recovery, business distinction, or protection against a concrete harmful effect. Do not replace
+  redundant branches with equally redundant annotations, assertions, validators, or wrappers.
+- Keep necessary authorization, business invariants, and atomic state-transition protection.
+  Being an external input, crossing a layer, or mentioning security is not by itself evidence
+  that an additional check is needed.
 
-Do not guard states that an existing guarantee already excludes, for example:
-
-- A field enforced non-null by the type system, a `NOT NULL` column, or required deserialization; use it directly instead of re-checking it.
-- A request payload already enforced by a typed schema or the entry boundary's validation, such as a Pydantic model, proto definition, or Bean Validation on a `@Valid` DTO; downstream methods consume the typed fields without repeating the same null, empty, or range checks.
-- A value already narrowed by earlier control flow, or a loop over a collection where zero iterations already gives the required result; likewise avoid early returns and fallback values that do not change required behavior.
-- Extra JSON keys or fields the operation does not depend on; do not invent restrictions to make input match an example payload, and do not require an exact `keySet` or field count without an explicit closed-schema contract. Verify that extra fields are actually ignored rather than automatically bound, forwarded, or persisted.
-
-Add a check only where a real gap exists: at the first untrusted boundary of external input, or
-where a repeat is justified under the ownership rules below. Ordinary business branches over
-status, eligibility, or routing are normal code, not defensive checks; this section does not
-restrict them.
-
-"Just in case", "the input comes from the frontend" (a frontend convention is not an enforced
-server-side guarantee), and symmetry with a check elsewhere are not sufficient reasons. Before
-removing an existing check, establish what contract or behavior it protects; do not loosen an
-established API contract or silently replace a meaningful error with a default value.
-
-#### Assign Every Validation an Owner
-
-- Enforce each necessary invariant at its first untrusted boundary — for example, HTTP parameters and bodies from outside the system, MQ consumer payloads, file imports, and third-party API responses — using existing deserialization, framework, or database guarantees where they already provide the required behavior instead of duplicating them manually.
-- Once a trusted caller has established an invariant, downstream methods must not repeat the identical validation merely to produce a different error message.
-- Repeat a validation only when the callee is independently reachable from an untrusted caller, a process or storage boundary has been crossed, concurrent state may have changed, security or data integrity depends on it (retain these even when the failure is rare), or the caller needs a genuinely different recovery path.
-- Preserve conditional database updates and state-machine guards when they protect a transition or detect concurrent changes; these are not redundant checks.
-
-#### Use Exceptions by Meaning, Not by Possibility
-
-- Use a specific business or validation exception only when the caller, API consumer, or workflow can correct, retry, branch on, or must distinguish that condition.
-- For unexpected internal invariant violations with no local recovery, use the project's existing global exception and logging policy instead of adding defensive branches or repeated exception translation at every layer.
-- Do not catch and immediately rethrow the same exception, or wrap it without actionable context, recovery behavior, or a required contract translation.
-- This exception policy does not remove necessary authorization, security, external-input, data-integrity, or state-transition validation; determine necessity using the rules above.
+Before implementing, changing, refactoring, or reviewing input contracts, validation, defensive
+branches, or exception handling, load
+[Validation and Boundaries](references/shared/validation-and-boundaries.md). This includes normal
+HTTP/MQ implementation and decisions about whether internal functions need checks, even when the
+user has not explicitly requested validation work. The reference supplies the detailed decision
+rules and examples for both implementation and review.
 
 ### Business Contract Preservation
 
@@ -136,7 +125,7 @@ When implementing:
 1. Inspect the existing code and tests before choosing an approach.
 2. Make the smallest coherent change.
 3. Search project-local, language-standard-library, framework, and approved-library capabilities before adding a helper, wrapper, validator, or query.
-4. Apply the validation and error-boundary rules above.
+4. Apply the validation and error-boundary rules while writing code; decide whether a check is needed before adding it, rather than adding defenses first and removing them in review.
 5. Follow the repository's test-creation policy, then run the narrowest verification that proves the changed behavior.
 
 ## Debugging Workflow
