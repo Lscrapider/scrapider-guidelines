@@ -51,6 +51,12 @@ rewrite files, generate artifacts, install dependencies, start services, or muta
 A preference is not a finding. Every finding needs a specific rule, code evidence, and concrete
 impact.
 
+For input contracts, validation, defensive branches, and exception handling, apply
+[Validation and Boundaries](validation-and-boundaries.md), including its review guidance. Judge
+checks by necessity and existing guarantees, not their count or syntax. Do not request additional
+checks merely for strictness or completeness; identify the actual missing guarantee and required
+behavior. Likewise, report redundant checks when the scoped code establishes their redundancy.
+
 ## Output Contract
 
 Start directly with findings. If there are no confirmed findings, say so explicitly.

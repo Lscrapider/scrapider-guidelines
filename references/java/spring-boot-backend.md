@@ -86,6 +86,10 @@ External API clients support service orchestration and do not replace the persis
   matches the repository. Simple identifiers and filters may use path variables or request
   parameters without creating a one-field Param class.
 - Do not use weakly typed `Map` or `JsonNode` request bodies when a stable typed contract exists.
+- Apply [Validation and Boundaries](../shared/validation-and-boundaries.md) to input handling.
+  Typed Param/DTO fields describe consumed data; they do not require rejecting unrelated extra
+  JSON fields. Reuse deserialization and necessary Bean Validation without manual field-set gates
+  or duplicate checks.
 - Use `VO` objects for frontend responses. Never return `PO` objects directly to the frontend.
 - Reuse the repository's established pagination parameter names and response shape; do not rename
   an existing API contract only to prefer `pageSize` or `pageNum`.
@@ -203,8 +207,10 @@ Use `listener` for inbound messages and `publisher` for outbound messages.
 
 ### Listener
 
-- Receive messages, own message annotations or subscription configuration, deserialize payloads,
-  and perform lightweight validation in `listener`.
+- Receive messages, own message annotations or subscription configuration, and deserialize payloads
+  in `listener`. Add only necessary checks not already provided by deserialization or an established
+  guarantee, following [Validation and Boundaries](../shared/validation-and-boundaries.md).
+  Being a message consumer does not require a handwritten validation block.
 - Convert message payloads to `domain.dto` DTO objects before calling `service`.
 - Keep business orchestration, persistence logic, and VO assembly out of listeners.
 
