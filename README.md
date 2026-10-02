@@ -2,14 +2,15 @@
 
 [简体中文](README_zh-CN.md) | English
 
-Engineering guidelines for coding agents working in Scrapider projects. This repository is a reusable Codex Skill that promotes small, contract-safe, and verifiable changes across supported technology stacks.
+Engineering guidelines for coding agents working in Scrapider projects. This reusable Codex Skill helps agents understand requests, follow project architecture, preserve business contracts within the requested scope, and deliver verified changes with appropriate complexity.
 
 ## What it provides
 
-- A practical engineering discipline: keep changes minimal, reuse established capabilities, and avoid accidental abstraction.
+- A coding workflow for understanding the problem, implementing or debugging, verifying behavior, and reporting evidence.
+- Shared rules for scope, business contracts, reuse, responsibility boundaries, and refactoring.
+- Validation and exception rules based on actual callers, existing guarantees, and required business behavior.
 - Scope-specific guidance for Spring Boot, Python, Android Kotlin, and Jetpack Compose work.
-- Clear rules for validation ownership, exception semantics, business-contract preservation, and verification.
-- An independent, read-only standards-review agent for checking changes against these guidelines.
+- Conditional standards review and separate Git operation guidance.
 
 ## Supported scopes
 
@@ -45,18 +46,25 @@ Use $scrapider-guidelines to implement this Spring Boot endpoint and preserve th
 
 ## How reference routing works
 
-The main [SKILL.md](SKILL.md) loads only the references relevant to the task. For example, a Spring Boot backend task loads the backend guidance; a multi-module Maven task additionally loads the module guidance. This keeps each task focused while applying the rules that matter to its actual scope.
+The main [SKILL.md](SKILL.md) defines the working principles, coding workflow, and loading rules. Detailed guidance is grouped by the decisions it governs:
 
-For a standards-conformance review, use the `scrapider-standards-reviewer` agent. It is intentionally read-only and follows the review procedure in [`references/shared/standards-review.md`](references/shared/standards-review.md).
+| Category | Source |
+| --- | --- |
+| Change scope, business contracts, reuse, responsibilities, and refactoring | [Code Design and Changes](references/shared/code-design-and-changes.md), loaded for all code and build/runtime configuration work. |
+| Input guarantees, validation ownership, and exception handling | [Validation and Boundaries](references/shared/validation-and-boundaries.md), loaded when those decisions are in scope. |
+| Review applicability, dispatch, read-only procedure, and report | [Standards Review](references/shared/standards-review.md), loaded for explicit reviews or changes that may cross its review boundaries. |
+| Git authorization and commit message format | [Git Operations and Commits](references/shared/git-commits.md), loaded before any Git state mutation. |
+| Technology-specific responsibilities | The applicable Java, Python, Android, or local deployment references. |
 
-## Core principles
+For example, a Spring Boot task loads the general code-design rules and backend guidance; a multi-module Maven task also loads module-placement guidance. Reference examples do not require adding layers the project does not need.
 
-1. **Simplicity first** — implement the smallest coherent change that solves the request.
-2. **Reuse before rebuild** — look for an equivalent project, framework, or standard-library capability before adding one.
-3. **No accidental layers** — introduce a layer only when it owns a real domain or technical boundary.
-4. **Surgical changes** — avoid unrelated refactors and formatting changes.
-5. **Preserve business contracts** — treat defaults, thresholds, enums, and strategy parameters as established behavior.
-6. **Verify proportionally** — use the narrowest useful check, and report the evidence.
+For a standards-conformance review, follow [`references/shared/standards-review.md`](references/shared/standards-review.md), which defines when to delegate to the read-only `scrapider-standards-reviewer` agent or review directly.
+
+## Working principles and origin
+
+The [working principles](SKILL.md#working-principles) retain the emphasis on reasoning before coding, simplicity, focused changes, and verifiable outcomes. Their framing follows the community-maintained [Karpathy-inspired coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills), which derive from Andrej Karpathy's observations about coding agents.
+
+The [coding workflow](SKILL.md#coding-workflow) applies these principles alongside the project's architecture, business contracts, validation boundaries, verification, and review requirements. Load detailed guidance for the actual task and maintain each rule in its relevant category.
 
 ## Repository layout
 

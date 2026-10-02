@@ -211,7 +211,8 @@ Use `listener` for inbound messages and `publisher` for outbound messages.
   in `listener`. Add only necessary checks not already provided by deserialization or an established
   guarantee, following [Validation and Boundaries](../shared/validation-and-boundaries.md).
   Being a message consumer does not require a handwritten validation block.
-- Convert message payloads to `domain.dto` DTO objects before calling `service`.
+- Deserialize into or map to the typed input the service consumes. Reuse an existing `domain.dto`
+  type when it expresses that contract; do not create a second identical type solely for the listener.
 - Keep business orchestration, persistence logic, and VO assembly out of listeners.
 
 ### Publisher
@@ -312,11 +313,11 @@ at the backend boundary when temporary direct access is required.
   callbacks. Do not rewrite equivalent code only to impose a preferred syntax.
 - Remove imports, local variables, private code, configuration, and dependencies made unused by
   the current change. Before removing broader or pre-existing code, check Spring wiring,
-  reflection, serialization, generated configuration, and public compatibility; report unrelated
-  dead code instead of deleting it opportunistically.
+  reflection, serialization, generated configuration, and actual consumers. Follow
+  [Code Design and Changes](../shared/code-design-and-changes.md) to migrate affected callers and
+  remove superseded paths without compatibility wrappers; report unrelated dead code instead of
+  deleting it opportunistically.
 - Keep code simple, clean, and direct.
-- Extract a function or class only to remove genuine duplication or when a code block is long
-  enough to impair readability.
 - Do not add method wrappers that merely forward a call.
 - Keep class names aligned with their package roles, such as `UserController`, `UserService`,
   `UserServiceImpl`, `UserManage`, `UserMapper`, `UserParam`, `UserDTO`, `UserVO`, and `UserPO`.
