@@ -46,7 +46,8 @@ Choose only the files whose responsibilities actually exist. Related small state
 - `XxxMapper.kt`: DTO, entity, SDK object, domain model, or UI model conversion when conversion is not trivial.
 - `XxxUseCase.kt` or domain files: complex business rules, cross-feature reuse, or orchestration too large for a ViewModel.
 
-Use this dependency direction:
+When the feature needs these responsibilities, keep dependencies in this direction and omit
+unneeded intermediate layers:
 
 ```text
 Screen / Composable -> ViewModel -> Repository / UseCase -> DataSource / Api / SDK / Local Store
@@ -61,7 +62,8 @@ ViewModel exposes UiState -> UI renders UiState -> UI emits Event -> ViewModel h
 - Keep `Screen` and Composable files in the view layer only.
 - Do not call backend APIs, map SDKs, location SDKs, weather SDKs, databases, or persistence APIs from Composables.
 - Do not put DTO mapping, SDK result parsing, repository calls, navigation decisions, or persistence logic directly in Composables.
-- Keep ViewModel as the page interaction entry point.
+- Where the feature uses a ViewModel, keep it as the page's state and business-interaction entry
+  point. A stateless Composable may receive state and callbacks directly without a new ViewModel.
 - Keep repositories and data sources out of the UI package unless the repository already uses that structure.
 - Do not create pass-through files, empty layers, or architecture folders only for appearance.
 - Add a file or layer only when it owns real state, behavior, mapping, data access, orchestration, or reuse.

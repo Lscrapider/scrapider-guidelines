@@ -21,6 +21,11 @@ Use the smallest existing mechanism that provides the required behavior. This ap
 - A DTO, documented field list, example JSON, or producer's current output does not establish that
   unknown fields are forbidden. Optional fields remain optional; do not require placeholders or
   invent ranges, formats, cross-field dependencies, or requiredness for completeness.
+- Before removing a compound check, identify each behavior it currently enforces. A field gate may
+  both reject extras and handle missing required data. Remove the unsupported restriction while
+  retaining required presence checks and error semantics established by the task or contract.
+  Verify the affected rejected inputs as well as the newly accepted input; deleting a branch does
+  not prove that its other responsibilities were redundant.
 - Do not hand-write exact-field or unknown-field gates using `TSet`, `Set`, `keySet`, set equality,
   differences, membership scans, field counts, or equivalent loops and repeated `if` statements.
   Changing the syntax does not make the restriction legitimate. This does not ban sets used for

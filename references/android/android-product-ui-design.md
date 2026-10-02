@@ -31,7 +31,9 @@ Do not start with colors, gradients, or decorative cards before the information 
 
 ## State-Specific Layout
 
-- Design generating, success, executing, completed, failed, empty, and loading states as distinct UI states.
+- Design the states the actual product flow supports, such as loading, success, failure, or empty,
+  with appropriate layouts and actions. Add generating or executing states only when the workflow
+  has those phases; do not invent states to complete a checklist.
 - Do not only change a label while keeping an incompatible card structure.
 - Give failure states a clear recovery path.
 - Give loading and generating states meaningful progress or working feedback.

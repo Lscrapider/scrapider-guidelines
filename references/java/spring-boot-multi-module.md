@@ -246,8 +246,9 @@ adding it, explain:
 - Why existing modules cannot own the code.
 - Build, scanning, packaging, configuration, and migration impact.
 
-Wait for confirmation when adding the module changes the architecture or when multiple ownership
-choices remain reasonable.
+Use existing user authorization when the module and ownership were already requested or agreed.
+Ask only when the change introduces an unapproved architecture decision or materially different
+ownership choices remain unresolved by the request and repository evidence.
 
 ## Review Checklist
 

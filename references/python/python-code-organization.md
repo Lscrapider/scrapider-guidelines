@@ -27,10 +27,10 @@ Use this reference for Python code. Python projects may be agents, RAG systems, 
 ## Classes, Inheritance, and Wrappers
 
 - Prefer plain functions and direct calls. Introduce a class only when it owns state, implements a protocol, or groups several methods sharing that state; do not create `XManager`, `XService`, `XHelper`, or `XWrapper` classes around logic that works as functions.
-- Do not write forwarding wrappers — a class or function whose body only calls another existing class or function. Call the target directly, re-export it for namespacing, or pass it as a callable.
+- Do not write forwarding wrappers — a class or function whose body only calls another existing class or function. Call the target directly or pass it as a callable. A package may expose its current API through a re-export, but must not retain old names or import paths as compatibility aliases.
 - When a new type genuinely specializes an existing class with a stable, project-controlled base, inherit explicitly instead of wrapping and forwarding.
 - Prefer composition over inheritance when the base is a third-party or fast-moving class, such as an SDK or model client; do not inherit from those unless the project already does.
-- Allow a wrapper only at a real boundary it owns: adapting an external SDK, payload, or protocol to internal objects. A wrapper around our own code is an accidental layer.
+- Allow a wrapper only when it owns a real responsibility, following [Code Design and Changes](../shared/code-design-and-changes.md). External SDK or protocol conversion and internal transaction or authorization boundaries can qualify; merely forwarding internal calls does not.
 - Do not create an abstract base class or Protocol for a single concrete implementation unless the project already uses that pattern.
 - Reuse Pydantic models, dataclasses, or plain dicts for data; do not wrap a single payload in a hand-written class of getters and setters.
 
@@ -170,8 +170,8 @@ src/
 - Split when one module mixes orchestration, external IO, model logic, data loading, and evaluation.
 - Keep related small functions together when splitting would make navigation worse.
 - Keep tiny one-off scripts simple; do not create a package hierarchy for a single script.
-- Keep entry points thin: `train.py`, `infer.py`, `evaluate.py`, or CLI commands should call package code instead of containing all logic.
-- Do not create one-file packages unless the project already uses that pattern or the area is expected to grow immediately.
+- Where a package already owns the implementation, keep `train.py`, `infer.py`, `evaluate.py`, or CLI entry points thin. A small self-contained script may keep its logic in one file; do not create a package merely to thin its entry point.
+- Create a one-file package only for a current package responsibility or an established repository convention, never because the area may grow later.
 - Do not move code only for aesthetics; every moved module should clarify ownership or reduce coupling.
 
 ## Naming Rules
@@ -185,7 +185,7 @@ src/
 
 - Prefer absolute imports from the project package when that is the existing style.
 - Keep package `__init__.py` minimal. Do not hide large side effects there.
-- Do not fix import problems by mutating `sys.path` unless the project already uses that pattern and there is no better local option.
+- Fix import problems at the package, installation, or entry-point configuration that owns them. Do not add `sys.path` mutations to keep obsolete module locations or broken package structure working.
 - Avoid circular imports; move shared contracts, constants, and small shared types into a lower-level shared module only when needed.
 
 ## Tests
