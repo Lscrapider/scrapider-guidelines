@@ -2,7 +2,7 @@
 
 [English](README.md) | 简体中文
 
-面向 Scrapider 项目编码代理的工程规范。本仓库以可复用的 Codex Skill 形式提供指导，帮助代理理解需求、遵循项目架构、在改动范围内维护业务契约，并以适当的复杂度完成可验证的改动。
+面向 Scrapider 项目编码代理的工程规范。本仓库以可复用的 Agent Skill 形式提供指导，帮助代理理解需求、遵循项目架构、在改动范围内维护业务契约，并以适当的复杂度完成可验证的改动。
 
 ## 提供什么
 
@@ -11,6 +11,7 @@
 - 依据真实调用路径、已有保证和业务需求确定校验与异常处理的规则。
 - 面向 Spring Boot、Python、Android Kotlin 与 Jetpack Compose 的按需规范。
 - 按影响范围触发的规范审查，以及独立的 Git 操作规范。
+- 只创建或修改目标 `AGENTS.md` 的编写引导，包含可选 MCP / Skill / 插件组合与协作分工推荐。
 
 ## 支持范围
 
@@ -22,11 +23,12 @@
 | Android Kotlin 与 Jetpack Compose | UI 状态、数据映射、异常处理与 Compose 架构。 |
 | Android UI 实现 | 面向设计稿还原和产品 UI 设计的补充指导。 |
 | 规范审查 | 完整的只读一致性审查流程。 |
+| 项目 AGENTS.md | 帮助作者组织清晰、有层次的项目说明，在原有章节中按需更新能力组合、协作等内容。 |
 | 本地全栈部署 | 在该部署场景适用时，涵盖 Docker Compose、Jenkins 主机构建、运行时镜像和可选 Nginx 路由。 |
 
-## 在 Codex 中使用
+## 使用方式
 
-请用你常用的 Skill 安装方式将本仓库安装为 Codex Skill，然后在任务提示中调用：
+通过所用 coding agent 的 Skill 安装与调用方式使用本仓库。指令正文和参考资料面向通用 coding agent；各宿主的发现、调用和可用能力以其实际支持为准。以下示例使用 Codex 的调用语法：
 
 ```text
 Use $scrapider-guidelines to implement this Spring Boot change.
@@ -42,7 +44,11 @@ Use $scrapider-guidelines to review this Python diff.
 Use $scrapider-guidelines to refactor this Jetpack Compose screen without changing its public behavior.
 
 Use $scrapider-guidelines to implement this Spring Boot endpoint and preserve the existing API contract.
+
+Use $scrapider-guidelines to create or rebuild this project's AGENTS.md with suitable workflows and optional tool combinations.
 ```
+
+AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不安装工具或创建配置、子 Agent 文件。
 
 ## 引用资料如何按需加载
 
@@ -54,6 +60,7 @@ Use $scrapider-guidelines to implement this Spring Boot endpoint and preserve th
 | 输入保证、校验归属、异常处理 | [校验与边界](references/shared/validation-and-boundaries.md)，涉及这些决策时加载。 |
 | 审查适用条件、调度、只读流程与报告 | [规范审查](references/shared/standards-review.md)，明确要求审查或改动可能跨越审查边界时加载。 |
 | Git 操作授权与提交信息格式 | [Git 操作与提交](references/shared/git-commits.md)，执行任何 Git 状态变更前加载。 |
+| 项目说明与可选能力组合 | [AGENTS.md Authoring](references/project/agents-md-authoring.md)，仅在编写请求中加载；选型时再读取 [Capability Recommendations](references/project/capability-recommendations.md)。 |
 | 技术栈专用职责 | 按需加载 Java、Python、Android 或本地部署参考。 |
 
 比如，Spring Boot 任务加载通用设计规则和后端规范；Maven 多模块任务再加载模块归属规范。参考中的示例不要求项目补齐不需要的分层。
@@ -77,6 +84,7 @@ Use $scrapider-guidelines to implement this Spring Boot endpoint and preserve th
 └── references/
     ├── android/
     ├── java/
+    ├── project/
     ├── python/
     └── shared/
 ```
