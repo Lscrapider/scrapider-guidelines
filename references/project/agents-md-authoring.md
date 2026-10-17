@@ -120,9 +120,9 @@ a limit on what the project may include. Equivalent existing descriptions or ref
 the relevant expectation: retain them instead of renaming, duplicating, or replacing them. Semantic
 matching recognizes existing coverage; it does not authorize renaming a matching section.
 
-Fill a genuine content gap in the appropriate existing location; introduce a heading only when the
-content needs one. Keep other useful project-specific sections. For a new document, choose headings
-that fit its content. For an existing document, retain its useful separation of responsibilities;
+Within the requested scope, fill a genuine content gap in the appropriate existing location; introduce
+a heading only when the content needs one. Keep other useful project-specific sections. For a new
+document, choose headings that fit its content. For an existing document, retain its useful separation of responsibilities;
 do not collapse established sections merely to reduce their count. Do not invent business policies or
 unneeded capabilities to fill a category; clarify a material missing decision when needed.
 
@@ -158,8 +158,8 @@ do not expand the root rule into a reading catalog, a module-to-README table, re
 explanation of which kinds of documents to read next. Do not invent missing README files or write them
 during this operation.
 
-Keep documentation ownership clear. Module purpose, internal structure, what a subdirectory contains,
-historical or prototype material, and architecture or protocol descriptions belong in the corresponding
+Keep documentation ownership clear. Detailed module descriptions, internal structure, subdirectory
+contents, historical or prototype material, and architecture or protocol descriptions belong in the corresponding
 README or module documentation. Do not copy them into root `AGENTS.md` merely because they are useful
 or important. The root file owns agent-facing instructions: selected Skill/MCP/plugin duties and
 workflows, collaboration, author constraints, reading requirements, and verification or delivery rules.
@@ -206,9 +206,9 @@ other project capabilities. Preserve whether its use is optional, conditional, o
 Preserve the existing scope and precedence of project instructions. In new wording, distinguish priority
 among coding conventions from authority over the user's task: selecting a skill does not put it above
 explicit user instructions. Do not invent a rule making the target file override untouched parent or
-child files to resolve a perceived tooling conflict. Distinguish
-a real conflict from complementary tools or a limited plugin selection. If a genuine conflict requires
-an author decision, present the specific conflicting rules and choices through the question relay
+child files to resolve a perceived tooling conflict. Distinguish a real conflict from complementary
+tools or a limited plugin selection. If a genuine conflict requires an author decision, present the
+specific conflicting rules and choices to the author, through the primary agent when delegated,
 before deciding; editing one file does not authorize changing the meaning of another file.
 
 ## Check and Deliver
@@ -234,12 +234,11 @@ Keep headings and independent responsibilities readable; do not achieve brevity 
 Compare meaning, headings, and rule separation against the agreed baseline. Check that useful detail
 and distinct responsibilities survived. Account for every changed or deleted heading and rule against
 the requested refresh. Preserve who a constraint covers, its conditions, scope, priority, and authorization level;
-do not substitute a more familiar generic rule for a project-specific one. Remove duplicate rules,
-stale snapshots, and contradictory routes, but do not target a reduction percentage or use fewer
-characters, lines, or headings as proof
-of improvement. Repeated runs should not accumulate content. Verify that only the requested target
-changed, excluding pre-existing user modifications. Document authoring needs no new unit tests or
-application build.
+do not substitute a more familiar generic rule for a project-specific one. Within the requested scope,
+remove duplicate rules, stale snapshots, and contradictory routes. Do not target a reduction percentage
+or use fewer characters, lines, or headings as proof of improvement. Repeated runs should not accumulate
+content. Verify that only the requested target changed, excluding pre-existing user modifications.
+Document authoring needs no new unit tests or application build.
 
 Deliver the file, meaningful changes, selection rationale, and checks actually performed. Mention setup
 needs only when relevant to an adopted choice. Keep operational observations in this message when they

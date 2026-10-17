@@ -4,13 +4,13 @@ Use this reference when implementing Android UI from screenshots, mockups, desig
 
 ## Implementation Order
 
-Before writing Compose code:
+Before implementing the Android UI:
 
 1. Compare the real UI structure block by block.
 2. Compare the data fields by business meaning.
 3. Compare icon and visual asset sources.
 4. Decide the layout constraints, spacing, alignment, and list behavior.
-5. Then implement the smallest Compose change that matches the design.
+5. Then implement the smallest change that matches the design using the UI stack selected under `android-kotlin-compose.md`.
 
 Do not write an approximate version first and rely on later visual corrections.
 

@@ -45,10 +45,10 @@ Use $scrapider-guidelines to refactor this Jetpack Compose screen without changi
 
 Use $scrapider-guidelines to implement this Spring Boot endpoint and preserve the existing API contract.
 
-Use $scrapider-guidelines to create or rebuild this project's AGENTS.md with suitable workflows and optional tool combinations.
+Use $scrapider-guidelines to create, update, or rebuild this project's AGENTS.md with suitable workflows and optional tool combinations.
 ```
 
-AGENTS.md authoring writes only the requested instruction file. It preserves project conventions and does not install tools or create configuration or agent files.
+AGENTS.md authoring writes only the requested instruction file. It preserves project conventions and does not install tools or create configuration or separate agent-definition files.
 
 ## How reference routing works
 

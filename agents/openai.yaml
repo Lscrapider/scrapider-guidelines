@@ -1,4 +1,4 @@
 interface:
   display_name: "Scrapider Guidelines"
-  short_description: "Engineering rules, standards reviews and project AGENTS.md guidance"
-  default_prompt: "Use $scrapider-guidelines to implement, refactor, debug, or review code, or to create or rebuild this project's AGENTS.md."
+  short_description: "Engineering rules, standards reviews and AGENTS.md guidance"
+  default_prompt: "Use $scrapider-guidelines to implement, refactor, debug, or review code, or to create, update, or rebuild this project's AGENTS.md."
