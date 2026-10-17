@@ -1,6 +1,6 @@
 ---
 name: scrapider-guidelines
-description: Use when a coding agent writes, edits, refactors, debugs, or reviews code under Scrapider engineering rules, especially for Spring Boot, Python, Android Kotlin, Jetpack Compose, or standards-conformance reviews.
+description: Use when a coding agent writes, edits, refactors, debugs, or reviews code under Scrapider engineering rules, especially for Spring Boot, Python, Android Kotlin, Jetpack Compose, or standards-conformance reviews. Also use when the user asks to create, update, or rebuild a project's AGENTS.md with project-specific workflows and optional capability recommendations.
 ---
 
 # Scrapider Guidelines
@@ -11,6 +11,20 @@ requested scope, and verify the result. Keep the design and change as simple as 
 
 This entry point defines the working principles, coding workflow, and reference routing. Detailed
 rules are grouped by the decisions they govern and apply during both implementation and review.
+
+## Project AGENTS.md Authoring (On Demand)
+
+When the user asks to create, complete, update, or rebuild a project's `AGENTS.md`, follow the
+[authoring workflow](references/project/agents-md-authoring.md). Load the
+[capability recommendations](references/project/capability-recommendations.md) only when selecting
+workflows and optional MCP, skill, plugin, or CLI combinations.
+
+This mode writes only the target `AGENTS.md` and helps the author select relevant content. A capability
+rebuild reassesses existing workflows and recommends suitable updates or combinations while preserving
+the document's structure and unrelated constraints. Apply confirmed choices without asking again;
+let the author choose unresolved changes, without installing capabilities or generating other files.
+Ordinary coding tasks use the workflow below and the project's instructions without loading these
+authoring references.
 
 ## Working Principles
 
