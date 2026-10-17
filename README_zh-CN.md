@@ -45,7 +45,7 @@ Use $scrapider-guidelines to refactor this Jetpack Compose screen without changi
 
 Use $scrapider-guidelines to implement this Spring Boot endpoint and preserve the existing API contract.
 
-Use $scrapider-guidelines to create or rebuild this project's AGENTS.md with suitable workflows and optional tool combinations.
+Use $scrapider-guidelines to create, update, or rebuild this project's AGENTS.md with suitable workflows and optional tool combinations.
 ```
 
 AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不安装工具或创建配置、子 Agent 文件。
