@@ -73,8 +73,8 @@ or provide an alternative. Related profiles may share a baseline, but should dif
 Keep complementary retrieval, coding, planning, and UI roles clear: they can form a workflow together,
 not compete as if they served the same purpose. Separate independent optional additions when useful;
 do not make the author choose between a coding standard and a retrieval service just to select both.
-Select one code-retrieval profile for the project. Write only that profile's included tools and
-conditional routes into `AGENTS.md`; keep alternative profiles in the recommendation conversation.
+When code retrieval is in scope, select one profile for the project. Write only that profile's included
+tools and conditional routes into `AGENTS.md`; keep alternative profiles in the recommendation conversation.
 Within an enhanced profile, state when native retrieval is sufficient, when graph relationships are
 needed, and when precise symbol queries add missing evidence. Repository size alone does not require
 the most extensive profile or a call to every included tool.
@@ -229,8 +229,8 @@ meaning, not whether headings match this reference; do not manufacture missing s
 For a capability rebuild, check that every relevant category in the requested area was assessed and
 every confirmed in-scope choice reached the result. Preserving headings and correcting one plugin's
 wording is not enough when an accepted retrieval combination or other workflow update was omitted.
-Check that one retrieval profile is adopted, its use and skip conditions are actionable, and no
-unchosen profile or mandatory all-tools sequence was copied into the project instructions.
+For in-scope retrieval changes, check that one profile is adopted, its use and skip conditions are
+actionable, and no unchosen profile or mandatory all-tools sequence was copied into the project instructions.
 Explain meaningful retained or changed choices in delivery; keep the assessment out of `AGENTS.md`.
 For initialization, compare the draft with its source documents and selected skills. Keep only a brief
 top-level module description and one general module-reading rule. Remove repeated reading routes
