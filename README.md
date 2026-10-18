@@ -77,6 +77,7 @@ The [coding workflow](SKILL.md#coding-workflow) applies these principles alongsi
 
 ```text
 .
+├── .research/
 ├── SKILL.md
 ├── agents/
 │   ├── openai.yaml
@@ -88,6 +89,14 @@ The [coding workflow](SKILL.md#coding-workflow) applies these principles alongsi
     ├── python/
     └── shared/
 ```
+
+## Research and evaluation
+
+The [code-retrieval Token experiment](.research/2026-10-18-retrieval-token-benchmark/REPORT.md)
+records the tested scenarios, measured usage, quality review, limitations, and resulting workflow
+choices. Its [per-run metrics](.research/2026-10-18-retrieval-token-benchmark/metrics.csv) are
+available for inspection. The `.research/` directory is for developers browsing this repository;
+omit it when installing the skill. It is not referenced by the skill's loading routes.
 
 ## Contributing
 

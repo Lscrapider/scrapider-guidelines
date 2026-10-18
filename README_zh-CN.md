@@ -77,6 +77,7 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
 
 ```text
 .
+├── .research/
 ├── SKILL.md
 ├── agents/
 │   ├── openai.yaml
@@ -88,6 +89,13 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
     ├── python/
     └── shared/
 ```
+
+## 调研与评估
+
+[代码检索 Token 实验](.research/2026-10-18-retrieval-token-benchmark/REPORT.md) 记录测试场景、
+实际用量、质量复核、限制和方案选择，也提供可核对的
+[逐次指标](.research/2026-10-18-retrieval-token-benchmark/metrics.csv)。`.research/` 供浏览仓库的开发者查阅，
+安装 Skill 时忽略该目录；Skill 的加载路由不引用这些记录。
 
 ## 贡献
 
