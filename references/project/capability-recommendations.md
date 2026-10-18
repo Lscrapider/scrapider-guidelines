@@ -1,8 +1,13 @@
 # Optional Capability Recommendations
 
-Load this reference when selecting workflows for a project's `AGENTS.md`. Each recipe is independently
-usable; choose the ones the project needs. These recommendations do not authorize installing tools,
+Load this reference when selecting workflows for a project's `AGENTS.md`. Choose one code-retrieval
+profile and any separately selected coding, planning, or UI capabilities. Each retrieval profile is
+independently usable. These recommendations do not authorize installing tools,
 changing configuration, building indexes, or creating files beyond the target `AGENTS.md`.
+
+Recommend capability configurations that can be used without paid licenses or subscriptions.
+Check that the required operations are available in the free configuration; exclude paid-only
+plugins and paid feature dependencies from proposals.
 
 Offer the author a small set of relevant named options with a recommendation, purpose, and tradeoffs.
 Reuse choices already made; let the author select a proposal or supply an alternative before treating
@@ -23,9 +28,9 @@ Use these profiles as a starting point, not a fixed menu or a requirement to ado
 
 | Scenario | Candidate combination and workflow | Main tradeoff |
 | --- | --- | --- |
-| Localized changes | Native search and targeted reads + the project's coding guidance + proportionate native planning and verification. Locate the relevant implementation, make the scoped change, and check the affected behavior. | No additional retrieval service; broad relationship questions may need more manual navigation. |
-| Cross-module changes | Codegraph + native retrieval + the chosen coding guidance. Use the graph's source and relationships to establish impact, inspect gaps, then implement and verify across affected boundaries. | An available, suitable graph index helps; retain native fallback. |
-| Precise symbol or IDE work | Codegraph + Serena + native retrieval + the chosen coding guidance. Codegraph establishes structure; Serena handles remaining symbol/reference questions or supported edits; native tools cover other evidence. | Adds a language backend; JetBrains is optional, and duplicate retrieval should be avoided. |
+| Localized changes | **Lightweight:** native search and targeted reads + the project's coding guidance + proportionate native planning and verification. Locate the relevant implementation, make the scoped change, and check the affected behavior. | No additional retrieval service; broad relationship questions may need more manual navigation. |
+| Cross-module changes | **Relationship-aware:** Codegraph + native retrieval + the chosen coding guidance. Use source and relationships to establish impact, inspect gaps, then implement and verify across affected boundaries. | An available, suitable graph index helps; retain native fallback. |
+| Precise symbol work across modules | **Precise-symbol enhancement:** Codegraph + Serena (LSP) + native retrieval + the chosen coding guidance. Codegraph establishes structure; Serena handles unresolved symbol/reference questions; native tools cover other evidence. | Requires supported language servers and their prerequisites; repository size alone does not justify this profile. |
 
 Name the actual coding guidance in each proposal. Preserve existing project standards; offer Scrapider
 Guidelines as an optional coding layer when appropriate, without inferring adoption from this authoring
@@ -50,7 +55,7 @@ skills and MCP connections; its packaging is not an additional workflow step.
 | --- | --- | --- |
 | MCP service | Callable operations that retrieve information or perform actions. | Codegraph, Serena, a semantic search service. |
 | Skill | Instructions loaded when a task needs their workflow or expertise. | Scrapider Guidelines, frontend-design, impeccable. |
-| Plugin | A host integration or distribution that may include skills, tools, commands, or hooks. | Serena's JetBrains IDE plugin; host-specific skill bundles. |
+| Plugin | A host integration or distribution that may include skills, tools, commands, or hooks. | Host-specific bundles of skills and MCP tools. |
 | CLI | A program invoked through the shell; integrations may wrap it. | RTK, OpenSpec, Codegraph's CLI. |
 
 Confirm availability in the target host. A named product, installed package, or bundled role definition
@@ -64,43 +69,106 @@ specific setup and launcher procedures in the selected skill rather than copying
 
 ## Code Retrieval Recipes
 
-Optimize for sufficient evidence with less irrelevant source and fewer repeated searches. Start from
-the question and available capabilities. Follow the selected primary tool's contract and call supporting
-tools only for unresolved evidence; do not impose one sequence across these independent recipes.
-Expand context when needed for correctness; do not impose a blanket ban on reading complete files.
+Optimize for sufficient evidence with less irrelevant source and fewer repeated model turns. Recommend
+one profile for the project's recurring needs; reuse a confirmed selection. Keep only that profile in
+`AGENTS.md`, grouped with the other selected capabilities. Do not copy the three-profile menu into the
+project file. A profile defines available responsibilities, not tools that every task must call.
 
-| Recipe | Suitable tasks and division of responsibility | Handoff and fallback |
+### Select One Retrieval Profile
+
+| Profile | Select when | Use within this profile; skip when unnecessary |
 | --- | --- | --- |
-| Native search + targeted reads | Small changes with known locations; literals, configuration, documentation, and current working-tree content. | Search for the entry point and read the necessary context. This is a complete baseline when no indexing service is available. |
-| Codegraph + native reads | Cross-file flows, callers, dependencies, and change impact. Codegraph handles structural discovery and can supply relevant source; native reads fill specific gaps. | Make a focused query, reuse its returned source, and inspect only missing or changed context. If the index is absent, stale, or incomplete, use native search and reads. |
-| Serena + native reads | Symbol navigation, precise references, diagnostics, and supported semantic edits when Serena is the selected primary retrieval tool. Native tools cover literals and unsupported content. | Use the LSP backend or a suitable JetBrains backend. No graph service is required for this standalone recipe. Fall back to native tools for unsupported languages, stale state, or missing operations. |
-| Codegraph + Serena, with an optional JetBrains plugin | Changes that need both a broad call/dependency view and precise symbol work. Codegraph establishes the affected flow; Serena resolves remaining symbol or reference questions and supported edits. | Call the second tool only for an unanswered question. If either is sufficient, stop. If one is unavailable, use the other's supported capabilities and native retrieval for the remaining gaps. |
-| repomap + one chosen retrieval recipe | Initial orientation in an unfamiliar repository. The map supplies a bounded outline; the chosen retrieval tool supplies task-specific evidence. | Request a budgeted map when supported, then move to focused retrieval. Skip the map when the relevant module is known or another tool already provided an adequate outline. |
+| **Lightweight — native search + targeted reads** | Work is usually local, paths or identifiers are known, or no suitable indexed service is available. This is a complete option for repositories of any size. | Use filename and literal search, then read the complete relevant implementation. Trace callers with scoped searches when needed. No MCP call is required by this profile; reconsider the choice only if repeated relationship work makes native navigation inefficient. |
+| **Relationship-aware — Codegraph + native retrieval** | Cross-file flows, dependencies, and impact analysis recur, and a suitable graph index is available. | Use Codegraph for those relationship questions and reuse returned source. Use native retrieval for literals, configuration, documentation, current edits, and uncovered evidence. Where the tool contract permits, directly read a known local implementation; skip broad graph exploration when no relationship question remains. |
+| **Precise-symbol enhancement — Codegraph + Serena (LSP) + native retrieval** | The project regularly needs both relationship analysis and precise language-aware symbol/reference queries that the graph does not adequately resolve. | Use Codegraph and native retrieval as above. Use Serena for an unresolved definition, implementation, or precise reference question in a supported language. Skip Serena when source or relationships already answer the question, for ordinary text/configuration searches, or when its language backend cannot resolve the target. |
 
-Codegraph implementations and exposed tools can differ. In the andysom25 implementation,
-`codegraph_explore` can include source, call paths, and impact information. Do not describe it as
-metadata-only or automatically add a second source-extraction service for content already returned.
-Confirm the implementation before encoding tool-specific behavior in project instructions.
-When Codegraph is the selected primary service, follow its exposed tool contract for the first code
-lookup and reuse the returned source. In the combined recipe, Serena fills remaining language-aware
-gaps and native tools cover text, configuration, documentation, or missing evidence. Do not import the
-standalone Serena or native recipe's starting point into this combined route. When the exposed contract
-requires Codegraph first for code questions or edits, a small change or known file is not an exception;
-use native retrieval for a missing or unavailable index, uncovered content, or evidence gaps as permitted
-by that contract. Respond to reported stale or incomplete results rather than assuming an index must
-be rebuilt or rechecked on every task.
+A large repository may benefit from the third profile, but size does not require it. Select it for a
+recurring semantic-navigation need and usable language support. A simple task in that profile may use
+only native retrieval; an answered graph query may need no Serena call. These are conditional routes
+within the selected profile, not a switch to another project-wide policy.
 
-### Serena for JetBrains projects
+Honor actual host and tool routing requirements. If an exposed contract requires Codegraph first for
+code questions or edits, preserve that condition and its allowed fallbacks; a known path alone does
+not override it. Do not impose that host-specific requirement on implementations without it. Tool
+selection does not authorize indexing, installation, semantic edits, or configuration changes.
 
-For PyCharm or IntelliJ IDEA projects, Serena MCP can use the optional Serena JetBrains IDE plugin as
-its language backend. The IDE plugin supplies IDE language capabilities; the coding agent still
-connects through Serena MCP. Open the same project root in the IDE and Serena, and ensure the IDE can
-resolve the relevant symbols and dependencies before relying on its results.
+When writing the selected profile into `AGENTS.md`, retain a short grouped entry with each included
+tool's trigger and responsibility, when to skip it, and the shared handoff or fallback. Give distinct
+responsibilities readable subitems or table line breaks. Keep native retrieval explicit even in an
+enhanced profile. Omit unselected tools, parameter tutorials, benchmark results, and fixed savings claims.
 
-The JetBrains plugin is a paid option; Serena's free LSP backend is an alternative. Select one backend
-according to the project's language support and needed operations. Do not require both or assume every
-JetBrains product, language, or host supports the same operations. If the IDE setup is unavailable,
-use the supported LSP backend or native retrieval.
+### Retrieve Enough Evidence with Fewer Repeated Calls
+
+Start from the question and available capabilities. Call supporting tools only for unresolved evidence;
+do not impose one fixed sequence. Expand context when needed for correctness, including complete files
+when appropriate.
+
+Where the service separates discovery from source retrieval, first narrow by path and symbol using
+outlines, signatures, or bounded search results. Then request the complete relevant function, method,
+or class, expanding to callers, types, or configuration only for a concrete evidence gap. Skip broad
+orientation when the target is already known. Follow pagination or narrow the scope when output is
+truncated; a partial snippet is not a complete implementation.
+
+Reuse existing indexes and already-returned source. A service that supplies both discovery and source
+does not need a second MCP just to retrieve the same code. If the selected primary tool returns bounded
+source in one call, reuse that result instead of forcing an extra outline-and-read sequence.
+
+Choose retrieval granularity for the question. Several needed methods in a small, cohesive class or
+file may be cheaper to retrieve together than through separate discovery and body requests. Batch
+independent reads whose targets are already known; keep queries that depend on earlier results
+sequential. Judge the whole task's evidence and model turns, not the shortest individual response.
+Before stopping, check that the answer addresses the requested facts with adequate evidence; do not
+expand a bounded question into an exhaustive account of every surrounding implementation detail.
+
+For a handoff, identify the unresolved question, known path or symbol, and source already obtained.
+Do not ask the second tool to repeat a complete body solely because both tools are in the profile.
+Across message or language boundaries, verify the relevant producer, routing and consumer evidence;
+a missing graph edge does not prove that the path is absent.
+
+### Codegraph Query Scope
+
+Codegraph implementations and exposed tools can differ; confirm the package and actual schema rather
+than transferring behavior from a similarly named project. A service exposing `codegraph_explore` can
+include source, call paths, and impact information. Reuse complete returned source. Where `maxFiles`
+is exposed, treat it as a source-file selection limit, not a Token budget or a guarantee that the target
+definition is selected. Use task-specific terms and a proportionate scope, verify the returned targets,
+and query only missing evidence. Do not invent a caller-controlled `maxTokens` parameter.
+Use native retrieval for an unavailable index, uncovered content, or stale results, within the exposed
+contract. Respond to actual coverage gaps rather than rebuilding or rechecking the index on every task.
+
+### Serena with language servers
+
+Use Serena's language-server (LSP) backend. The coding agent connects to Serena MCP, which uses
+supported language servers for the activated project's languages. Confirm the project root and the
+required language-server dependencies and toolchains before relying on symbol results.
+
+Choose language servers whose required operations are available without paid features. Language
+coverage and semantic operations vary by server; verify support for the actual query or edit, and
+use native retrieval for unsupported content or remaining evidence gaps.
+
+With the classic interface, use a scoped `find_symbol` or a file's `get_symbols_overview` for discovery
+when needed, then request the selected body with `include_body=true`. For a known target, request that
+body directly. Use references only for a remaining relationship question. `relative_path` narrows the
+search; `max_matches` is a refinement threshold, not pagination. An empty or oversized result calls for
+checking the path or symbol pattern, not repeated broad queries. Follow the installed schema's limits.
+
+### Alternatives for a Specific Unmet Need
+
+The three profiles are the default proposals, not a ban on the author's existing or preferred tools.
+A confirmed standalone Serena (LSP) + native profile can serve precise symbol work without a graph
+service. Codebase Memory + native reads is another possible primary profile for outlines, graph
+queries, and symbol source. Evaluate either as a replacement profile, not an extra default layer.
+
+For `DeusData/codebase-memory-mcp`, narrow with `search_graph` or `get_file_outline`, then use the returned
+qualified name with `get_code_snippet(source_mode="full")`. Follow source continuation to complete the
+needed body; `auto` may return an outline for a large container. Use bounded `trace_path` only for a
+relationship gap. Its `max_output_tokens` is a sizing hint, not measured model usage. Best-effort index
+coverage and empty results do not establish that an implementation is absent; use native evidence for
+uncovered content. Do not add it merely to duplicate an existing graph service.
+
+A selected repomap can provide a budgeted initial outline inside a profile when no existing tool
+supplies adequate orientation. Skip it for known modules or an already sufficient outline; it does not
+require a separate mandatory retrieval sequence.
 
 ## Optional Retrieval and Output Layers
 
@@ -109,7 +177,7 @@ better deployment tiers.
 
 | Optional combination | When it helps | Boundaries and fallback |
 | --- | --- | --- |
-| Chosen retrieval recipe + RTK CLI | Relevant source is already targeted, but supported Git, build, test, or log commands produce excessive output. Retrieval handles source; RTK filters command output. | RTK does not supply symbols or dependencies. Use a confirmed host integration or supported CLI operation; otherwise use native commands with bounded output. Inspect raw output when filtering obscures a failure or needed evidence. |
+| Chosen retrieval profile + RTK CLI command filters | Relevant source is already targeted, but supported Git, build, test, or log commands produce excessive output. Prefer the OSS command-filter edition when it meets the need. | This filters shell output, not MCP schemas. Use a verified host integration or supported CLI operation; otherwise use bounded native commands. Keep raw output available when filtering obscures evidence. RTK's reported token estimates are not host-measured usage. |
 | Structural retrieval + one semantic search service | The task is described conceptually and identifiers or structural queries do not locate the implementation. A service such as `@teknologika/mcp-codebase-search` can supply candidate code chunks. | Confirm package identity, language coverage, index freshness, and host support. Verify candidate matches against current code and follow relationships as needed. Reuse existing semantic search rather than adding duplicate indexes. |
 | Chosen retrieval recipe + an AST symbol extractor | A supported language needs symbol-level source extraction that the existing tools do not provide. `syphon1c/code-scale-mcp` is a candidate to evaluate. | AST extraction and vector search serve different purposes. Do not assume a similarly named npm package is the same project. Prefer existing symbol tools or bounded native reads when they already suffice. |
 | Selected MCP services behind a schema gateway | The host loads many tool definitions and does not already provide adequate deferred tool discovery. MCP Slim (`dopatools/mcp-slim`) is one candidate. | Confirm the gateway's actual discovery and proxy support. With a proxy design, the host uses the gateway and it manages downstream connections; listing every server beside it does not establish proxying. Use the host's normal MCP connections when a gateway adds no benefit. |
@@ -122,7 +190,15 @@ for repomap and a symbol extractor. Leave unresolved candidates out of the activ
 Keep source retrieval, command output, tool schemas, and repeated calls distinct when assessing cost.
 Schema deferral alone does not reduce source payloads; a tool-side cache hit alone does not prove fewer
 model-input tokens. Do not promise a fixed savings percentage or label a larger stack the cheapest.
-Measure total input, repeated work, and answer quality in the target host if quantitative savings matter.
+For quantitative comparisons, use host-reported usage and distinguish total input, cached input,
+uncached input and output. Include retries and model turns; distinguish code actually retrieved from
+facts correctly explained in the answer. Keep model, task, host presentation and quality expectations
+comparable, and report any unresolved differences instead of treating a single run as a backend ranking.
+
+When controlling a bridge or adapter, avoid presenting equivalent text and structured results twice.
+Check equivalence and retain unique fields, continuation and error information; preserve raw results
+when an audit needs them. Verify any saving in the actual host. This does not authorize changing the
+host or installing a gateway during AGENTS.md authoring.
 
 ## Planning and Execution
 
