@@ -1,0 +1,222 @@
+{
+  "status": "complete",
+  "model": "gpt-6-luna",
+  "reasoning_effort": "max",
+  "snapshot": {
+    "corpus": "anonymized Java/Python repository",
+    "files": 2126,
+    "bytes": 12155961,
+    "private_identity_withheld": true
+  },
+  "xerj": {
+    "version": "1.0.0-rc.96",
+    "release_date": "2026-10-16",
+    "asset_sha256": "514491a36018e28b09df92487aba003f1df4401511dfbd9dfd1153a24c461d7b",
+    "node_mode": "loopback-only, lexical, no remote reranker/embedding",
+    "clean_index_seconds": 160.173,
+    "clean_index_exit_code": 3,
+    "clean_index_state": "completed-with-junk",
+    "indexed_unique_files": 2055,
+    "code_files_recognized_and_indexed": 1589,
+    "file_junk_count": 30,
+    "record_junk_count": 87,
+    "index_documents": 12931,
+    "markdown_indexed_paths": 38,
+    "python_indexed_paths": 262,
+    "python_canonical_duplicate_paths": 1
+  },
+  "baseline": {
+    "codegraph": "1.3.0",
+    "serena": "2.0.0, LSP / Python",
+    "transport": "Native and Codegraph CLI; optional read-only Serena MCP helper; XERJ CLI text passages"
+  },
+  "controls": {
+    "fresh_context": true,
+    "serial": true,
+    "repetitions": 2,
+    "cases": 3,
+    "profiles": 3,
+    "shared_global_tool_catalog": true,
+    "schema_isolated": false,
+    "full_model_traces_published": false
+  },
+  "integrity": {
+    "case_files_removed_before_formal_runs": true,
+    "all_previous_xerj_index_data_discarded": true,
+    "clean_codegraph_rebuild": true,
+    "formal_corpus_case_truth_probe_records": 0,
+    "source_hashes_unchanged_after_runs": true,
+    "frozen_inputs_unchanged_after_runs": true,
+    "formal_tool_output_private_case_rubric_marker_scan": {
+      "traces": 18,
+      "tool_outputs": 194,
+      "hits": 0,
+      "scope": "Targeted private case directory, ground-truth title and rubric field/file markers in original host tool outputs; not a semantic leak detector."
+    }
+  },
+  "measurement": {
+    "all_18_complete_and_valid": true,
+    "source": "actual host token_usage_record; unique response_id sum reconciled with completed-turn snapshot",
+    "character_token_estimation_used": false,
+    "formal_totals": {
+      "input_tokens": 13210859,
+      "cached_input_tokens": 12303744,
+      "uncached_input_tokens": 907115,
+      "output_tokens": 156715,
+      "reasoning_output_tokens": 98751,
+      "total_tokens": 13367574,
+      "duration_ms": 1374118,
+      "responses": 212,
+      "host_tool_calls": 194
+    },
+    "endpoint_unreachable_xerj_cli_calls": 7,
+    "xerj_cli_invocations": 16,
+    "xerj_calls_returning_passages": 9,
+    "serena_formal_calls": 0
+  },
+  "frozen_inputs": {
+    "frozen_before_formal_runs": true,
+    "artifact_count": 37,
+    "integrity_checked_during_execution": true,
+    "private_paths_and_fingerprints_published": false
+  },
+  "overhead": {
+    "captured_utc": "2026-10-18T11:05:40.186410+00:00",
+    "scope": "Current validation user turn only. Excludes the earlier XERJ literature review and all 18 case workers. Coordinator remains a partial snapshot; final delivery after this cutoff is not included.",
+    "records": [
+      {
+        "role": "environment_preparation",
+        "status": "completed",
+        "unique_responses": 95,
+        "turns": 1,
+        "reconciles_with_latest_turn_snapshots": true,
+        "input_tokens": 11103669,
+        "cached_input_tokens": 10919552,
+        "output_tokens": 77913,
+        "reasoning_output_tokens": 47575,
+        "total_tokens": 11181582,
+        "uncached_input_tokens": 184117
+      },
+      {
+        "role": "case_design",
+        "status": "completed",
+        "unique_responses": 37,
+        "turns": 2,
+        "reconciles_with_latest_turn_snapshots": true,
+        "input_tokens": 4356218,
+        "cached_input_tokens": 4208128,
+        "output_tokens": 58431,
+        "reasoning_output_tokens": 26550,
+        "total_tokens": 4414649,
+        "uncached_input_tokens": 148090
+      },
+      {
+        "role": "measurement_preparation",
+        "status": "completed",
+        "unique_responses": 18,
+        "turns": 1,
+        "reconciles_with_latest_turn_snapshots": true,
+        "input_tokens": 1300434,
+        "cached_input_tokens": 1237888,
+        "output_tokens": 41578,
+        "reasoning_output_tokens": 29838,
+        "total_tokens": 1342012,
+        "uncached_input_tokens": 62546
+      },
+      {
+        "role": "blind_case_01",
+        "status": "completed",
+        "unique_responses": 9,
+        "turns": 1,
+        "reconciles_with_latest_turn_snapshots": true,
+        "input_tokens": 557844,
+        "cached_input_tokens": 505216,
+        "output_tokens": 17907,
+        "reasoning_output_tokens": 13403,
+        "total_tokens": 575751,
+        "uncached_input_tokens": 52628
+      },
+      {
+        "role": "blind_case_02",
+        "status": "completed",
+        "unique_responses": 9,
+        "turns": 1,
+        "reconciles_with_latest_turn_snapshots": true,
+        "input_tokens": 488149,
+        "cached_input_tokens": 452224,
+        "output_tokens": 8801,
+        "reasoning_output_tokens": 6282,
+        "total_tokens": 496950,
+        "uncached_input_tokens": 35925
+      },
+      {
+        "role": "blind_case_03",
+        "status": "completed",
+        "unique_responses": 6,
+        "turns": 1,
+        "reconciles_with_latest_turn_snapshots": true,
+        "input_tokens": 258941,
+        "cached_input_tokens": 246656,
+        "output_tokens": 3982,
+        "reasoning_output_tokens": 1674,
+        "total_tokens": 262923,
+        "uncached_input_tokens": 12285
+      },
+      {
+        "role": "coordinator",
+        "status": "partial_live_cutoff",
+        "unique_responses": 126,
+        "turns": 1,
+        "reconciles_with_latest_turn_snapshots": true,
+        "input_tokens": 20319599,
+        "cached_input_tokens": 19549952,
+        "output_tokens": 79667,
+        "reasoning_output_tokens": 33931,
+        "total_tokens": 20399266,
+        "uncached_input_tokens": 769647
+      }
+    ]
+  },
+  "grading": {
+    "judge_model": "gpt-6-luna",
+    "judge_effort": "max",
+    "independent_case_judges": 3,
+    "blind_to_profile_usage_and_traces": true,
+    "primary_review_changed_scores": false,
+    "all_score_sums_validated": true,
+    "critical_factual_errors": 0,
+    "primary_review_note": "Completeness deductions retained under the frozen rubric. No citation-format penalties. A single B answer failed completeness while preserving the main remote-document processing path. The synchronous-case score difference is driven by the explicit new-component checklist and is not evidence of broad capability improvement."
+  },
+  "cleanup": {
+    "status": "complete",
+    "extra_java_workspace_removed": true,
+    "preserved": [
+      "Original private project and existing indexes",
+      "Existing Serena installation and global MCP configuration",
+      "Existing Codegraph, Codex and uv",
+      "Unrelated working-tree changes and other research directories"
+    ],
+    "temporary_source_answers_and_full_log_copies_not_published": true,
+    "completed_utc": "2026-10-18T11:06:07.275961+00:00",
+    "temporary_root_removed": true,
+    "node_process_stopped": true,
+    "experiment_runtime_processes_remaining": 0,
+    "regular_files_removed": 20331,
+    "regular_file_logical_bytes_removed": 376811337,
+    "symlink_targets_followed": false
+  },
+  "publication": {
+    "project_and_case_identity": "anonymized",
+    "excluded": [
+      "Project and organization names",
+      "Internal business identifiers and symbol names",
+      "Private source and module paths",
+      "Local filesystem paths and environment identifiers",
+      "Private repository commit identifiers",
+      "Private source, answer and trace fingerprints",
+      "Source-bearing answers, raw logs and credentials"
+    ],
+    "measurements_and_scores_changed": false,
+    "public_release_asset_checksum_retained": true
+  }
+}
