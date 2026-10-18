@@ -1,0 +1,13 @@
+sequence,case,profile,repeat,run_id,model,effort,input_tokens,cached_input_tokens,uncached_input_tokens,output_tokens,total_tokens,model_responses,host_tool_calls,mcp_calls,codegraph_calls,serena_calls,schema_discovery_turns,non_bridge_host_turns,deduplicated_responses,elapsed_seconds,quality_score,quality_max,quality_pass,critical_errors,bridge_startup_seconds
+1,symbol,graph_native,1,01_symbol_graph_native_r1,gpt-6-luna,max,314595,297984,16611,3881,318476,7,6,1,1,0,2,3,0,34.599,8,8,True,0,0.300775
+2,symbol,graph_serena,1,02_symbol_graph_serena_r1,gpt-6-luna,max,208102,199680,8422,1830,209932,5,4,0,0,0,0,4,0,23.588,8,8,True,0,0.846691
+3,local,graph_serena,1,03_local_graph_serena_r1,gpt-6-luna,max,218451,206592,11859,1977,220428,5,4,0,0,0,0,4,0,20.806,8,8,True,0,0.882121
+4,local,graph_native,1,04_local_graph_native_r1,gpt-6-luna,max,386858,374656,12202,2555,389413,9,8,0,0,0,0,8,0,28.805,8,8,True,0,0.260224
+5,local,graph_native,2,05_local_graph_native_r2,gpt-6-luna,max,163121,155136,7985,1269,164390,4,3,0,0,0,0,3,0,17.471,8,8,True,0,0.225171
+6,local,graph_serena,2,06_local_graph_serena_r2,gpt-6-luna,max,256420,244864,11556,2302,258722,6,5,0,0,0,0,5,0,24.242,8,8,True,0,0.969916
+7,symbol,graph_serena,2,07_symbol_graph_serena_r2,gpt-6-luna,max,256477,243712,12765,2572,259049,6,5,0,0,0,0,5,0,26.831,8,8,True,0,0.843681
+8,symbol,graph_native,2,08_symbol_graph_native_r2,gpt-6-luna,max,411483,386304,25179,2722,414205,9,8,2,2,0,2,4,0,33.077,8,8,True,0,0.258988
+9,symbol,graph_native,3,09_symbol_graph_native_r3,gpt-6-luna,max,206675,197376,9299,1485,208160,5,4,0,0,0,0,4,0,23.536,8,8,True,0,0.221585
+10,symbol,graph_serena,3,10_symbol_graph_serena_r3,gpt-6-luna,max,172368,160512,11856,1966,174334,4,3,0,0,0,0,3,0,18.696,8,8,True,0,0.906473
+11,local,graph_serena,3,11_local_graph_serena_r3,gpt-6-luna,max,166536,157568,8968,1427,167963,4,3,0,0,0,0,3,0,16.729,8,8,True,0,0.830118
+12,local,graph_native,3,12_local_graph_native_r3,gpt-6-luna,max,302982,289280,13702,3148,306130,7,6,0,0,0,0,6,0,29.323,8,8,True,0,0.267357
