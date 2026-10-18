@@ -1,0 +1,296 @@
+[
+  {
+    "run_id": "run-01",
+    "case": "01-remote-document-path",
+    "blind_score": 93,
+    "primary_score": 93,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "validation-vs-production": 15,
+      "routing-and-registration": 15,
+      "component-responsibilities": 11,
+      "input-and-submit-flow": 20,
+      "poll-and-download": 15,
+      "normalized-output-contract": 17
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-02",
+    "case": "01-remote-document-path",
+    "blind_score": 80,
+    "primary_score": 80,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "validation-vs-production": 10,
+      "routing-and-registration": 15,
+      "component-responsibilities": 8,
+      "input-and-submit-flow": 17,
+      "poll-and-download": 13,
+      "normalized-output-contract": 17
+    },
+    "pass": false,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-03",
+    "case": "01-remote-document-path",
+    "blind_score": 92,
+    "primary_score": 92,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "validation-vs-production": 15,
+      "routing-and-registration": 15,
+      "component-responsibilities": 12,
+      "input-and-submit-flow": 18,
+      "poll-and-download": 15,
+      "normalized-output-contract": 17
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-04",
+    "case": "02-sync-engine-contract",
+    "blind_score": 85,
+    "primary_score": 85,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "new-capability-decision": 0,
+      "current-routing-contract": 20,
+      "concrete-operation-routing": 10,
+      "actual-sync-executor": 15,
+      "factory-registration": 15,
+      "sdk-boundary-and-result": 25
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-05",
+    "case": "02-sync-engine-contract",
+    "blind_score": 85,
+    "primary_score": 85,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "new-capability-decision": 0,
+      "current-routing-contract": 20,
+      "concrete-operation-routing": 10,
+      "actual-sync-executor": 15,
+      "factory-registration": 15,
+      "sdk-boundary-and-result": 25
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-06",
+    "case": "02-sync-engine-contract",
+    "blind_score": 85,
+    "primary_score": 85,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "new-capability-decision": 0,
+      "current-routing-contract": 20,
+      "concrete-operation-routing": 10,
+      "actual-sync-executor": 15,
+      "factory-registration": 15,
+      "sdk-boundary-and-result": 25
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-07",
+    "case": "03-object-uri-control",
+    "blind_score": 100,
+    "primary_score": 100,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "ordinary-object": 35,
+      "trailing-slash-prefix": 25,
+      "path-segments": 20,
+      "query-and-percent": 20
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-08",
+    "case": "03-object-uri-control",
+    "blind_score": 100,
+    "primary_score": 100,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "ordinary-object": 35,
+      "trailing-slash-prefix": 25,
+      "path-segments": 20,
+      "query-and-percent": 20
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-09",
+    "case": "03-object-uri-control",
+    "blind_score": 100,
+    "primary_score": 100,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "ordinary-object": 35,
+      "trailing-slash-prefix": 25,
+      "path-segments": 20,
+      "query-and-percent": 20
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-10",
+    "case": "01-remote-document-path",
+    "blind_score": 90,
+    "primary_score": 90,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "validation-vs-production": 11,
+      "routing-and-registration": 15,
+      "component-responsibilities": 15,
+      "input-and-submit-flow": 17,
+      "poll-and-download": 15,
+      "normalized-output-contract": 17
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-11",
+    "case": "01-remote-document-path",
+    "blind_score": 88,
+    "primary_score": 88,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "validation-vs-production": 15,
+      "routing-and-registration": 15,
+      "component-responsibilities": 12,
+      "input-and-submit-flow": 17,
+      "poll-and-download": 13,
+      "normalized-output-contract": 16
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-12",
+    "case": "01-remote-document-path",
+    "blind_score": 93,
+    "primary_score": 93,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "validation-vs-production": 15,
+      "routing-and-registration": 15,
+      "component-responsibilities": 11,
+      "input-and-submit-flow": 20,
+      "poll-and-download": 15,
+      "normalized-output-contract": 17
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-13",
+    "case": "02-sync-engine-contract",
+    "blind_score": 85,
+    "primary_score": 85,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "new-capability-decision": 0,
+      "current-routing-contract": 20,
+      "concrete-operation-routing": 10,
+      "actual-sync-executor": 15,
+      "factory-registration": 15,
+      "sdk-boundary-and-result": 25
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-14",
+    "case": "02-sync-engine-contract",
+    "blind_score": 96,
+    "primary_score": 96,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "new-capability-decision": 11,
+      "current-routing-contract": 20,
+      "concrete-operation-routing": 10,
+      "actual-sync-executor": 15,
+      "factory-registration": 15,
+      "sdk-boundary-and-result": 25
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-15",
+    "case": "02-sync-engine-contract",
+    "blind_score": 85,
+    "primary_score": 85,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "new-capability-decision": 0,
+      "current-routing-contract": 20,
+      "concrete-operation-routing": 10,
+      "actual-sync-executor": 15,
+      "factory-registration": 15,
+      "sdk-boundary-and-result": 25
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-16",
+    "case": "03-object-uri-control",
+    "blind_score": 100,
+    "primary_score": 100,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "ordinary-object": 35,
+      "trailing-slash-prefix": 25,
+      "path-segments": 20,
+      "query-and-percent": 20
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-17",
+    "case": "03-object-uri-control",
+    "blind_score": 100,
+    "primary_score": 100,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "ordinary-object": 35,
+      "trailing-slash-prefix": 25,
+      "path-segments": 20,
+      "query-and-percent": 20
+    },
+    "pass": true,
+    "critical_errors": 0
+  },
+  {
+    "run_id": "run-18",
+    "case": "03-object-uri-control",
+    "blind_score": 100,
+    "primary_score": 100,
+    "changed_by_primary": false,
+    "criterion_scores": {
+      "ordinary-object": 35,
+      "trailing-slash-prefix": 25,
+      "path-segments": 20,
+      "query-and-percent": 20
+    },
+    "pass": true,
+    "critical_errors": 0
+  }
+]
