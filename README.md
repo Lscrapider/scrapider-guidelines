@@ -95,7 +95,10 @@ The [coding workflow](SKILL.md#coding-workflow) applies these principles alongsi
 The [code-retrieval Token experiment](.research/2026-10-18-retrieval-token-benchmark/REPORT.md)
 records the tested scenarios, measured usage, quality review, limitations, and resulting workflow
 choices. Its [per-run metrics](.research/2026-10-18-retrieval-token-benchmark/metrics.csv) are
-available for inspection. The `.research/` directory is for developers browsing this repository;
+available for inspection. The [12-run Serena follow-up](.research/2026-10-18-serena-incremental-benefit/REPORT.md)
+records the repaired response rendering, fixed scoring, repeated comparisons, and limits on attributing
+benefits to an optional tool that workers did not invoke.
+The `.research/` directory is for developers browsing this repository;
 omit it when installing the skill. It is not referenced by the skill's loading routes.
 
 ## Contributing

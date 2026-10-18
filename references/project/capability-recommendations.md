@@ -30,7 +30,7 @@ Use these profiles as a starting point, not a fixed menu or a requirement to ado
 | --- | --- | --- |
 | Localized changes | **Lightweight:** native search and targeted reads + the project's coding guidance + proportionate native planning and verification. Locate the relevant implementation, make the scoped change, and check the affected behavior. | No additional retrieval service; broad relationship questions may need more manual navigation. |
 | Cross-module changes | **Relationship-aware:** Codegraph + native retrieval + the chosen coding guidance. Use source and relationships to establish impact, inspect gaps, then implement and verify across affected boundaries. | An available, suitable graph index helps; retain native fallback. |
-| Precise symbol work across modules | **Precise-symbol enhancement:** Codegraph + Serena (LSP) + native retrieval + the chosen coding guidance. Codegraph establishes structure; Serena handles unresolved symbol/reference questions; native tools cover other evidence. | Requires supported language servers and their prerequisites; repository size alone does not justify this profile. |
+| Verified symbol gaps across modules | **Precise-symbol enhancement (conditional):** Codegraph + Serena (LSP) + native retrieval + the chosen coding guidance. Codegraph establishes structure; Serena handles unresolved symbol/reference questions; native tools cover other evidence. | Verify that Serena can resolve the relevant gap. Extra capabilities do not establish lower Token use or faster completion. |
 
 Name the actual coding guidance in each proposal. Preserve existing project standards; offer Scrapider
 Guidelines as an optional coding layer when appropriate, without inferring adoption from this authoring
@@ -76,11 +76,16 @@ project file. A profile defines available responsibilities, not tools that every
 
 ### Select One Retrieval Profile
 
+Recommend the least extensive profile that covers the project's observed needs. Offer the third profile
+when a concrete symbol or reference gap remains and Serena's relevant language capability is verified;
+do not infer that gap from repository size or the presence of same-named methods alone. Preserve an
+explicitly chosen profile, while keeping unused tools optional within it.
+
 | Profile | Select when | Use within this profile; skip when unnecessary |
 | --- | --- | --- |
 | **Lightweight — native search + targeted reads** | Work is usually local, paths or identifiers are known, or no suitable indexed service is available. This is a complete option for repositories of any size. | Use filename and literal search, then read the complete relevant implementation. Trace callers with scoped searches when needed. No MCP call is required by this profile; reconsider the choice only if repeated relationship work makes native navigation inefficient. |
 | **Relationship-aware — Codegraph + native retrieval** | Cross-file flows, dependencies, and impact analysis recur, and a suitable graph index is available. | Use Codegraph for those relationship questions and reuse returned source. Use native retrieval for literals, configuration, documentation, current edits, and uncovered evidence. Where the tool contract permits, directly read a known local implementation; skip broad graph exploration when no relationship question remains. |
-| **Precise-symbol enhancement — Codegraph + Serena (LSP) + native retrieval** | The project regularly needs both relationship analysis and precise language-aware symbol/reference queries that the graph does not adequately resolve. | Use Codegraph and native retrieval as above. Use Serena for an unresolved definition, implementation, or precise reference question in a supported language. Skip Serena when source or relationships already answer the question, for ordinary text/configuration searches, or when its language backend cannot resolve the target. |
+| **Precise-symbol enhancement — Codegraph + Serena (LSP) + native retrieval** | Recurring symbol/reference questions remain unresolved by the current graph and native evidence, and Serena is verified to cover those queries. | Use Codegraph and native retrieval as above. Use Serena for an unresolved definition, implementation, or precise reference question in a supported language. Skip Serena when source or relationships already answer the question, for ordinary text/configuration searches, or when its language backend cannot resolve the target. |
 
 A large repository may benefit from the third profile, but size does not require it. Select it for a
 recurring semantic-navigation need and usable language support. A simple task in that profile may use
@@ -133,6 +138,8 @@ include source, call paths, and impact information. Reuse complete returned sour
 is exposed, treat it as a source-file selection limit, not a Token budget or a guarantee that the target
 definition is selected. Use task-specific terms and a proportionate scope, verify the returned targets,
 and query only missing evidence. Do not invent a caller-controlled `maxTokens` parameter.
+Resolve ambiguous same-name relationships against receiver declarations and call-site source; use a
+precise-symbol tool when that evidence still leaves the binding unresolved.
 Use native retrieval for an unavailable index, uncovered content, or stale results, within the exposed
 contract. Respond to actual coverage gaps rather than rebuilding or rechecking the index on every task.
 
@@ -194,6 +201,8 @@ For quantitative comparisons, use host-reported usage and distinguish total inpu
 uncached input and output. Include retries and model turns; distinguish code actually retrieved from
 facts correctly explained in the answer. Keep model, task, host presentation and quality expectations
 comparable, and report any unresolved differences instead of treating a single run as a backend ranking.
+Record which tools were actually used. An available but unused tool cannot explain an observed saving;
+an availability comparison does not establish that tool's benefit when invoked.
 
 When controlling a bridge or adapter, avoid presenting equivalent text and structured results twice.
 Check equivalence and retain unique fields, continuation and error information; preserve raw results
