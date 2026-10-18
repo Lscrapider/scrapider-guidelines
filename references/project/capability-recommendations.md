@@ -1,13 +1,15 @@
 # Optional Capability Recommendations
 
-Load this reference when selecting workflows for a project's `AGENTS.md`. Choose one code-retrieval
-profile and any separately selected coding, planning, or UI capabilities. Each retrieval profile is
-independently usable. These recommendations do not authorize installing tools,
+Load this reference when selecting workflows for a project's `AGENTS.md`. When code retrieval is in
+scope, choose one retrieval profile alongside any selected coding, planning, or UI capabilities.
+Each profile is independently usable. These recommendations do not authorize installing tools,
 changing configuration, building indexes, or creating files beyond the target `AGENTS.md`.
 
 Recommend capability configurations that can be used without paid licenses or subscriptions.
 Check that the required operations are available in the free configuration; exclude paid-only
 plugins and paid feature dependencies from proposals.
+Keep licensing and pricing labels out of generated `AGENTS.md` entries. Use capability names such as
+`Serena (LSP)` and describe their responsibilities and routing.
 
 Offer the author a small set of relevant named options with a recommendation, purpose, and tradeoffs.
 Reuse choices already made; let the author select a proposal or supply an alternative before treating
@@ -80,6 +82,8 @@ Recommend the least extensive profile that covers the project's observed needs. 
 when a concrete symbol or reference gap remains and Serena's relevant language capability is verified;
 do not infer that gap from repository size or the presence of same-named methods alone. Preserve an
 explicitly chosen profile, while keeping unused tools optional within it.
+During authoring, check capability fit against documented operations, language support, and available
+project evidence; this does not require installing a tool or running a new benchmark.
 
 | Profile | Select when | Use within this profile; skip when unnecessary |
 | --- | --- | --- |
