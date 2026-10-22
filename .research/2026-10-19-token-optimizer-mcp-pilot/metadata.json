@@ -1,0 +1,24 @@
+{
+  "package": {
+    "name": "@ooples/token-optimizer-mcp",
+    "version": "7.5.1",
+    "license": "MIT",
+    "integrity": "sha512-rheM6TEsPbrXPitlNnc3VhK6TRy23QZ6IBqHTKfrYOZ0VHEcPYBNAgSeEUHQybUXI/+1XKUIYbU6ELnKWN/2Og==",
+    "resolved": "https://registry.npmjs.org/@ooples/token-optimizer-mcp/-/token-optimizer-mcp-7.5.1.tgz"
+  },
+  "model": "gpt-6-luna",
+  "effort": "max",
+  "cli_version": "0.163.0-alpha.10.2",
+  "node_version": "v24.16.0",
+  "cli_path": "/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex",
+  "source_name": "jsonl_partitioner.py",
+  "normalized_source_sha256": "026555f1721b630a64598ca916553a1648f33be4aa78ae66d16960cbe6acaf33",
+  "package_files_sha256": {
+    "dist/tools/shared/diff-utils.js": "e5d32cfae9cb73f088eee39426e89e27a1d6e7b465019cf4311d77f379a725a6",
+    "dist/tools/file-operations/smart-read.js": "ef9f058063aec06c955c2fb71cdd7672b0f20af1794b32c05cc8fd9c653b4da6",
+    "dist/server/index.js": "72c9f753d23547f1cc1d5b556be1852c2310a894b7bf8693b229021389e3785b"
+  },
+  "protocol_sha256": "ff2121c9a4e76cd0b8281bdc5ff1a043c85979b95b2fcf5369ddd3a76d4b0471",
+  "source_in_private_records": true,
+  "last_complete_pair_is_cross_day": true
+}

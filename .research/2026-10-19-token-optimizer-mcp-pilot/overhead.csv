@@ -1,0 +1,8 @@
+account,scope,input,cached_input,uncached_input,output,total,status
+main snapshot,preparation/orchestration/evaluation combined; incomplete after cutoff,7715918,7298304,417614,41988,7757906,known snapshot
+preparation subagent,source exploration and case design; not a measured task worker,970222,859520,110702,14364,984586,known final
+connectivity smoke,preparation,18814,11648,7166,22,18836,known final
+four completed workers,task execution,455151,359296,95855,16850,472001,known final
+old CLI model rejection,unknown/incomplete,,,,,,usage unavailable; not zero
+r04 transport timeout,unknown/incomplete,,,,,,usage unavailable; not zero
+after main snapshot cutoff,unknown/incomplete,,,,,,usage unavailable; not zero

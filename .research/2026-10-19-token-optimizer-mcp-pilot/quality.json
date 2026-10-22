@@ -1,0 +1,76 @@
+{
+  "r01": {
+    "case": "review",
+    "pass": true,
+    "score": 8,
+    "max_score": 8,
+    "rubric": [
+      "stage0 accepts bool/float when positive",
+      "stage0 unescaped UTF8 JSONL",
+      "stage0 nonempty closes final part",
+      "stage0 empty creates one empty part",
+      "stage1 rejects bool/float and nonpositive values",
+      "stage1 ascii escaping changes original Chinese content/byte contract",
+      "stage2 indentation skips close_part for nonempty final file",
+      "stage2 single nonempty row returns empty tuple; empty case still works"
+    ],
+    "reviewer": "primary agent; compared frozen source stages; not blinded",
+    "source_scope_verified": true,
+    "source_hash": "ea58804df07d2371a0b4b2e29fd7ffdce8b176ded325d79c39f4f8e3b2df95f1",
+    "no_worker_source_edit": true
+  },
+  "r02": {
+    "case": "review",
+    "pass": true,
+    "score": 8,
+    "max_score": 8,
+    "rubric": [
+      "stage0 accepts bool/float when positive",
+      "stage0 unescaped UTF8 JSONL",
+      "stage0 nonempty closes final part",
+      "stage0 empty creates one empty part",
+      "stage1 rejects bool/float and nonpositive values",
+      "stage1 ascii escaping changes original Chinese content/byte contract",
+      "stage2 indentation skips close_part for nonempty final file",
+      "stage2 single nonempty row returns empty tuple; empty case still works"
+    ],
+    "reviewer": "primary agent; compared frozen source stages; not blinded",
+    "source_scope_verified": true,
+    "source_hash": "ea58804df07d2371a0b4b2e29fd7ffdce8b176ded325d79c39f4f8e3b2df95f1",
+    "no_worker_source_edit": true
+  },
+  "r03": {
+    "case": "simple",
+    "pass": true,
+    "score": 5,
+    "max_score": 5,
+    "rubric": [
+      "seeded random shuffle",
+      "membership based on shuffled indices",
+      "returned order uses original enumerate order",
+      "same input ratio seed deterministic",
+      "no edits; source evidence"
+    ],
+    "reviewer": "primary agent; compared frozen source stages; not blinded",
+    "source_scope_verified": true,
+    "source_hash": "026555f1721b630a64598ca916553a1648f33be4aa78ae66d16960cbe6acaf33",
+    "no_worker_source_edit": true
+  },
+  "r04_retry": {
+    "case": "simple",
+    "pass": true,
+    "score": 5,
+    "max_score": 5,
+    "rubric": [
+      "seeded random shuffle",
+      "membership based on shuffled indices",
+      "returned order uses original enumerate order",
+      "same input ratio seed deterministic",
+      "no edits; source evidence"
+    ],
+    "reviewer": "primary agent; compared frozen source stages; not blinded",
+    "source_scope_verified": true,
+    "source_hash": "026555f1721b630a64598ca916553a1648f33be4aa78ae66d16960cbe6acaf33",
+    "no_worker_source_edit": true
+  }
+}

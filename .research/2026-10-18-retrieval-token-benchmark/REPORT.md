@@ -1,6 +1,6 @@
 # Code Retrieval Token Benchmark (2026-10-18)
 
-Developer research archive for human browsing on GitHub. Omit `.research/` when installing the skill; the skill does not load this archive. This is an exploratory, single-sample comparison of six code-retrieval workflows across three repository-question types. Task descriptions below are generalized; this archive contains no private source excerpts, answers, raw prompts, traces, user names, absolute paths, deployment details, or credentials.
+Developer research archive for human browsing on GitHub. Omit `.research/` when installing the skill; the skill does not load this archive. This is an exploratory, single-sample comparison of six code-retrieval workflows across three repository-question types. Task descriptions below are generalized; this archive contains no private source excerpts, answers, raw prompts, traces, user names, absolute paths, deployment identifiers, sensitive configuration, or credentials. Tool and operating-system versions are retained as experiment parameters.
 
 ## Findings
 
@@ -141,7 +141,9 @@ The evidence supports retaining three mutually exclusive project-level choices f
 
 Choose one workflow per project. Do not require every project or every task to invoke the whole combination. The default and focused Codegraph profiles use the same backend; this sample does not establish that either strategy should be installed as a separate product. Codebase Memory remains an experiment candidate, not the default stack.
 
-The recorded cleanup retained the existing Codegraph setup, isolated Serena Java/Python environment, native retrieval, frozen snapshot, Codegraph and Serena indexes, and experiment evidence. It removed the unselected CBM executable, runtime databases and lock files, plus inactive TypeScript/Vue Serena language servers. The cleanup audit reports 495,373,423 logical bytes removed and confirms that the protected run results, frozen source files, retained indexes, and retained provenance were unchanged. No global registration was added. This cleanup is an operational choice, not a ranking of backend quality or cost.
+An earlier partial cleanup removed the unselected CBM executable, runtime databases and lock files, plus inactive TypeScript/Vue Serena language servers. Its historical audit reported 495,373,423 logical bytes removed while the snapshot and experiment evidence were still retained. That record describes the earlier stage, not the current retention state.
+
+Final retention state: the temporary experiment environment, private project copy, experiment indexes, harnesses, raw-trace copies, and preview files have since been removed. The old experiment directory was checked and is absent. The final public deliverables are this report and metrics.csv; they retain the measured results, assessment conclusions, versions, parameters, and provenance hashes. Persistent Serena 2.0.0 LSP and its Java/Python dependencies, the preexisting Codegraph, Codex and uv installations, other existing MCP configuration, and the real project's original indexes are protected. No permanent tool depends on a retained copy of the deleted experiment. See the shared [cleanup verification record](../CLEANUP.md) for the final checks. Cleanup is an operational choice, not a ranking of backend quality or cost.
 
 ## Authoring behavior checks after the update
 
@@ -174,4 +176,4 @@ Prefer existing host capabilities when they already cover a layer. No new packag
 - Frozen source manifest SHA-256: 3e1c6d71ce1fe277a91fb185dcc6e9249c7db60b5677aadb0805b0caae623304
 - Formal usage basis: 397 unique response IDs across 18 completed runs, cross-checked against per-run usage.
 
-The hashes identify the reviewed inputs without exposing their local paths. Raw requests, answers, traces, and source snapshots remain in the existing local evidence store and are not copied into this archive. A future backend-cost study should first control the rendered representation and schema exposure, then repeat matched-quality cases and compare host-reported usage; this archive does not claim those effects have been measured.
+The hashes identify the reviewed inputs without exposing their local paths. Experiment-owned copies of raw requests, answers, traces, and source snapshots were removed during final cleanup and are not included in this archive. The archive supports checking aggregate arithmetic and the recorded assessment, but no longer supports reopening those original packets or independently reproducing the private-source investigation. Host-managed conversation history is outside this experiment cleanup and is not promised as a reproduction store. A future backend-cost study should first control the rendered representation and schema exposure, then repeat matched-quality cases and compare host-reported usage; this archive does not claim those effects have been measured.

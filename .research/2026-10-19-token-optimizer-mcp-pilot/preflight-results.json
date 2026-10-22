@@ -1,0 +1,128 @@
+[
+  {
+    "name": "tools",
+    "names": [
+      "expand",
+      "get_cached",
+      "smart_read",
+      "smart_write",
+      "smart_edit",
+      "smart_glob",
+      "smart_grep"
+    ]
+  },
+  {
+    "name": "first_full",
+    "arguments": {
+      "path": "/private/tmp/token-optimizer-pilot-ls3bxvt2/preflight-state/policy.py"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"content\":\"def policy(enabled):\\n    if enabled:\\n        return \\\"allow\\\"\\n    return \\\"deny\\\"\\n\"}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "unchanged",
+    "arguments": {
+      "path": "/private/tmp/token-optimizer-pilot-ls3bxvt2/preflight-state/policy.py"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"content\":\"// No changes\"}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "indentation_change",
+    "arguments": {
+      "path": "/private/tmp/token-optimizer-pilot-ls3bxvt2/preflight-state/policy.py"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"content\":\"// No changes\"}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "full_recovery",
+    "arguments": {
+      "path": "/private/tmp/token-optimizer-pilot-ls3bxvt2/preflight-state/policy.py",
+      "enableCache": false,
+      "diffMode": false
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"content\":\"def policy(enabled):\\n    if enabled:\\n        return \\\"allow\\\"\\n        return \\\"deny\\\"\\n\"}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "literal_first",
+    "arguments": {
+      "path": "/private/tmp/token-optimizer-pilot-ls3bxvt2/preflight-state/literal.py"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"content\":\"VALUE = \\\"a b\\\"\\n\"}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "literal_whitespace_change",
+    "arguments": {
+      "path": "/private/tmp/token-optimizer-pilot-ls3bxvt2/preflight-state/literal.py"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"content\":\"// No changes\"}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "normal_change",
+    "arguments": {
+      "path": "/private/tmp/token-optimizer-pilot-ls3bxvt2/preflight-state/literal.py"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"content\":\"VALUE = \\\"changed\\\"\\n\",\"diff\":{\"added\":[\"VALUE = \\\"changed\\\"\\n\"],\"removed\":[\"VALUE = \\\"a  b\\\"\\n\"],\"unchanged\":0}}"
+        }
+      ]
+    }
+  },
+  {
+    "name": "new_process_first_read",
+    "arguments": {
+      "path": "/private/tmp/token-optimizer-pilot-ls3bxvt2/preflight-state/policy.py"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"content\":\"def policy(enabled):\\n    if enabled:\\n        return \\\"allow\\\"\\n        return \\\"deny\\\"\\n\"}"
+        }
+      ]
+    }
+  }
+]

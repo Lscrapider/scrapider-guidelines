@@ -1,0 +1,30 @@
+{
+  "r01": {
+    "input_tokens": 114188,
+    "cached_input_tokens": 79872,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 5364,
+    "reasoning_output_tokens": 3651
+  },
+  "r02": {
+    "input_tokens": 243469,
+    "cached_input_tokens": 205568,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 8268,
+    "reasoning_output_tokens": 6132
+  },
+  "r03": {
+    "input_tokens": 49756,
+    "cached_input_tokens": 33792,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1697,
+    "reasoning_output_tokens": 1191
+  },
+  "r04_retry": {
+    "input_tokens": 47738,
+    "cached_input_tokens": 40064,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 1521,
+    "reasoning_output_tokens": 1095
+  }
+}

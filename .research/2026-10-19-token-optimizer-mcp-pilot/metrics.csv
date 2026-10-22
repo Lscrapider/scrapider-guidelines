@@ -1,0 +1,6 @@
+run_id,case,arm,model,effort,input,cached_input,uncached_input,output,reasoning_output,total,wall_seconds,user_turns,model_request_rounds,mcp_calls,command_calls,mechanism_actual_mcp,mechanism_diff_cache,quality_pass,quality_score,failure_reason,failed_attempt_of_case,runtime_profile
+r01,review,native,gpt-6-luna,max,114188,79872,34316,5364,3651,119552,68.014,1,,0,6,False,False,True,8,,,native
+r02,review,optimizer,gpt-6-luna,max,243469,205568,37901,8268,6132,251737,105.214,1,,3,7,True,False,True,8,,,files; client allows smart_read/get_cached/expand
+r03,simple,optimizer,gpt-6-luna,max,49756,33792,15964,1697,1191,51453,32.279,1,,0,2,False,False,True,5,,,files; client allows smart_read/get_cached/expand
+r04_retry,simple,native,gpt-6-luna,max,47738,40064,7674,1521,1095,49259,29.828,1,,0,2,False,False,True,5,,r04,native
+r04,simple,native,gpt-6-luna,max,,,,,,,300,1,,0,3,False,False,False,,transport timeout; no final answer or terminal usage,,

@@ -1,0 +1,12 @@
+{
+  "indentation": {
+    "before_false": "deny",
+    "after_false": null,
+    "behavior_changed": true
+  },
+  "literal": {
+    "before": "a b",
+    "after": "a  b",
+    "value_changed": true
+  }
+}
