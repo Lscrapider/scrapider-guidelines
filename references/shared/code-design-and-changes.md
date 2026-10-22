@@ -14,6 +14,25 @@ responsibility boundaries, and refactoring.
 - Remove what the current change makes unused. Report unrelated dead code or design issues instead
   of fixing them opportunistically; do not reformat unrelated code.
 
+## Problem Ownership and Repair Scope
+
+- Treat a named function or file as the investigation entry point unless the user explicitly limits
+  the edit scope. Determine whether the cause belongs to local business behavior, an existing shared
+  mechanism, or the same required contract implemented by several current paths.
+- Inspect the relevant callers, existing framework or project capabilities, and related implementations
+  needed to establish that scope. Expand only for a concrete connection to the cause; stop when the
+  evidence establishes the boundary. A clearly local or mechanical change needs no repository-wide scan.
+- Fix an evidenced common cause across the affected paths within the authorized scope. A small patch
+  at the reported location is incomplete if other in-scope paths retain the same defect. Keep a
+  scenario-specific rule local, and preserve intentional differences between related operations;
+  similar names, signatures, or code do not establish a shared contract.
+- Choose the repair scope before extracting code. Evolve the existing responsibility boundary and
+  reuse its capabilities first. Introduce shared code only when it owns a demonstrated common
+  responsibility under [Abstraction and Responsibility](#abstraction-and-responsibility).
+- Respect explicit file, module, and behavior limits. If a complete repair requires work beyond those
+  limits, identify the concrete dependency and resolve the scope with the user before that work;
+  a shared cause does not authorize unrelated cleanup or speculative generalization.
+
 ## Business Contracts
 
 - Treat default values, thresholds, enums, and strategy parameters as business contracts. Reuse

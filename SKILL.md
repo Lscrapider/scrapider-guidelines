@@ -58,6 +58,8 @@ reported; an attempted edit or a passing unrelated check does not establish comp
 - Read applicable project instructions and inspect the implementation, callers, and tests. Explicit
   user direction and project instructions take precedence over this skill. Use the routing below
   to load the relevant general and technology-specific rules before making implementation choices.
+- Determine problem ownership and repair scope using [Code Design and Changes](references/shared/code-design-and-changes.md#problem-ownership-and-repair-scope)
+  before choosing a local fix, a shared fix, or an extraction.
 - State material assumptions or uncertainty, the goal, approach, expected files, and verification
   method. For small, clear changes, one or two sentences suffice; do not impose a formal plan.
 - If plausible interpretations lead to different outcomes, explain the alternatives and tradeoffs.
@@ -112,6 +114,14 @@ reported; an attempted edit or a passing unrelated check does not establish comp
 
 Load the categories relevant to the actual task. General rules and technology-specific rules work
 together; package maps and examples do not require creating layers the project does not need.
+Read the applicable technology baseline, then follow its scenario routes. Select all routes whose
+behavior, contracts, or responsibilities the task affects, including through callers; selection is
+not limited to words in the request or edited filenames. Inspect uncertain connections narrowly and
+load the relevant reference if its applicability remains unresolved. Reassess when the scope expands.
+For reviews and investigations, select routes for the existing behavior under examination; a diff
+or proposed edit is not required.
+Use the same routing for implementation, refactoring, debugging, and review; reuse already-read,
+unchanged material.
 
 ### General Engineering and Task Rules
 
@@ -126,9 +136,9 @@ together; package maps and examples do not require creating layers the project d
 
 | Technology or task | When to load | Reference |
 | --- | --- | --- |
-| Spring Boot backend | Any Java Spring Boot implementation or review | [Spring Boot Backend](references/java/spring-boot-backend.md) |
+| Spring Boot backend | Any Java Spring Boot implementation, refactoring, debugging, or review; read this baseline and follow its routes for architecture, HTTP/domain objects, data access, and messaging as applicable | [Spring Boot Backend](references/java/spring-boot-backend.md) |
 | Maven multi-module | Multiple Maven modules, parent/aggregator POMs, module ownership, dependencies, splitting, or Spring configuration placement; load with the backend reference | [Spring Boot Multi-Module](references/java/spring-boot-multi-module.md) |
-| Python | Any Python implementation or review | [Python Code Organization](references/python/python-code-organization.md) |
+| Python | Any Python implementation, refactoring, debugging, or review; read this baseline and follow its package-layout route when creating, moving, or reorganizing code | [Python Code Organization](references/python/python-code-organization.md) |
 | Android Kotlin / Compose | Any Android implementation or review | [Android Kotlin Compose](references/android/android-kotlin-compose.md) |
 | Android UI from a design | A screenshot, mockup, design image, or existing product UI is the implementation source; load with the Android reference | [Android UI Implementation](references/android/android-ui-implementation-from-design.md) |
 | Android product UI design | Designing or generating Android product UI without a fixed design image; load with the Android reference | [Android Product UI Design](references/android/android-product-ui-design.md) |

@@ -63,7 +63,17 @@ The main [SKILL.md](SKILL.md) defines the working principles, coding workflow, a
 | Project instructions and optional capability combinations | [AGENTS.md Authoring](references/project/agents-md-authoring.md), loaded only for authoring requests; [Capability Recommendations](references/project/capability-recommendations.md) when selecting workflows. |
 | Technology-specific responsibilities | The applicable Java, Python, Android, or local deployment references. |
 
-For example, a Spring Boot task loads the general code-design rules and backend guidance; a multi-module Maven task also loads module-placement guidance. Reference examples do not require adding layers the project does not need.
+For example, a Spring Boot task loads the general code-design rules and backend baseline, then follows
+its routes for architecture, HTTP/domain objects, data access, and messaging only where applicable.
+A multi-module Maven task also loads module-placement guidance. Python tasks load the Python baseline;
+package-layout rules and examples are added when creating, moving, or reorganizing code. Mixed tasks
+load every applicable route, including behavior affected through callers, and revisit routing when
+the scope expands. Implementation and review use the same routes. Reference examples do not require
+adding layers the project does not need.
+
+The shared code-design rules distinguish the reported location from the cause's actual scope:
+inspect related paths when evidence connects them, repair shared causes within the authorized scope,
+and keep scenario-specific behavior local. Determine that scope before introducing an abstraction.
 
 For a standards-conformance review, follow [`references/shared/standards-review.md`](references/shared/standards-review.md), which defines when to delegate to the read-only `scrapider-standards-reviewer` agent or review directly.
 

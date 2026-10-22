@@ -59,7 +59,9 @@ otherwise return `Blocked` instead of guessing.
 1. Read the applicable project instructions.
 2. Read the entire current `scrapider-guidelines/SKILL.md`.
 3. Determine the technologies and task types in scope. Load only the reference documents selected
-   by the current `SKILL.md` routing rules for that scope; do not load unrelated references.
+   by the current `SKILL.md` routing rules for that scope, including applicable scenario references
+   routed by the technology baselines. Select them from affected behavior and callers, not only the
+   edited filenames; reassess as inspection reveals additional scope. Do not load unrelated references.
 4. Inspect the complete scoped diff, including relevant untracked files, plus only the surrounding
    code, callers, tests, configuration, and documentation needed to verify a potential violation.
 5. Build an internal checklist from the normative instructions in the loaded material that apply
