@@ -1,6 +1,6 @@
 # Serena Incremental-Benefit Follow-up (2026-10-18)
 
-Developer research archive. Omit `.research/` when installing the Skill; the Skill does not load this report. This follows the [initial six-profile experiment](../2026-10-18-retrieval-token-benchmark/REPORT.md) using the same frozen private Java/Python project. Private source, prompts, answers, and traces remain local.
+Developer research archive. Omit `.research/` when installing the Skill; the Skill does not load this report. This follows the [initial six-profile experiment](../2026-10-18-retrieval-token-benchmark/REPORT.md) using the same frozen private Java/Python project. Private source, prompts, answers, and traces are excluded from this archive; their experiment-owned temporary copies have been removed after the final results were saved.
 
 ## Result and recommendation
 
@@ -22,7 +22,7 @@ Codegraph remained version 1.3.0, Serena 2.0.0 classic LSP, Java via vscode-java
 
 ## Duplicate-return repair
 
-The model-facing helper now removes a redundant structured representation only when a single text block parses to the same JSON value, or exactly equals `structuredContent.result`. Equality preserves JSON types, so booleans and numbers are not conflated. Residual structured fields, text-block metadata, error flags, non-text blocks, and continuation information remain visible. Complete original packets and per-render audit records are retained locally. Tool schemas are requested individually on demand.
+The model-facing helper used in this follow-up removed a redundant structured representation only when a single text block parsed to the same JSON value, or exactly equalled `structuredContent.result`. Equality preserved JSON types, so booleans and numbers were not conflated. Residual structured fields, text-block metadata, error flags, non-text blocks, and continuation information remained visible. Original packets and per-render audit records were retained for assessment, then their experiment-owned copies and the helper were removed during final cleanup. Tool schemas were requested individually on demand.
 
 Offline replay checked all 292 original response records against their raw JSONL packets: 91 whole-JSON duplicates and 154 duplicate `result` fields were deduplicated; two non-equivalent structured responses and 45 text-only responses were retained. Four in-memory boundary checks covered equality, non-equality, additional cursor fields, and errors/non-text/metadata. No host Token savings were inferred from character counts.
 
@@ -89,13 +89,13 @@ After all 12 formal workers finished, a separate direct Serena `find_referencing
 3. **Retrieval choices and repeat variability matter.** Two N symbol runs used Codegraph and then native verification; the other ten runs used native retrieval only. Even the all-native local case varied substantially. Extra helper discovery and model rounds contribute to the observed workflow totals.
 4. **n=3 is descriptive evidence.** The task order was counterbalanced, but model randomness and caches were not controlled. No statistical significance, universal ranking, or billing-based conclusion is claimed.
 5. **Presentation was repaired, not isolated as a treatment.** The original 18-run matrix is not a matched before/after control: tasks, routing, and repetition design changed. Its numbers must not be used to calculate the repair's savings.
-6. **The public archive is an audit summary, not a standalone reproducer.** The source project is private. Original tasks, source citations, frozen ground truth, full requests, rendered/raw responses, model logs, and scoring remain in the local evidence store.
+6. **The public archive is an audit summary, not a standalone reproducer.** The source project is private. Experiment-owned temporary copies of the original tasks, source citations, frozen ground truth, full requests, rendered/raw responses, model logs, and detailed scoring were removed after archiving the final measurements and assessment conclusions. Provenance hashes identify the historical inputs but do not restore them. Host-managed conversation history is outside this cleanup and is not promised as a reproduction store.
 
 ## Skill decision
 
 Keep one selected retrieval profile per project. Prefer native retrieval when it covers the actual question, and Codegraph plus native retrieval for recurring relationship work. Retain the third profile as a conditional capability option only after an actual symbol/reference gap is identified and Serena is verified to resolve it. Preserve confirmed user choices, but do not require unused tools on every task or present the third profile as a validated Token-saving upgrade.
 
-The guidance also now calls for checking ambiguous same-name edges against receiver and call-site source, and distinguishes available tools from tools actually used when interpreting benchmarks. No research paths or numerical benchmark claims were added to the Skill loading routes. No new global MCP installation, live-project edit, or index rebuild was performed. The prepared runtimes and raw evidence remain available; this result does not justify uninstalling Serena as generally ineffective.
+The guidance also now calls for checking ambiguous same-name edges against receiver and call-site source, and distinguishes available tools from tools actually used when interpreting benchmarks. No research paths or numerical benchmark claims were added to the Skill loading routes. During the formal experiment, no new global MCP installation, live-project edit, or index rebuild was performed. Serena 2.0.0 LSP was subsequently retained in a persistent installation with its Java/Python dependencies and local Codex integration. Temporary experiment runtimes, project bindings, harnesses, raw-trace copies, and previews have been removed. The old temporary environment is absent; the retained installation is not a launcher into that environment. See the shared [cleanup verification record](../CLEANUP.md). This result does not justify uninstalling Serena as generally ineffective.
 
 ## Provenance
 

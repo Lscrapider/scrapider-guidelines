@@ -1,0 +1,38 @@
+{
+  "method": "difference of final cumulative counters across this request interval; do not sum snapshots",
+  "main_before": {
+    "timestamp": "2026-10-18T14:09:07.761Z",
+    "usage": {
+      "input_tokens": 25360161,
+      "cached_input_tokens": 24795648,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 111187,
+      "reasoning_output_tokens": 56040,
+      "total_tokens": 25471348
+    }
+  },
+  "main_snapshot_end": {
+    "timestamp": "2026-10-19T12:50:45.829Z",
+    "usage": {
+      "input_tokens": 33076079,
+      "cached_input_tokens": 32093952,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 153175,
+      "reasoning_output_tokens": 84182,
+      "total_tokens": 33229254
+    }
+  },
+  "preparation_subagent_final": {
+    "name": "optimizer_case_design",
+    "usage": {
+      "input_tokens": 970222,
+      "cached_input_tokens": 859520,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 14364,
+      "reasoning_output_tokens": 11890,
+      "total_tokens": 984586
+    }
+  },
+  "completed_task_source": "terminal-usage.json; one final usage per fresh thread",
+  "unknown": "failed and canceled calls without returned usage remain unknown"
+}

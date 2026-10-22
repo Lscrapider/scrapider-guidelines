@@ -1,0 +1,105 @@
+{
+  "cutoff_utc": "2026-10-19T12:51:45.989420+00:00",
+  "main_snapshot_end_utc": "2026-10-19T12:50:45.829Z",
+  "main_start_utc": "2026-10-18T14:09:55.500Z",
+  "main_usage_delta": {
+    "input_tokens": 7715918,
+    "cached_input_tokens": 7298304,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 41988,
+    "reasoning_output_tokens": 28142,
+    "total_tokens": 7757906
+  },
+  "main_unique_cumulative_updates": 28,
+  "main_counter_resets": [],
+  "preparation_subagent": {
+    "name": "optimizer_case_design",
+    "usage": {
+      "input_tokens": 970222,
+      "cached_input_tokens": 859520,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 14364,
+      "reasoning_output_tokens": 11890,
+      "total_tokens": 984586
+    }
+  },
+  "connectivity_smoke": {
+    "input_tokens": 18814,
+    "cached_input_tokens": 11648,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 22,
+    "reasoning_output_tokens": 15
+  },
+  "unknown_usage_attempts": [
+    "old CLI rejected model before inference; usage not returned",
+    "r04 transport timeout without terminal usage"
+  ],
+  "limitations": [
+    "main snapshot excludes later report writing and final delivery",
+    "main combines preparation, orchestration and evaluation; not precisely separable",
+    "possible usage not returned after interruption or failure is unknown"
+  ],
+  "completed_task_usage": {
+    "input_tokens": 455151,
+    "cached_input_tokens": 359296,
+    "output_tokens": 16850
+  },
+  "known_research_lower_bound_total": 9233329,
+  "accounts": [
+    {
+      "account": "main snapshot",
+      "scope": "preparation/orchestration/evaluation combined; incomplete after cutoff",
+      "input": 7715918,
+      "cached_input": 7298304,
+      "uncached_input": 417614,
+      "output": 41988,
+      "total": 7757906,
+      "status": "known snapshot"
+    },
+    {
+      "account": "preparation subagent",
+      "scope": "source exploration and case design; not a measured task worker",
+      "input": 970222,
+      "cached_input": 859520,
+      "uncached_input": 110702,
+      "output": 14364,
+      "total": 984586,
+      "status": "known final"
+    },
+    {
+      "account": "connectivity smoke",
+      "scope": "preparation",
+      "input": 18814,
+      "cached_input": 11648,
+      "uncached_input": 7166,
+      "output": 22,
+      "total": 18836,
+      "status": "known final"
+    },
+    {
+      "account": "four completed workers",
+      "scope": "task execution",
+      "input": 455151,
+      "cached_input": 359296,
+      "uncached_input": 95855,
+      "output": 16850,
+      "total": 472001,
+      "status": "known final"
+    },
+    {
+      "account": "old CLI model rejection",
+      "scope": "unknown/incomplete",
+      "status": "usage unavailable; not zero"
+    },
+    {
+      "account": "r04 transport timeout",
+      "scope": "unknown/incomplete",
+      "status": "usage unavailable; not zero"
+    },
+    {
+      "account": "after main snapshot cutoff",
+      "scope": "unknown/incomplete",
+      "status": "usage unavailable; not zero"
+    }
+  ]
+}
