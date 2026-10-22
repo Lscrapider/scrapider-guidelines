@@ -20,9 +20,13 @@ This reference does not replace `spring-boot-backend.md` and does not redefine J
 layering, data-access, API, configuration, or security rules. For every applicable multi-module
 backend task:
 
-1. Load `spring-boot-backend.md` to determine the file's responsibility and implementation rules.
-2. Load this reference to place that responsibility in the correct Maven module.
-3. Apply both references throughout implementation and review.
+1. Load `spring-boot-backend.md` for the baseline rules and scenario routing.
+2. Load [Spring Boot Architecture](spring-boot-architecture.md) to determine package responsibility
+   when choosing the Maven module for a file.
+3. Load this reference to place that responsibility in the correct Maven module.
+4. Load other scenario references only when the actual affected behavior or call path meets their
+   triggers in `spring-boot-backend.md`.
+5. Apply the applicable references throughout implementation and review.
 
 A layered or hybrid multi-module project distributes responsibilities from the single-module
 backend reference across Maven modules. Module boundaries change physical placement, not the
@@ -66,14 +70,16 @@ package names, or topology into another repository as defaults.
 
 ## Map Single-Module Responsibilities to Modules
 
-Use the package map in `spring-boot-backend.md` as the responsibility baseline. For each file:
+Use the package map in [Spring Boot Architecture](spring-boot-architecture.md) as the responsibility
+baseline. For each file:
 
 1. Classify its responsibility, such as application assembly, business entry, business workflow,
    data model, persistence, external integration, or messaging.
 2. Identify the module that already owns that responsibility or business domain.
 3. Confirm that placing the file there follows the established dependency direction.
 4. Check equivalent files in that module for package and naming conventions.
-5. Apply all implementation rules from `spring-boot-backend.md`.
+5. Apply the core rules from `spring-boot-backend.md` and load any scenario references that apply to
+   the file's behavior and call paths.
 
 Do not place a file in the executable module merely because that module packages the final JAR,
 scans the component, or can access every dependency.
@@ -148,8 +154,9 @@ A dedicated persistence module normally owns the repository's established databa
 such as Mapper, Manage, Repository, custom SQL resources, and persistence dependencies.
 
 Do not put business workflow, Controller code, authentication decisions, response assembly, or
-message consumption in a persistence module. Apply the Manage and Mapper rules from
-`spring-boot-backend.md`; this reference only determines their module placement.
+message consumption in a persistence module. When persistence access is affected, apply the Manage
+and Mapper rules from [Spring Boot Data Access](spring-boot-data-access.md); this reference only
+determines their module placement.
 
 ### Shared or Foundation Modules
 
@@ -178,7 +185,7 @@ modules and alternatives before changing the architecture.
 
 Use this table only after confirming the repository has corresponding module roles.
 
-| Responsibility from `spring-boot-backend.md` | Typical module owner | Common placement error |
+| Responsibility from `spring-boot-architecture.md` | Typical module owner | Common placement error |
 | --- | --- | --- |
 | Application class, profile loading, top-level assembly | Application/bootstrap module | Treating bootstrap as the owner of every Spring Bean |
 | Domain Controller, Service, ServiceImpl | Matching business-domain module | Putting a business Controller in bootstrap |
@@ -254,7 +261,9 @@ ownership choices remain unresolved by the request and repository evidence.
 
 Before creating, moving, or reviewing a file in a multi-module Spring Boot project, verify:
 
-- [ ] `spring-boot-backend.md` is loaded for implementation and layering rules.
+- [ ] `spring-boot-backend.md` is loaded for baseline and routing rules, and
+      `spring-boot-architecture.md` for package responsibility and module placement.
+- [ ] Other scenario references are loaded when their behavior or call-path triggers apply.
 - [ ] Relevant parent, aggregator, and child POMs have been inspected.
 - [ ] The file's single-module package responsibility is clear.
 - [ ] The target module already owns that responsibility or business domain.

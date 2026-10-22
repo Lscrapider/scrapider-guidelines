@@ -63,7 +63,13 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
 | 项目说明与可选能力组合 | [AGENTS.md Authoring](references/project/agents-md-authoring.md)，仅在编写请求中加载；选型时再读取 [Capability Recommendations](references/project/capability-recommendations.md)。 |
 | 技术栈专用职责 | 按需加载 Java、Python、Android 或本地部署参考。 |
 
-比如，Spring Boot 任务加载通用设计规则和后端规范；Maven 多模块任务再加载模块归属规范。参考中的示例不要求项目补齐不需要的分层。
+比如，Spring Boot 任务加载通用设计规则和后端基础规范，再按实际涉及的架构、HTTP／领域对象、
+数据访问、消息队列场景追加参考；Maven 多模块任务另读模块归属规范。Python 任务先读基础规范，
+新建、移动或重组代码时再读包结构规则和示例。混合任务加载所有适用分支，也包括经调用方受到影响的
+行为；范围扩大时重新检查路由，实现和审查采用相同规则。参考中的示例不要求项目补齐不需要的分层。
+
+通用设计规则区分用户指出的位置与问题的实际归属：有证据关联时检查其他路径，在授权范围内完整修复
+共同原因，同时保留场景特有的行为；先确定修复范围，再决定是否引入抽象。
 
 规范一致性审查遵循 [`references/shared/standards-review.md`](references/shared/standards-review.md)，由该文档定义何时委派只读的 `scrapider-standards-reviewer` Agent，何时直接审查。
 
