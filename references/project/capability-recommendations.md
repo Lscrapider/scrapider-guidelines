@@ -184,10 +184,9 @@ project does not yet contain. Scope it narrowly when writing its capability entr
   current stable version and its compatibility with the project's framework line), or when a
   version-sensitive API fact remains unanswered by repository precedent and by local dependency-jar
   verification together.
-- Do not trigger for day-to-day implementation the repository already demonstrates. Local
-  dependency jars verify API signatures but reflect only cached, possibly outdated versions, so
-  version selection and compatibility come from the docs service, while signature checks can stay
-  local.
+- Do not trigger for day-to-day implementation the repository already demonstrates. Use local
+  dependency jars for signature checks only; take version selection and compatibility conclusions
+  from the docs service.
 - After resolving, verify the library identity against its Maven/npm coordinates — same-name
   libraries exist on docs services.
 - On conflict, the project's declared version (`pom.xml` / `package.json` / lockfile) wins over any
@@ -201,25 +200,28 @@ not retrieval: **retrieval questions stay on the selected retrieval profile, and
 edits stay with native tools.**
 
 - **Semantic rename**: run it through the IDE when the symbol is not unique or reflection strings may
-  reference it; a manual rename plus a text-search sweep remains cheaper for unique symbols.
+  reference it; for unique symbols, rename manually and sweep references with a text search.
 - **Per-file quick diagnostics**: a seconds-level regression check after editing one file; it does not
   replace model review for design or security findings.
-- **Incremental single-file build**: sub-second feedback after an edit, versus a full CLI build.
+- **Incremental single-file build**: immediate compile verification for a single file after an edit.
 - **Third-party symbol facts**: the IDE resolves the exact artifact version and declaration the
   classpath actually uses — an arbiter when versions are ambiguous.
-- **Custom inspection scripts**: mechanical coding standards (layering bans, required javadoc, import
-  rules) can be captured as reusable IDE inspection scripts for whole-project scans, leaving semantic
-  judgments to the standards review.
+- **Custom inspection scripts**: mechanical coding standards (layering bans, import rules,
+  dependency directions) ship as a ready-made `.inspection.kts` rule library in scrapider-guidelines
+  `scripts/inspections/` when that skill is the coding layer. Division: scripted rules run against
+  changed files through `run_inspection_kts` (or the IDE editor and Qodana once the scripts are
+  installed into the project's `.idea/inspections/`), and their findings settle those rules;
+  semantic judgments stay with the standards review. Fallback: when the IDE channel is not enabled
+  for the project, review those points by hand and say so in the review report.
 
 - **Reformat after writing**: one call normalizes generic layout (indentation, spacing, braces,
   annotation line breaks). Without a project code-style config it falls back to IDE defaults, so
   project-specific conventions (comment templates, import grouping) still follow existing files.
-  Treat it as a best-effort finishing step — it can time out on a busy IDE backend. File creation
+  Treat it as a best-effort finishing step: on failure, drop it and finish natively. File creation
   and edits otherwise stay with native tools.
 
-Retrieval questions stay on the selected retrieval profile; this surface measured quality parity with
-graph-plus-native retrieval at higher token and call counts. Large-file slicing through this surface
-is unreliable on a busy backend; do not route work around it.
+Retrieval questions stay on the selected retrieval profile. Do not use this surface for large-file
+slicing; it is unreliable.
 
 ### Alternatives for a Specific Unmet Need
 
@@ -250,8 +252,8 @@ better deployment tiers.
 | Structural retrieval + one semantic search service | The task is described conceptually and identifiers or structural queries do not locate the implementation. A service such as `@teknologika/mcp-codebase-search` can supply candidate code chunks. | Confirm package identity, language coverage, index freshness, and host support. Verify candidate matches against current code and follow relationships as needed. Reuse existing semantic search rather than adding duplicate indexes. |
 | Chosen retrieval recipe + an AST symbol extractor | A supported language needs symbol-level source extraction that the existing tools do not provide. `syphon1c/code-scale-mcp` is a candidate to evaluate. | AST extraction and vector search serve different purposes. Do not assume a similarly named npm package is the same project. Prefer existing symbol tools or bounded native reads when they already suffice. |
 | Selected MCP services behind a schema gateway | The host loads many tool definitions and does not already provide adequate deferred tool discovery. MCP Slim (`dopatools/mcp-slim`) is one candidate. | Confirm the gateway's actual discovery and proxy support. With a proxy design, the host uses the gateway and it manages downstream connections; listing every server beside it does not establish proxying. Use the host's normal MCP connections when a gateway adds no benefit. |
-| Chosen retrieval profile + an external library docs service (such as context7) | **Trigger only when** adopting a new dependency or a recently forked/renamed library, or facing a version-sensitive API fact with no local evidence: confirm the current stable version and its compatibility with the project's framework line (for example, which starter adapter matches the Spring Boot version). | Do not query for implementation the repository already demonstrates. Local dependency jars can verify API signatures but reflect only cached, possibly outdated versions. Verify the resolved library identity against its coordinates — same-name libraries exist on docs services. Language-level pitfalls (checked exceptions and the like) still need compile verification, not docs. |
-| Chosen retrieval profile + an IDE tool surface (such as a JetBrains IDE built-in MCP) | IDE-exclusive operations on the IDE-open project inside the edit loop: semantic rename, per-file quick diagnostics, incremental single-file build, debugger sessions, third-party symbol facts, and mechanical coding standards captured as reusable inspection scripts. | Do not add this layer for retrieval questions: measured quality parity with graph-plus-native retrieval at higher token and call counts. File creation and edits stay with native tools; a post-write reformat is a best-effort finishing step. Large-file slicing is unreliable on a busy backend. Calls must explicitly target the IDE-open project, and renames or builds apply only there. Deep design or security findings still need model review, not IDE inspections. |
+| Chosen retrieval profile + an external library docs service (such as context7) | **Trigger only when** adopting a new dependency or a recently forked/renamed library, or facing a version-sensitive API fact with no local evidence: confirm the current stable version and its compatibility with the project's framework line (for example, which starter adapter matches the Spring Boot version). | Do not query for implementation the repository already demonstrates. Use local dependency jars for signature checks, not for version selection. Verify the resolved library identity against its coordinates — same-name libraries exist on docs services. Language-level pitfalls (checked exceptions and the like) still need compile verification, not docs. |
+| Chosen retrieval profile + an IDE tool surface (such as a JetBrains IDE built-in MCP) | IDE-exclusive operations on the IDE-open project inside the edit loop: semantic rename, per-file quick diagnostics, incremental single-file build, debugger sessions, third-party symbol facts, and mechanical coding standards captured as reusable inspection scripts. | Do not add this layer for retrieval questions. File creation and edits stay with native tools; a post-write reformat is a best-effort finishing step. Do not use large-file slicing through this surface. Calls must explicitly target the IDE-open project, and renames or builds apply only there. Deep design or security findings still need model review, not IDE inspections. |
 
 An integrated context engine may already combine outlines, symbols, graphs, and semantic retrieval.
 Confirm the exact implementation and overlapping responsibilities before replacing or stacking services.
