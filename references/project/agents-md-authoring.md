@@ -107,8 +107,10 @@ these roles as fixed labeled fields in the entry — **trigger** (opened by a qu
 when"), **division** (the boundary with neighboring capabilities and what routes where), **skip**
 (explicit exclusions with their replacement), and **fallback** (behavior when unavailable or in
 conflict) — in that order, so semantic roles survive rewrites; omit a field only when it has no real
-content, such as division when no neighboring capability overlaps. When rebuilding, convert existing
-capability prose to these labeled fields without changing its meaning. Place the
+content, such as division when no neighboring capability overlaps. Write the labels in the document's
+language and keep one label set across the whole file. A trigger states a decidable condition, not a
+need description, and parameter semantics or usage tutorials stay out of the fields. When rebuilding,
+convert existing capability prose to these labeled fields without changing its meaning. Place the
 combination alongside other entries in the existing capability list or table, without giving it a
 separate section or subsection. In a list, keep the parent item to the combination's name and purpose;
 put distinct tool responsibilities and shared handoff or fallback rules in short nested items. In a
