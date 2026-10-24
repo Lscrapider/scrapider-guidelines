@@ -102,7 +102,13 @@ only selected capabilities in the document, including deliberately selected opti
 Unselected candidates and setup advice belong in the conversation.
 
 Describe cooperating MCPs, skills, plugins, and native tools as one grouped capability entry. State the
-trigger, each tool's role, when enough evidence has been obtained, and a useful fallback. Place the
+trigger, each tool's role, when enough evidence has been obtained, and a useful fallback. Express
+these roles as fixed labeled fields in the entry — **trigger** (opened by a qualifier such as "only
+when"), **division** (the boundary with neighboring capabilities and what routes where), **skip**
+(explicit exclusions with their replacement), and **fallback** (behavior when unavailable or in
+conflict) — in that order, so semantic roles survive rewrites; omit a field only when it has no real
+content, such as division when no neighboring capability overlaps. When rebuilding, convert existing
+capability prose to these labeled fields without changing its meaning. Place the
 combination alongside other entries in the existing capability list or table, without giving it a
 separate section or subsection. In a list, keep the parent item to the combination's name and purpose;
 put distinct tool responsibilities and shared handoff or fallback rules in short nested items. In a
