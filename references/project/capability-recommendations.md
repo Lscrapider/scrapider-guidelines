@@ -107,7 +107,10 @@ roles as fixed labeled fields — **trigger** (opened by a qualifier such as "on
 (the boundary with neighboring capabilities and what routes where), **skip** (explicit exclusions
 with their replacement), and **fallback** (behavior when unavailable or in conflict) — in that order;
 omit a field only when it has no real content, such as division when no neighboring capability
-overlaps. When rebuilding an existing entry, convert its prose to these labeled fields without
+overlaps. Write the labels in the document's language and keep one label set across the whole file.
+Field content carries the same limits as the entry itself: a trigger states a decidable condition,
+not a need description, and parameter semantics or usage tutorials stay out of the fields. When
+rebuilding an existing entry, convert its prose to these labeled fields without
 changing the meaning. Give distinct responsibilities readable subitems or table line breaks. Keep
 native retrieval explicit even in an enhanced profile. Omit unselected tools, parameter tutorials,
 benchmark results, and fixed savings claims.
