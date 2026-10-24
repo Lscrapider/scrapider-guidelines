@@ -57,5 +57,5 @@ v3 证据：
 | 修订点 | 证据 |
 | --- | --- |
 | Serena 降级为"默认不启用" | 用户实测反馈（内存极重，不想再用）；部署成本不对称（用户论证）：Context7 在远程服务端零本机消耗、JetBrains 与 IDEA 共享进程为沉没成本、Serena 为纯新增常驻消耗 |
-| JetBrains 行扩为"四件套 + 规则库" | 四件套证据见 R3（rename J2、诊断 J10、增量编译探针）；inspection.kts 为用户决策直接采用（不走 AB，另上下文落地规范规则库）；reformat_file 未验证且有 30s 超时风险（R4-C5 附带发现），不写入推荐 |
+| JetBrains 行扩为"四件套 + 规则库" | 四件套证据见 R3（rename J2、诊断 J10、增量编译探针）；inspection.kts 为用户决策直接采用（不走 AB，另上下文落地规范规则库）；reformat_file 经 R4 后探针验证有效（乱格式一键规整；无项目 codeStyle 配置按 IDEA 默认，项目惯例仍看先例；忙时可能超时）——定位"写后尽力而为的收尾步骤"，已写入 skill 与最终稿 |
 | 写文件工具（create_new_file/replace_text_in_text） | 同构性间接证据（R4-C5 污染残留恰为 jetbrains 写入产物且风格对齐），无需在 AGENTS.md 单列——与原生写文件等价 |
