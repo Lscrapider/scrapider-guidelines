@@ -48,3 +48,6 @@ r4c5-a,R4-C5-write-param,C5-A,subagent,664366,19,332700,0,0,3,"codegraph×3 Skil
 r4c5-b,R4-C5-write-param,C5-B,subagent,900844,23,405469,0,16,0,"jetbrains×16 + Bash×7; 数据无效:armJ2残留前次被取消运行的成品(=jetbrains写入产物),本臂仅逐项核对未写入",,,实验污染如实记录; 附带发现①reformat_file×2与execute_terminal_command×1均30s超时(IDE后端繁忙时不可用); ②残留文件风格与BatchListParam完全同构=create_new_file/replace_text_in_text写入同构性的间接证据(写入成功且风格对齐)
 r5-001,agents-md-init-acceptance,R5-verify,subagent,429452,9,449790,0,0,0,"按skill authoring工作流生成能力段草稿; 读agents-md-authoring+capability-recommendations+真实AGENTS.md",,,验收:工作流质量高但口径转述失真(Context7双口径被泛化/四件套丢2项)+inspection.kts决策断链→两项均已回写skill优化; 另2次复验臂被用户取消(inspection不急)
 pf-010,reformat-probe,R5-verify,main,,,,,,,"乱格式类一次reformat秒级规整(注解分行/缩进/空格/大括号);项目无codeStyle配置按IDEA默认;超时为IDE忙偶发",,,推翻R4'未验证不推荐'结论;定位=写后尽力而为收尾步骤
+r6-001,agentsmd-test-polluted,R6-acceptance,subagent,,,,,,,"6臂(create-1/2,rebuild-1/2,2次取消)验收作废",,,污染三源:①臂prompt含字段名提示(把答案写进考题)②臂可读.research/(含DRAFT定稿,用户发现)③安装版skill(~/.codex symlink)未同步今晚修改——臂读到旧版
+r6-002,fm-create-clean,R6-acceptance,subagent,1080534,23,665421,0,0,0,"干净环境:skill已同步新版+prompt无字段提示+禁.research; 项目=financial-management-ai",,,,全验收点通过:四字段无提示执行+Context7双触发+写文件原生+IDEA未打开兜底; 结构段全部项目证据(file:line)
+r6-003,fm-rebuild-clean,R6-acceptance,subagent,347715,7,366285,0,0,0,"干净环境同上; 只转工具条目skill条目原样保留",,,,全验收点通过; 依据引用精确到小节名; 字段名按目标文档语言中文化(合理); 交叉引用codegraph_*→Codegraph对齐

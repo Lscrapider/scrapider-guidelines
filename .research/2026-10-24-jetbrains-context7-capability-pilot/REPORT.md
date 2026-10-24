@@ -241,6 +241,24 @@ Status: 试点完成（2026-10-24 执行会话）：第 0 步预检通过（主�
 1. **AGENTS.md 初始化验收**（子 agent 按 skill authoring 工作流为 ai-data-governance 生成能力段草稿，429K/9 次/450s）：工作流执行质量高（diff 只改能力段、无关段落逐字保留、未写安装状态）；但暴露两点——①**口径转述失真规律**：skill 参考里写了的双口径，子 agent 精简改写时泛化成宽口径（Context7"API 用法/官方示例时用"），四件套丢了两项——结论"关键口径须以 Trigger only 限定语显式写死"，已按此优化 skill 表行；②**inspection.kts 决策断链**（用户必用决策未回写 skill，子 agent 无从推出），已回写 IDE 表行与新增小节。最终草稿按调研定稿修正（Codegraph 恢复先查、四件套补全、写文件默认原生）并整体精简 1/3（只删机制解释与重复，语义零缺失），存于 `.scratch-20261024/agents-md-draft/AGENTS.draft.md`（待用户确认合入真实仓库）。
 2. **reformat_file 探针验证（推翻 R4 旧结论）**：语法对但格式乱的类，一次调用秒级规整（注解分行/缩进统一/运算符空格/大括号规范）——**功能真实有效**，R4 的 30s 超时确认为 IDE 忙时偶发。边界两条：项目无 .editorconfig/codeStyles，按 IDEA 默认风格（项目特有惯例如空行数量/javadoc 措辞/import 分组仍需以先例为准）；忙时可能超时。**最终定位：写后尽力而为的收尾步骤**（省掉"排版级"逐行对齐，"结构级"风格仍看先例）——已同步 skill 表行/小节与最终草稿。
 
+## R6 AGENTS.md 引导验收（四字段标准 + 干净重测，2026-10-24）
+
+### 方法论事故与修复（用户发现的污染漏洞）
+
+首轮验收（6 臂）**全部作废**，三个污染源：① 测试臂 prompt 内含字段名提示（把"四字段"答案写进考题）；② 臂工作目录在 scrapider-guidelines 仓库内，可读到 `.research/`（含 DRAFT 定稿）；③ **安装版 skill（~/.zcode/skills → ~/.codex/skills symlink）与 git 仓库不同步**——臂实际读到的 references 停留在旧版，当晚加入的四字段标准/context7 小节根本不存在于臂的视野。修复：同步 skill 至安装位置（与 git 版一致）+ 干净 prompt（无提示、禁 .research 与旧草稿）+ 换项目（financial-management-ai，四栈混合）测泛化。
+
+### 干净重测结论（fm-create / fm-rebuild 双臂全过）
+
+- **四字段排版标准**（authoring 的 labeled fields 规则）：无提示下双臂全执行；rebuild 臂只转换工具/MCP 条目、skill 条目原样保留（正确的最小改动）
+- **Context7 双触发**：具名小节 `External library docs service (context7)` 根治对号入座——此前四连泛化失真，干净重测双臂全部推出"仅新依赖/fork 改名/本地证据穷尽"限定
+- **IDE 边界全家桶**：检索不走 IDE、文件创建与修改用原生（此前两轮丢失项）、reformat 尽力而为、模型评审不替代——小节 scope 句加粗后全部被搬运
+- **IDEA 未打开场景兜底**：双臂覆盖（CLI 构建回退）
+- 跨项目泛化通过；结构段全部来自项目证据（含排除 README 中已过期命令的实测判断）
+
+### skill 最终增量（本轮全部落地）
+
+agents-md-authoring.md 与 capability-recommendations.md 同步写入**能力条目四字段标准**（trigger/division/skip/fallback 固定标签与顺序、无实际内容可省略、rebuild 时散文转换不改语义）；新增 context7 具名小节；IDE 小节 scope 句加粗。配套测试文档 8 份存于 `.scratch-20261024/agents-md-draft/`（6 份污染作废留档对照 + fm 两份干净通过 + 手写定稿 AGENTS.draft.md）。
+
 ---
 
 # 第四轮收尾（ROUND4：功能覆盖决策 + 用户实测反馈，2026-10-24）

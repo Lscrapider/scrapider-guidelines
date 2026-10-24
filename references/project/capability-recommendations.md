@@ -102,9 +102,15 @@ not override it. Do not impose that host-specific requirement on implementations
 selection does not authorize indexing, installation, semantic edits, or configuration changes.
 
 When writing the selected profile into `AGENTS.md`, retain a short grouped entry with each included
-tool's trigger and responsibility, when to skip it, and the shared handoff or fallback. Give distinct
-responsibilities readable subitems or table line breaks. Keep native retrieval explicit even in an
-enhanced profile. Omit unselected tools, parameter tutorials, benchmark results, and fixed savings claims.
+tool's trigger and responsibility, when to skip it, and the shared handoff or fallback. Express these
+roles as fixed labeled fields — **trigger** (opened by a qualifier such as "only when"), **division**
+(the boundary with neighboring capabilities and what routes where), **skip** (explicit exclusions
+with their replacement), and **fallback** (behavior when unavailable or in conflict) — in that order;
+omit a field only when it has no real content, such as division when no neighboring capability
+overlaps. When rebuilding an existing entry, convert its prose to these labeled fields without
+changing the meaning. Give distinct responsibilities readable subitems or table line breaks. Keep
+native retrieval explicit even in an enhanced profile. Omit unselected tools, parameter tutorials,
+benchmark results, and fixed savings claims.
 
 ### Retrieve Enough Evidence with Fewer Repeated Calls
 
@@ -166,11 +172,30 @@ body directly. Use references only for a remaining relationship question. `relat
 search; `max_matches` is a refinement threshold, not pagination. An empty or oversized result calls for
 checking the path or symbol pattern, not repeated broad queries. Follow the installed schema's limits.
 
+### External library docs service (context7)
+
+A docs service such as context7 answers questions a repository cannot: facts about libraries the
+project does not yet contain. Scope it narrowly when writing its capability entry:
+
+- **Trigger only** when adopting a new dependency or a recently forked/renamed library (confirm the
+  current stable version and its compatibility with the project's framework line), or when a
+  version-sensitive API fact remains unanswered by repository precedent and by local dependency-jar
+  verification together.
+- Do not trigger for day-to-day implementation the repository already demonstrates. Local
+  dependency jars verify API signatures but reflect only cached, possibly outdated versions, so
+  version selection and compatibility come from the docs service, while signature checks can stay
+  local.
+- After resolving, verify the library identity against its Maven/npm coordinates — same-name
+  libraries exist on docs services.
+- On conflict, the project's declared version (`pom.xml` / `package.json` / lockfile) wins over any
+  doc snippet. Language-level pitfalls still need compile verification, not docs.
+
 ### IDE tool surface on an open project
 
 A built-in IDE MCP surface (such as a JetBrains IDE server) applies only to the project the IDE has
 open, and every call must explicitly target that project. Within that scope it serves the edit loop,
-not retrieval:
+not retrieval: **retrieval questions stay on the selected retrieval profile, and file creation and
+edits stay with native tools.**
 
 - **Semantic rename**: run it through the IDE when the symbol is not unique or reflection strings may
   reference it; a manual rename plus a text-search sweep remains cheaper for unique symbols.
