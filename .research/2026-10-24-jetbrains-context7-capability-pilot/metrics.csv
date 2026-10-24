@@ -46,3 +46,5 @@ pf-008,build-incremental-probe,preflight,main,,,,,,,"build_project单文件增�
 pf-009,idea-armJ2-open,preflight,main,,,,,,,"get_project_modules(armJ2)返回19模块——冻结副本已入IDEA,写操作场景解锁",,,用户操作确认
 r4c5-a,R4-C5-write-param,C5-A,subagent,664366,19,332700,0,0,3,"codegraph×3 Skill×1 Read×7 Write×1 Edit×4 Bash×3; 编译1次过",5,TRUE,"agent_e7189379; 5/5(编译/文件头模板/注解风格/字段注释/import组织); param放foundation-entity对齐仓库主先例; @Author署名按当前用户(合理假设如实披露)"
 r4c5-b,R4-C5-write-param,C5-B,subagent,900844,23,405469,0,16,0,"jetbrains×16 + Bash×7; 数据无效:armJ2残留前次被取消运行的成品(=jetbrains写入产物),本臂仅逐项核对未写入",,,实验污染如实记录; 附带发现①reformat_file×2与execute_terminal_command×1均30s超时(IDE后端繁忙时不可用); ②残留文件风格与BatchListParam完全同构=create_new_file/replace_text_in_text写入同构性的间接证据(写入成功且风格对齐)
+r5-001,agents-md-init-acceptance,R5-verify,subagent,429452,9,449790,0,0,0,"按skill authoring工作流生成能力段草稿; 读agents-md-authoring+capability-recommendations+真实AGENTS.md",,,验收:工作流质量高但口径转述失真(Context7双口径被泛化/四件套丢2项)+inspection.kts决策断链→两项均已回写skill优化; 另2次复验臂被用户取消(inspection不急)
+pf-010,reformat-probe,R5-verify,main,,,,,,,"乱格式类一次reformat秒级规整(注解分行/缩进/空格/大括号);项目无codeStyle配置按IDEA默认;超时为IDE忙偶发",,,推翻R4'未验证不推荐'结论;定位=写后尽力而为收尾步骤
