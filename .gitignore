@@ -3,3 +3,4 @@
 *.log
 references/shared/full-stack-docker-compose-ci-deployment.md
 /.serena/
+/AGENTS.md
