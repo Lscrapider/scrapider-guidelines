@@ -1,7 +1,7 @@
 {
   "name": "scrapider-guidelines",
   "description": "Scrapider engineering guidelines for implementation, refactoring, debugging, reviews, and project AGENTS.md authoring.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": {
     "name": "Lscrapider"
   },

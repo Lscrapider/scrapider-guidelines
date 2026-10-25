@@ -153,7 +153,7 @@ Load every scenario reference whose trigger matches the behavior or call paths a
 
 | Reference | Load when the task or affected code path involves |
 | --- | --- |
-| [Spring Boot Multi-Module](spring-boot-multi-module.md) | A Maven multi-module backend, parent/aggregator POMs, module ownership or dependencies, module splitting, or Spring configuration placement. Load before choosing a target module or file location. |
+| [Spring Boot Multi-Module](spring-boot-multi-module.md) | Changing module ownership or dependencies, splitting modules, placing new or moved code across modules, or changing Spring configuration placement. Not needed merely because the repository is multi-module or because a task edits within an already-placed module. |
 | [Spring Boot Architecture](spring-boot-architecture.md) | Adding or moving a Java file, choosing its package or responsibility, or changing an existing role or responsibility. This includes changes to `handler` or `provider` behavior/responsibility and third-party `api` client behavior/responsibility. |
 | [Spring Boot HTTP and Domain](spring-boot-http-and-domain.md) | HTTP/controller boundaries; data contracts for internal layer transfer or third-party responses, including choosing their representation; `Param`/`DTO`/`PO`/`VO`; and any bean/object conversion, including object-to-Map and Map-to-object conversion. This includes service return contracts across those boundaries. |
 | [Spring Boot Data Access](spring-boot-data-access.md) | Adding or changing database access, including query/ORM calls, persistence behavior, or conditions that affect persistence even when changed indirectly outside `manage` or `mapper`. |

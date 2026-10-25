@@ -8,7 +8,7 @@
     {
       "name": "scrapider-guidelines",
       "source": "./plugins/scrapider-guidelines",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "description": "Scrapider engineering guidelines: layered reference routing for Spring Boot, Python, and Android Kotlin, five collaboration role agents, and a JetBrains inspection.kts rule library.",
       "description_i18n": {
         "zh-CN": "Scrapider 工程规范：面向 Spring Boot、Python 与 Android Kotlin 的分层规则路由，五个协作角色 Agent，以及 JetBrains inspection.kts 规则脚本库。"

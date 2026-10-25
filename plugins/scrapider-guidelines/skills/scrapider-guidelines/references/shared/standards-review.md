@@ -33,6 +33,9 @@ separate review points. After fixes, re-check the fixed points without repeating
   or disallowed, review directly and state that it was performed by the primary agent.
 - Supply the repository path, exact scope or diff range, relevant request, known project instruction
   paths, and the exact skill root used for the task. Do not supply conclusions or expected findings.
+- When the JetBrains inspection channel is available for the scope, the primary agent may also
+  attach the repository-configured `BatchAllRules.inspection.kts` text with its switches already
+  set, so the reviewer can run it without a separate full read; this supplies tooling, not findings.
 - Use this document as the sole standards-review procedure and output contract. The reviewer returns
   the report to the primary agent, who evaluates it alongside other evidence.
 

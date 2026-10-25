@@ -26,6 +26,12 @@ contracts, and converter ownership — remain part of the standards review.
 - Use `BatchAllRules.inspection.kts` for multi-file reviews; use a per-rule script to isolate one
   rule on one file. In batch results, use `file:line` from each message and ignore structured
   location fields.
+- The inspection channel takes script source as its payload and has no run-by-reference, so the
+  full script text travels with every call and again with every additional batch. You do not need
+  to study the rule implementations to run them: this document's rule table plus the script's top
+  configuration block are everything a reviewer adjusts or interprets; treat the remaining script
+  body as an opaque payload. For a one- or two-file scope with a few suspect rules, prefer the
+  small per-rule scripts over transporting the batch script.
 - Single-file messages contain `[rule]`, plus `missing @x` for absence-type rules or a verdict
   token for file-level Python rules. Batch messages contain `[rule] file:line <code excerpt or
   missing-x>`.
