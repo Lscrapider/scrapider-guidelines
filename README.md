@@ -27,7 +27,7 @@ Engineering guidelines for coding agents working in Scrapider projects. This reu
 
 ## Usage
 
-Use your coding agent's skill installation and invocation mechanisms. The instructions and references target coding agents generally; discovery, invocation, and available capabilities depend on the host. These examples use Codex invocation syntax:
+Use your coding agent's skill installation and invocation mechanisms. The instructions and references target coding agents generally; discovery, invocation, and available capabilities depend on the host. This repository also works as a plugin marketplace: in ZCode or Claude Code, add `https://github.com/Lscrapider/scrapider-plugins` as a plugin marketplace and install the `scrapider-guidelines` plugin to get the skill together with its five role agents. These examples use Codex invocation syntax:
 
 ```text
 Use $scrapider-guidelines to implement this Spring Boot change.
@@ -51,17 +51,17 @@ AGENTS.md authoring writes only the requested instruction file. It preserves pro
 
 ## How reference routing works
 
-The main [SKILL.md](SKILL.md) defines the working principles, coding workflow, and loading rules. Detailed guidance is grouped by the decisions it governs:
+The main [SKILL.md](plugins/scrapider-guidelines/skills/scrapider-guidelines/SKILL.md) defines the working principles, coding workflow, and loading rules. Detailed guidance is grouped by the decisions it governs:
 
 | Category | Source |
 | --- | --- |
-| Change scope, business contracts, reuse, responsibilities, and refactoring | [Code Design and Changes](references/shared/code-design-and-changes.md), loaded for all code and build/runtime configuration work. |
-| Input guarantees, validation ownership, and exception handling | [Validation and Boundaries](references/shared/validation-and-boundaries.md), loaded when those decisions are in scope. |
-| Review applicability, dispatch, read-only procedure, and report | [Standards Review](references/shared/standards-review.md), loaded for explicit reviews or changes that may cross its review boundaries. |
-| Git authorization and commit message format | [Git Operations and Commits](references/shared/git-commits.md), loaded before any Git state mutation. |
-| Inspection script library | [Inspection Scripts](references/shared/inspection-scripts.md), loaded by the assigned standards reviewer when the JetBrains inspection channel is available; also loaded for explicit library maintenance, adaptation, or installation. |
-| Project instructions and optional capability combinations | [AGENTS.md Authoring](references/project/agents-md-authoring.md), the entry point for authoring requests; it routes to recommendations, selected examples, role definitions, and separately requested setup. |
-| Technology-specific responsibilities | Start with the applicable [Spring Boot](references/java/spring-boot-backend.md), [Python](references/python/python-code-organization.md), or [Android](references/android/android-kotlin-compose.md) baseline, then follow its matching scenario routes. |
+| Change scope, business contracts, reuse, responsibilities, and refactoring | [Code Design and Changes](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/shared/code-design-and-changes.md), loaded for all code and build/runtime configuration work. |
+| Input guarantees, validation ownership, and exception handling | [Validation and Boundaries](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/shared/validation-and-boundaries.md), loaded when those decisions are in scope. |
+| Review applicability, dispatch, read-only procedure, and report | [Standards Review](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/shared/standards-review.md), loaded for explicit reviews or changes that may cross its review boundaries. |
+| Git authorization and commit message format | [Git Operations and Commits](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/shared/git-commits.md), loaded before any Git state mutation. |
+| Inspection script library | [Inspection Scripts](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/shared/inspection-scripts.md), loaded by the assigned standards reviewer when the JetBrains inspection channel is available; also loaded for explicit library maintenance, adaptation, or installation. |
+| Project instructions and optional capability combinations | [AGENTS.md Authoring](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/project/agents-md-authoring.md), the entry point for authoring requests; it routes to recommendations, selected examples, role definitions, and separately requested setup. |
+| Technology-specific responsibilities | Start with the applicable [Spring Boot](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/java/spring-boot-backend.md), [Python](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/python/python-code-organization.md), or [Android](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/android/android-kotlin-compose.md) baseline, then follow its matching scenario routes. |
 
 Each entry point owns the triggers for its downstream references; loading it does not load every
 linked file. A Spring Boot task follows the backend baseline's routes for multi-module placement,
@@ -76,35 +76,40 @@ The shared code-design rules distinguish the reported location from the cause's 
 inspect related paths when evidence connects them, repair shared causes within the authorized scope,
 and keep scenario-specific behavior local. Determine that scope before introducing an abstraction.
 
-For a standards-conformance review, follow [`references/shared/standards-review.md`](references/shared/standards-review.md), which defines when to delegate to the read-only `scrapider-standards-reviewer` agent or review directly.
+For a standards-conformance review, follow [`references/shared/standards-review.md`](plugins/scrapider-guidelines/skills/scrapider-guidelines/references/shared/standards-review.md), which defines when to delegate to the read-only `scrapider-standards-reviewer` agent or review directly.
 
 ## Working principles and origin
 
-The [working principles](SKILL.md#working-principles) retain the emphasis on reasoning before coding, simplicity, focused changes, and verifiable outcomes. Their framing follows the community-maintained [Karpathy-inspired coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills), which derive from Andrej Karpathy's observations about coding agents.
+The [working principles](plugins/scrapider-guidelines/skills/scrapider-guidelines/SKILL.md#working-principles) retain the emphasis on reasoning before coding, simplicity, focused changes, and verifiable outcomes. Their framing follows the community-maintained [Karpathy-inspired coding guidelines](https://github.com/multica-ai/andrej-karpathy-skills), which derive from Andrej Karpathy's observations about coding agents.
 
-The [coding workflow](SKILL.md#coding-workflow) applies these principles alongside the project's architecture, business contracts, validation boundaries, verification, and review requirements. Load detailed guidance for the actual task and maintain each rule in its relevant category.
+The [coding workflow](plugins/scrapider-guidelines/skills/scrapider-guidelines/SKILL.md#coding-workflow) applies these principles alongside the project's architecture, business contracts, validation boundaries, verification, and review requirements. Load detailed guidance for the actual task and maintain each rule in its relevant category.
 
 ## Repository layout
 
 ```text
 .
+├── .claude-plugin/
+│   └── marketplace.json          # marketplace catalog; this repository is the marketplace root
 ├── .research/
-├── SKILL.md
-├── agents/
-│   ├── openai.yaml
-│   ├── scrapider-code-reviewer.md
-│   ├── scrapider-developer.md
-│   ├── scrapider-explorer.md
-│   ├── scrapider-generalist.md
-│   └── scrapider-standards-reviewer.md
-├── references/
-│   ├── android/
-│   ├── java/
-│   ├── project/
-│   ├── python/
-│   └── shared/
-└── scripts/
-    └── inspections/
+└── plugins/
+    └── scrapider-guidelines/     # plugin root
+        ├── .claude-plugin/
+        │   └── plugin.json
+        ├── .zcode-plugin/
+        │   └── plugin.json
+        ├── agents/               # five collaboration role definitions
+        └── skills/
+            └── scrapider-guidelines/
+                ├── SKILL.md
+                ├── openai.yaml
+                ├── references/
+                │   ├── android/
+                │   ├── java/
+                │   ├── project/
+                │   ├── python/
+                │   └── shared/
+                └── scripts/
+                    └── inspections/
 ```
 
 ## Research and evaluation
@@ -118,8 +123,8 @@ benefits to an optional tool that workers did not invoke. Later archives record 
 recent features: the [inspection-script rule library](.research/2026-10-24-inspection-kts-rule-library/REPORT.md)
 behind the mechanical-check channel, the [JetBrains MCP and Context7 capability pilot](.research/2026-10-24-jetbrains-context7-capability-pilot/REPORT.md)
 behind the external library docs service and IDE tool surface recommendations.
-The `.research/` directory is for developers browsing this repository;
-omit it when installing the skill. It is not referenced by the skill's loading routes.
+The `.research/` directory is for developers browsing this repository; it stays out of the
+plugin payload, and the skill's loading routes do not reference it.
 
 ## Contributing
 

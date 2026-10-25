@@ -148,7 +148,7 @@ in the scenarios below.**
 
 Do not use this surface for large-file slicing.
 
-Scripted standards checks belong to [scrapider-standards-reviewer](../../agents/scrapider-standards-reviewer.md).
+Scripted standards checks belong to [scrapider-standards-reviewer](../../../../agents/scrapider-standards-reviewer.md).
 Its role definition loads the inspection library and handles coverage and candidate confirmation;
 do not turn that internal mechanism into a main-agent procedure in project `AGENTS.md`.
 

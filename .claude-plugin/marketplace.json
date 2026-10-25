@@ -1,0 +1,24 @@
+{
+  "name": "scrapider-plugins",
+  "description": "Scrapider plugin marketplace: engineering-guideline skills and collaboration role agents.",
+  "owner": {
+    "name": "Lscrapider"
+  },
+  "plugins": [
+    {
+      "name": "scrapider-guidelines",
+      "source": "./plugins/scrapider-guidelines",
+      "version": "0.1.0",
+      "description": "Scrapider engineering guidelines: layered reference routing for Spring Boot, Python, and Android Kotlin, five collaboration role agents, and a JetBrains inspection.kts rule library.",
+      "description_i18n": {
+        "zh-CN": "Scrapider 工程规范：面向 Spring Boot、Python 与 Android Kotlin 的分层规则路由，五个协作角色 Agent，以及 JetBrains inspection.kts 规则脚本库。"
+      },
+      "displayName": "Scrapider Guidelines",
+      "displayName_i18n": {
+        "zh-CN": "Scrapider 工程规范"
+      },
+      "category": "developer-tools",
+      "homepage": "https://github.com/Lscrapider/scrapider-plugins"
+    }
+  ]
+}

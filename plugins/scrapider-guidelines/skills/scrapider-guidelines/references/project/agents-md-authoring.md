@@ -255,11 +255,11 @@ acceptance does not make every other role a leaf agent.
 
 | Role | Responsibility |
 | --- | --- |
-| [scrapider-explorer](../../agents/scrapider-explorer.md) | Read-only investigation and concise evidence. |
-| [scrapider-developer](../../agents/scrapider-developer.md) | Implementation and verification. |
-| [scrapider-code-reviewer](../../agents/scrapider-code-reviewer.md) | Read-only functional correctness and regression review. |
-| [scrapider-standards-reviewer](../../agents/scrapider-standards-reviewer.md) | Read-only engineering standards review. |
-| [scrapider-generalist](../../agents/scrapider-generalist.md) | Work outside the specialist roles. |
+| [scrapider-explorer](../../../../agents/scrapider-explorer.md) | Read-only investigation and concise evidence. |
+| [scrapider-developer](../../../../agents/scrapider-developer.md) | Implementation and verification. |
+| [scrapider-code-reviewer](../../../../agents/scrapider-code-reviewer.md) | Read-only functional correctness and regression review. |
+| [scrapider-standards-reviewer](../../../../agents/scrapider-standards-reviewer.md) | Read-only engineering standards review. |
+| [scrapider-generalist](../../../../agents/scrapider-generalist.md) | Work outside the specialist roles. |
 
 The primary agent checks delegated results and owns integration and acceptance. Keep small tasks direct,
 parallelize useful independent work, and serialize dependencies or shared edits. Handoffs carry goals,
