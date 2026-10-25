@@ -115,12 +115,14 @@ plugin marketplace — and have no per-project initialization. Verify by listing
 available skills or by loading the skill once. Install Scrapider Guidelines itself at the user or
 project scope the host defines.
 
-The bundled [collaboration roles](agents-md-authoring.md#bundled-collaboration-roles) need their
-definitions supplied to the host as custom agents, preserving each file's `name` and `description`;
-their presence in this skill does not register them. Verify the host actually offers a role before
-a workflow depends on delegation; when it does not, keep the responsibilities with the primary
-agent per the authoring rules and leave the registration step with the author.
+The bundled [collaboration roles](agents-md-authoring.md#bundled-collaboration-roles) are registered
+automatically under the plugin's namespace only in hosts that support plugin-provided agents. When
+loaded as a plain skill, or when the host does not register plugin agents, supply their definitions
+through the host's custom-agent mechanism, preserving each file's `name` and `description`. Verify
+the host actually offers a role before a workflow depends on delegation; when it does not, keep the
+responsibilities with the primary agent per the authoring rules and leave the registration step
+with the author.
 
-Role definitions carry no tools: the tools available to a delegated role come from the host
-session. Set up the capabilities the project adopted with the sections above, then confirm the
-delegated run can call them.
+Role definitions may narrow their tool surface with a `tools` list; without one, the tools available
+to a delegated role come from the host session. Set up the capabilities the project adopted with the
+sections above, then confirm the delegated run can call them.

@@ -1,5 +1,9 @@
 # Scrapider Guidelines
 
+<p align="center">
+  <img src="plugins/scrapider-guidelines/assets/icon.png" width="128" height="128" alt="Scrapider Guidelines plugin icon" />
+</p>
+
 [简体中文](README_zh-CN.md) | English
 
 Engineering guidelines for coding agents working in Scrapider projects. This reusable Agent Skill helps agents understand requests, follow project architecture, preserve business contracts within the requested scope, and deliver verified changes with appropriate complexity.
@@ -27,7 +31,7 @@ Engineering guidelines for coding agents working in Scrapider projects. This reu
 
 ## Usage
 
-Use your coding agent's skill installation and invocation mechanisms. The instructions and references target coding agents generally; discovery, invocation, and available capabilities depend on the host. This repository also works as a plugin marketplace: in ZCode or Claude Code, add `https://github.com/Lscrapider/scrapider-plugins` as a plugin marketplace and install the `scrapider-guidelines` plugin to get the skill together with its five role agents. These examples use Codex invocation syntax:
+Use your coding agent's skill installation and invocation mechanisms. The instructions and references target coding agents generally; discovery, invocation, and available capabilities depend on the host. This repository also works as a plugin marketplace: in ZCode or Claude Code, add `https://github.com/Lscrapider/scrapider-plugins` as a plugin marketplace and install the `scrapider-guidelines` plugin to get the skill together with its five role agents. The optional `scrapider-capabilities` plugin registers the recommended MCP servers (Context7 docs lookup, Codegraph code intelligence) for hosts that do not already have them. These examples use Codex invocation syntax:
 
 ```text
 Use $scrapider-guidelines to implement this Spring Boot change.
@@ -46,6 +50,14 @@ Use $scrapider-guidelines to implement this Spring Boot endpoint and preserve th
 
 Use $scrapider-guidelines to create, update, or rebuild this project's AGENTS.md with suitable workflows and optional tool combinations.
 ```
+
+In Claude Code, run the explicit standards review command with its plugin namespace:
+
+```text
+/scrapider-guidelines:scrapider-review
+```
+
+Add a scope or paths after the command to narrow the review. Without arguments, it reviews the current working-tree changes.
 
 AGENTS.md authoring writes only the requested instruction file. It preserves project conventions and does not install tools or create configuration or separate agent-definition files.
 
@@ -92,24 +104,34 @@ The [coding workflow](plugins/scrapider-guidelines/skills/scrapider-guidelines/S
 │   └── marketplace.json          # marketplace catalog; this repository is the marketplace root
 ├── .research/
 └── plugins/
-    └── scrapider-guidelines/     # plugin root
+    ├── scrapider-guidelines/     # plugin root
+    │   ├── .claude-plugin/
+    │   │   └── plugin.json
+    │   ├── .zcode-plugin/
+    │   │   └── plugin.json
+    │   ├── assets/
+    │   │   └── icon.png
+    │   ├── commands/            # explicit standards-review command
+    │   │   └── scrapider-review.md
+    │   ├── agents/              # five collaboration role definitions
+    │   └── skills/
+    │       └── scrapider-guidelines/
+    │           ├── SKILL.md
+    │           ├── agents/
+    │           │   └── openai.yaml
+    │           ├── references/
+    │           │   ├── android/
+    │           │   ├── java/
+    │           │   ├── project/
+    │           │   ├── python/
+    │           │   └── shared/
+    │           └── scripts/
+    │               └── inspections/
+    └── scrapider-capabilities/   # optional MCP bundle: context7 + codegraph
         ├── .claude-plugin/
         │   └── plugin.json
-        ├── .zcode-plugin/
-        │   └── plugin.json
-        ├── agents/               # five collaboration role definitions
-        └── skills/
-            └── scrapider-guidelines/
-                ├── SKILL.md
-                ├── openai.yaml
-                ├── references/
-                │   ├── android/
-                │   ├── java/
-                │   ├── project/
-                │   ├── python/
-                │   └── shared/
-                └── scripts/
-                    └── inspections/
+        └── .zcode-plugin/
+            └── plugin.json
 ```
 
 ## Research and evaluation

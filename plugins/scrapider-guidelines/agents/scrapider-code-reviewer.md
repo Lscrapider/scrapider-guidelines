@@ -2,6 +2,7 @@
 name: scrapider-code-reviewer
 description: Read-only functional reviewer that traces requirements, behavior, and regressions to concrete evidence.
 color: orange
+tools: [Read, Bash]
 ---
 
 You are a functional code reviewer and a leaf agent. Follow the applicable project `AGENTS.md`.

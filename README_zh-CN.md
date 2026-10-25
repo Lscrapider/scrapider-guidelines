@@ -1,5 +1,9 @@
 # Scrapider Guidelines
 
+<p align="center">
+  <img src="plugins/scrapider-guidelines/assets/icon.png" width="128" height="128" alt="Scrapider 工程规范插件图标" />
+</p>
+
 [English](README.md) | 简体中文
 
 面向 Scrapider 项目编码代理的工程规范。本仓库以可复用的 Agent Skill 形式提供指导，帮助代理理解需求、遵循项目架构、在改动范围内维护业务契约，并以适当的复杂度完成可验证的改动。
@@ -27,7 +31,7 @@
 
 ## 使用方式
 
-通过所用 coding agent 的 Skill 安装与调用方式使用本仓库。指令正文和参考资料面向通用 coding agent；各宿主的发现、调用和可用能力以其实际支持为准。本仓库同时是一个插件市场：在 ZCode 或 Claude Code 中将 `https://github.com/Lscrapider/scrapider-plugins` 添加为插件市场并安装 `scrapider-guidelines` 插件，即可获得此 Skill 及五个协作角色 Agent。以下示例使用 Codex 的调用语法：
+通过所用 coding agent 的 Skill 安装与调用方式使用本仓库。指令正文和参考资料面向通用 coding agent；各宿主的发现、调用和可用能力以其实际支持为准。本仓库同时是一个插件市场：在 ZCode 或 Claude Code 中将 `https://github.com/Lscrapider/scrapider-plugins` 添加为插件市场并安装 `scrapider-guidelines` 插件，即可获得此 Skill 及五个协作角色 Agent；可选的 `scrapider-capabilities` 插件会注册推荐的 MCP 服务（Context7 文档查询、Codegraph 代码索引），宿主已有这些服务的请勿安装。以下示例使用 Codex 的调用语法：
 
 ```text
 Use $scrapider-guidelines to implement this Spring Boot change.
@@ -46,6 +50,14 @@ Use $scrapider-guidelines to implement this Spring Boot endpoint and preserve th
 
 Use $scrapider-guidelines to create, update, or rebuild this project's AGENTS.md with suitable workflows and optional tool combinations.
 ```
+
+在 Claude Code 中，使用带插件命名空间的命令显式发起规范审查：
+
+```text
+/scrapider-guidelines:scrapider-review
+```
+
+在命令后添加范围或路径可缩小审查范围；不带参数时审查当前工作区改动。
 
 AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不安装工具或创建配置、子 Agent 文件。
 
@@ -88,24 +100,34 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
 │   └── marketplace.json          # 市场目录，本仓库即市场根
 ├── .research/
 └── plugins/
-    └── scrapider-guidelines/     # 插件根
+    ├── scrapider-guidelines/     # 插件根
+    │   ├── .claude-plugin/
+    │   │   └── plugin.json
+    │   ├── .zcode-plugin/
+    │   │   └── plugin.json
+    │   ├── assets/
+    │   │   └── icon.png
+    │   ├── commands/            # 显式规范审查命令
+    │   │   └── scrapider-review.md
+    │   ├── agents/              # 五个协作角色定义
+    │   └── skills/
+    │       └── scrapider-guidelines/
+    │           ├── SKILL.md
+    │           ├── agents/
+    │           │   └── openai.yaml
+    │           ├── references/
+    │           │   ├── android/
+    │           │   ├── java/
+    │           │   ├── project/
+    │           │   ├── python/
+    │           │   └── shared/
+    │           └── scripts/
+    │               └── inspections/
+    └── scrapider-capabilities/   # 可选 MCP 组合：context7 + codegraph
         ├── .claude-plugin/
         │   └── plugin.json
-        ├── .zcode-plugin/
-        │   └── plugin.json
-        ├── agents/               # 五个协作角色定义
-        └── skills/
-            └── scrapider-guidelines/
-                ├── SKILL.md
-                ├── openai.yaml
-                ├── references/
-                │   ├── android/
-                │   ├── java/
-                │   ├── project/
-                │   ├── python/
-                │   └── shared/
-                └── scripts/
-                    └── inspections/
+        └── .zcode-plugin/
+            └── plugin.json
 ```
 
 ## 调研与评估

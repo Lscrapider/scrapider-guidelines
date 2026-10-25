@@ -1,0 +1,30 @@
+{
+  "name": "scrapider-capabilities",
+  "description": "Optional MCP capabilities recommended by Scrapider Guidelines: Context7 library docs lookup and Codegraph code intelligence. Do not install when these servers are already registered on the host; codegraph still requires per-project `codegraph init`.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Lscrapider"
+  },
+  "homepage": "https://github.com/Lscrapider/scrapider-plugins",
+  "repository": "https://github.com/Lscrapider/scrapider-plugins",
+  "license": "MIT",
+  "keywords": [
+    "mcp",
+    "context7",
+    "codegraph",
+    "documentation",
+    "code-intelligence"
+  ],
+  "mcpServers": {
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "codegraph": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@colbymchenry/codegraph", "serve", "--mcp"]
+    }
+  }
+}

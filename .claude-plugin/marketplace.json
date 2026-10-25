@@ -8,7 +8,7 @@
     {
       "name": "scrapider-guidelines",
       "source": "./plugins/scrapider-guidelines",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "description": "Scrapider engineering guidelines: layered reference routing for Spring Boot, Python, and Android Kotlin, five collaboration role agents, and a JetBrains inspection.kts rule library.",
       "description_i18n": {
         "zh-CN": "Scrapider 工程规范：面向 Spring Boot、Python 与 Android Kotlin 的分层规则路由，五个协作角色 Agent，以及 JetBrains inspection.kts 规则脚本库。"
@@ -18,6 +18,47 @@
         "zh-CN": "Scrapider 工程规范"
       },
       "category": "developer-tools",
+      "author": {
+        "name": "Lscrapider"
+      },
+      "icon": "https://raw.githubusercontent.com/Lscrapider/scrapider-plugins/main/plugins/scrapider-guidelines/assets/icon.png",
+      "keywords": [
+        "engineering-standards",
+        "code-review",
+        "spring-boot",
+        "python",
+        "android",
+        "kotlin",
+        "jetpack-compose",
+        "agents-md",
+        "inspection"
+      ],
+      "homepage": "https://github.com/Lscrapider/scrapider-plugins"
+    },
+    {
+      "name": "scrapider-capabilities",
+      "source": "./plugins/scrapider-capabilities",
+      "version": "0.1.0",
+      "description": "Optional MCP bundle recommended by Scrapider Guidelines: Context7 library docs lookup and Codegraph code intelligence. Do not install if these servers are already registered on the host.",
+      "description_i18n": {
+        "zh-CN": "Scrapider Guidelines 推荐的可选 MCP 组合：Context7 库文档查询与 Codegraph 代码索引。宿主已注册这些服务的请勿安装，避免重复注册。"
+      },
+      "displayName": "Scrapider Capabilities",
+      "displayName_i18n": {
+        "zh-CN": "Scrapider 能力包"
+      },
+      "category": "developer-tools",
+      "author": {
+        "name": "Lscrapider"
+      },
+      "icon": "https://raw.githubusercontent.com/Lscrapider/scrapider-plugins/main/plugins/scrapider-guidelines/assets/icon.png",
+      "keywords": [
+        "mcp",
+        "context7",
+        "codegraph",
+        "documentation",
+        "code-intelligence"
+      ],
       "homepage": "https://github.com/Lscrapider/scrapider-plugins"
     }
   ]

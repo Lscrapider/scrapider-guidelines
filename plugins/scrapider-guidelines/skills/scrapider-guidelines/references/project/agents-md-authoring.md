@@ -248,8 +248,10 @@ instructions without rerunning this authoring workflow.
 ## Bundled Collaboration Roles
 
 Prefer existing user roles. When collaboration choices are open, offer only the responsibilities the
-project needs from the following definitions; read definitions on demand. Their presence in this skill
-does not install or register agents, and selecting them does not mean running all roles on every task.
+project needs from the following definitions; read definitions on demand. In hosts that support
+plugin-provided agents, plugin installation registers these roles under the plugin's namespace.
+Loading the skill alone does not install or register agents. Selecting roles does not mean running
+all roles on every task.
 Apply a no-delegation rule only to roles whose definitions or project instructions impose it; primary-agent
 acceptance does not make every other role a leaf agent.
 
