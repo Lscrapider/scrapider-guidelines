@@ -1,0 +1,37 @@
+{
+  "name": "scrapider-guidelines",
+  "description": "Scrapider engineering guidelines for implementation, refactoring, debugging, reviews, and project AGENTS.md authoring.",
+  "version": "0.2.1",
+  "author": {
+    "name": "Lscrapider"
+  },
+  "homepage": "https://github.com/Lscrapider/scrapider-plugins",
+  "repository": "https://github.com/Lscrapider/scrapider-plugins",
+  "license": "MIT",
+  "keywords": [
+    "engineering-standards",
+    "spring-boot",
+    "android",
+    "code-review",
+    "agents",
+    "skills"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Scrapider Guidelines",
+    "shortDescription": "Engineering rules and reviews",
+    "longDescription": "Apply Scrapider engineering guidelines when implementing, refactoring, debugging, or reviewing Spring Boot, Python, and Android Kotlin projects. Includes standards-review guidance and project AGENTS.md authoring workflows. Optional IDE checks depend on the host's available tools.",
+    "developerName": "Lscrapider",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Lscrapider/scrapider-plugins",
+    "defaultPrompt": [
+      "Use Scrapider Guidelines to review the current changes."
+    ],
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
+  }
+}

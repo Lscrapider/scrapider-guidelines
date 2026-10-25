@@ -101,6 +101,8 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
 ├── .research/
 └── plugins/
     ├── scrapider-guidelines/     # 插件根
+    │   ├── .codex-plugin/
+    │   │   └── plugin.json
     │   ├── .claude-plugin/
     │   │   └── plugin.json
     │   ├── .zcode-plugin/

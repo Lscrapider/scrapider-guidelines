@@ -105,6 +105,8 @@ The [coding workflow](plugins/scrapider-guidelines/skills/scrapider-guidelines/S
 ├── .research/
 └── plugins/
     ├── scrapider-guidelines/     # plugin root
+    │   ├── .codex-plugin/
+    │   │   └── plugin.json
     │   ├── .claude-plugin/
     │   │   └── plugin.json
     │   ├── .zcode-plugin/
