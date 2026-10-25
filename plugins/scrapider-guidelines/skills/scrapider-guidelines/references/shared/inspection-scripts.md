@@ -57,7 +57,7 @@ contracts, and converter ownership — remain part of the standards review.
 | J14NoLocalExceptionHandler | No local `@ExceptionHandler` methods in controllers; `@ControllerAdvice` and `@RestControllerAdvice` classes are exempt | spring-boot-http-and-domain.md | ERROR | controller classes |
 | J15NoMapRequestBody | Controller `@RequestBody` parameters typed as `Map` or `JsonNode` | spring-boot-http-and-domain.md | WEAK_WARNING | controller classes |
 | J16PackageSuffixAlignment | Class names carry package-role suffixes; the `service` package applies the suffix to interfaces only | spring-boot-backend.md + spring-boot-architecture.md, Package Map | WARNING | classes in mapped packages |
-| J17ModuleDependencyDirection | Enforce module import directions and placement bans | spring-boot-multi-module.md | ERROR | main-source `.java` in a multi-module repository |
+| J17ModuleDependencyDirection | Enforce module import directions, placement bans, and tier order in the declared module dependency graph | spring-boot-multi-module.md | ERROR | main-source `.java` in a multi-module repository |
 | J18MybatisPlusConfigOnly | MyBatis-Plus plugin imports are limited to `.config` packages or `*Config` classes | spring-boot-architecture.md, config responsibility | ERROR | main-source `.java` |
 | J19NoSilentCatch | Empty catches and configured non-empty silent catches are flagged | this reference | WARNING | main-source `.java` |
 | PY1SnakeCaseModuleName | Python module filenames use ASCII `snake_case` | python-code-organization.md, Naming Rules | WARNING | any `.py` |
@@ -65,7 +65,10 @@ contracts, and converter ownership — remain part of the standards review.
 | PY3NoVagueModuleName | Vague module filenames such as `common`, `util`, `utils`, `helper`, `helpers`, and `misc` | python-code-organization.md, Naming Rules | WEAK_WARNING | any `.py` |
 
 Result boundaries: J1 checks fields and constructor parameters only. J13 checks `PO`-suffixed
-types in the declared return signature, not runtime objects hidden inside `Map` values.
+types in the declared return signature, not runtime objects hidden inside `Map` values. J17 reports
+one `[J17][SKIP]` notice per unresolved module and one dependency-graph finding per violating module
+pair per run; its import bans additionally require the tier token in the file's own package so the
+root package can be derived.
 
 ## Adapting to a Repository
 
@@ -73,5 +76,9 @@ types in the declared return signature, not runtime objects hidden inside `Map` 
   J1 and J17 also match `*Manage`).
 - `J11`: add utility classes to `EXPLICIT_UTILITY_CLASSES`.
 - `J16`: update the package-to-suffix map.
-- `J17`: update the `moduleOf` mappings and banned-import prefixes together to match the target
-  topology; unmatched packages remain unchecked.
+- `J17`: tiers resolve from `MODULE_MAP` package-prefix overrides, then module and package naming
+  tokens (`foundation`/`shared`/`common`/`core`, `entity`/`model`, `db`/`persistence`/`mapper`,
+  `business`/`biz`, `bootstrap`/`app`); `business`/`bootstrap` naming wins over later tokens while
+  `foundation-*` compounds take the most specific segment. Add `MODULE_MAP` entries only for
+  non-conventional naming; files whose tier stays unresolved emit a `[J17][SKIP]` notice instead of
+  silently passing.

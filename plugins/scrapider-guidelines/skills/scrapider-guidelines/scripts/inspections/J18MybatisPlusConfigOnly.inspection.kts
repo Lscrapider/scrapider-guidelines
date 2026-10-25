@@ -2,7 +2,7 @@ import com.intellij.psi.*
 
 /**
  * Rule J18: flag MyBatis-Plus plugin imports outside .config packages or files whose first
- * class name ends in Config.
+ * class name ends in Config. plugins.pagination.* are data holders, not plugins, and are exempt.
  */
 fun importFqn(st: PsiElement): String {
     var t = st.text.trim()
@@ -17,7 +17,9 @@ val j18MybatisPlusConfigOnly = localInspection { psiFile, inspection ->
     val cls = javaFile.classes.firstOrNull()?.name ?: ""
     if (pkg.endsWith(".config") || cls.endsWith("Config")) return@localInspection
     javaFile.importList?.allImportStatements?.forEach { st ->
-        if (importFqn(st).startsWith("com.baomidou.mybatisplus.extension.plugins."))
+        val fqn = importFqn(st)
+        if (fqn.startsWith("com.baomidou.mybatisplus.extension.plugins.") &&
+            !fqn.startsWith("com.baomidou.mybatisplus.extension.plugins.pagination."))
             inspection.registerProblem(st, "[J18]")
     }
 }

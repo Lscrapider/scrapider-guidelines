@@ -1,11 +1,14 @@
 import com.intellij.psi.*
+import com.intellij.openapi.module.ModuleUtilCore
+import com.intellij.openapi.roots.ModuleRootManager
 
 /**
  * Batch driver: apply the rule library to configured changed-file paths; an empty FILES list
  * checks only the context file. Use each result's file:line message and ignore structured
  * location fields in batch mode. Output aggregates after PER_RULE_PER_FILE matches and truncates
  * after MAX_FINDINGS; split the file list into smaller batches when truncated.
- * Update moduleOf mappings and J17 banned-import prefixes to the target topology before use.
+ * J17 tiers resolve from MODULE_MAP overrides, then module/package naming tokens; unresolved
+ * tiers emit one [J17][SKIP] notice per module instead of silently passing.
  */
 val FILES = emptyList<String>()
 val OPT_IN = true
@@ -35,13 +38,45 @@ fun importFqn(st: PsiElement): String {
     return t.trimEnd(';').trim()
 }
 
-fun moduleOf(pkg: String): String = when {
-    pkg.startsWith("com.example.model.") -> "model"
-    pkg.startsWith("com.example.persistence.") -> "persistence"
-    pkg.startsWith("com.example.shared.") -> "shared"
-    pkg.startsWith("com.example.bootstrap.") -> "bootstrap"
-    pkg.startsWith("com.example.business.") -> "business"
-    else -> ""
+// J17 tier resolution: MODULE_MAP overrides first, then module-name tokens, then package tokens.
+// business/bootstrap naming wins over later specificity tokens (business-common stays business);
+// foundation compounds take the most specific segment (foundation-entity -> model).
+val MODULE_MAP: Map<String, String> = emptyMap()
+val TIER_BY_TOKEN = mapOf(
+    "bootstrap" to "bootstrap", "app" to "bootstrap", "application" to "bootstrap",
+    "business" to "business", "biz" to "business",
+    "foundation" to "shared", "shared" to "shared", "common" to "shared", "core" to "shared",
+    "persistence" to "persistence", "db" to "persistence", "mapper" to "persistence",
+    "model" to "model", "entity" to "model"
+)
+val BANNED_TIERS = mapOf(
+    "model" to setOf("business", "bootstrap", "persistence", "shared"),
+    "persistence" to setOf("business", "bootstrap"),
+    "shared" to setOf("business", "bootstrap"),
+    "business" to setOf("bootstrap")
+)
+val j17Noted = mutableSetOf<String>()
+
+fun tierFromTokens(tokens: List<String>): String? {
+    val hits = tokens.mapIndexedNotNull { i, t -> TIER_BY_TOKEN[t]?.let { i to it } }
+    if (hits.isEmpty()) return null
+    val top = hits.firstOrNull { it.second == "bootstrap" } ?: hits.firstOrNull { it.second == "business" }
+    return (top ?: hits.last()).second
+}
+
+fun tierOf(f: PsiJavaFile): String? {
+    val pkg = f.packageName
+    MODULE_MAP.forEach { (prefix, tier) -> if (pkg.startsWith(prefix)) return tier }
+    val modName = ModuleUtilCore.findModuleForFile(f)?.name ?: ""
+    tierFromTokens(modName.lowercase().split('-', '_', '.').filter { it.isNotEmpty() })?.let { return it }
+    return tierFromTokens(pkg.lowercase().split('.').filter { it.isNotEmpty() })
+}
+
+fun rootPackageOf(pkg: String): String? {
+    val segs = pkg.lowercase().split('.').filter { it.isNotEmpty() }
+    val first = segs.indexOfFirst { TIER_BY_TOKEN.containsKey(it) }
+    if (first <= 0) return null
+    return segs.subList(0, first).joinToString(".") + "."
 }
 
 fun checkJ1(f: PsiJavaFile, out: MutableList<String>) {
@@ -312,31 +347,44 @@ fun checkJ17(f: PsiJavaFile, out: MutableList<String>) {
     val CC = "org.springframework.web.bind.annotation.Controller"
     val SVC = "org.springframework.stereotype.Service"
     val RA = "org.springframework.web.bind.annotation.RestControllerAdvice"
-    val module = moduleOf(f.packageName)
-    if (module.isEmpty()) return
-    val banned: List<String> = when (module) {
-        "model" -> listOf("com.example.business.", "com.example.bootstrap.",
-            "com.example.persistence.", "com.example.shared.")
-        "persistence" -> listOf("com.example.business.", "com.example.bootstrap.")
-        "shared" -> listOf("com.example.business.", "com.example.bootstrap.")
-        "business" -> listOf("com.example.bootstrap.")
-        else -> emptyList()
+    val mod = ModuleUtilCore.findModuleForFile(f)
+    val tier = tierOf(f)
+    if (tier == null) {
+        if (j17Noted.add("skip:" + (mod?.name ?: f.packageName)))
+            out.add("[J17][SKIP] ${f.name} tier unresolved (module ${mod?.name ?: "?"}, package ${f.packageName}); set MODULE_MAP prefixes")
+        return
     }
-    f.importList?.allImportStatements?.forEach { st ->
-        val q = importFqn(st)
-        banned.firstOrNull { q.startsWith(it) }?.let {
-            out.add("[J17] ${f.name}:${lineOf(f, st)} ${snip(st)}")
+    val banned = BANNED_TIERS[tier] ?: emptySet()
+    val root = rootPackageOf(f.packageName)
+    if (root != null) {
+        f.importList?.allImportStatements?.forEach { st ->
+            val q = importFqn(st)
+            val hit = banned.firstOrNull { q.startsWith(root + it + ".") }
+            if (hit != null)
+                out.add("[J17] ${f.name}:${lineOf(f, st)} $tier imports $hit package: ${snip(st)}")
+        }
+    }
+    if (mod != null) {
+        ModuleRootManager.getInstance(mod).dependencies.forEach { dep ->
+            val depTier = tierFromTokens(dep.name.lowercase().split('-', '_', '.'))
+            if (depTier != null && depTier in banned && j17Noted.add("graph:${mod.name}->${dep.name}"))
+                out.add("[J17] ${f.name}:1 module ${mod.name} ($tier) depends on ${dep.name} ($depTier)")
         }
     }
     f.classes.forEach { c ->
-        val n = c.name ?: ""
+        val n = c.name ?: return@forEach
         val dbAccess = n !in EXCLUDED_MAPPER_NAMES && (n.endsWith("Mapper") || n.endsWith("Manage"))
-        if (module == "bootstrap" && (c.getAnnotation(RC) != null || c.getAnnotation(CC) != null || c.getAnnotation(SVC) != null || dbAccess))
-            out.add("[J17] ${f.name}:${lineOf(f, c)} ${snip(c)}")
-        if (module == "model" && (c.getAnnotation(RC) != null || c.getAnnotation(CC) != null || c.getAnnotation(SVC) != null || c.getAnnotation(RA) != null || dbAccess))
-            out.add("[J17] ${f.name}:${lineOf(f, c)} ${snip(c)}")
-        if (module == "persistence" && (c.getAnnotation(RC) != null || c.getAnnotation(CC) != null))
-            out.add("[J17] ${f.name}:${lineOf(f, c)} ${snip(c)}")
+        val web = c.getAnnotation(RC) != null || c.getAnnotation(CC) != null
+        val svc = c.getAnnotation(SVC) != null
+        val advice = c.getAnnotation(RA) != null
+        val misplaced = when (tier) {
+            "bootstrap" -> web || svc || dbAccess
+            "model" -> web || svc || advice || dbAccess
+            "persistence" -> web
+            else -> false
+        }
+        if (misplaced)
+            out.add("[J17] ${f.name}:${lineOf(f, c.nameIdentifier ?: c)} $tier-tier class ${snip(c.nameIdentifier ?: c)}")
     }
 }
 
@@ -346,7 +394,8 @@ fun checkJ18(f: PsiJavaFile, out: MutableList<String>) {
     if (pkg.endsWith(".config") || cls.endsWith("Config")) return
     f.importList?.allImportStatements?.forEach { st ->
         val q = importFqn(st)
-        if (q.startsWith("com.baomidou.mybatisplus.extension.plugins."))
+        if (q.startsWith("com.baomidou.mybatisplus.extension.plugins.") &&
+            !q.startsWith("com.baomidou.mybatisplus.extension.plugins.pagination."))
             out.add("[J18] ${f.name}:${lineOf(f, st)} ${snip(st)}")
     }
 }
