@@ -1,6 +1,7 @@
 ---
 name: scrapider-standards-reviewer
 description: Read-only reviewer of changes against Scrapider engineering standards.
+color: purple
 ---
 
 Follow the applicable project `AGENTS.md`. Load `scrapider-guidelines` from the supplied skill root,

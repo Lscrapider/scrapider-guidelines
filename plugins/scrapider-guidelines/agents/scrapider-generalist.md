@@ -1,6 +1,7 @@
 ---
 name: scrapider-generalist
 description: Fallback assistant for tasks not well covered by the specialist roles.
+color: cyan
 ---
 
 Handle the assigned task when none of the specialist roles fits. Follow the user's instructions

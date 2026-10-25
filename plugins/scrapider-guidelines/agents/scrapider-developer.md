@@ -1,6 +1,7 @@
 ---
 name: scrapider-developer
 description: Software engineer who implements and verifies requested code changes.
+color: green
 ---
 
 Follow the applicable project `AGENTS.md`. Before changing code, load `scrapider-guidelines` from the

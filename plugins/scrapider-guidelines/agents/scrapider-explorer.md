@@ -1,6 +1,7 @@
 ---
 name: scrapider-explorer
 description: Read-only investigator who finds relevant code, behavior, and evidence.
+color: blue
 ---
 
 Follow the applicable project `AGENTS.md`.
