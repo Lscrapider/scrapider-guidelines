@@ -22,7 +22,7 @@
 | Python | 包与模块的组织方式。 |
 | Android Kotlin 与 Jetpack Compose | UI 状态、数据映射、异常处理与 Compose 架构。 |
 | Android UI 实现 | 面向设计稿还原和产品 UI 设计的补充指导。 |
-| 规范审查 | 完整的只读一致性审查流程。 |
+| 规范审查 | 完整的只读一致性审查流程，可用 JetBrains 检查脚本通道执行机械检查。 |
 | 项目 AGENTS.md | 帮助作者组织清晰、有层次的项目说明，在原有章节中按需更新能力组合、协作等内容。 |
 | 本地全栈部署 | 在该部署场景适用时，涵盖 Docker Compose、Jenkins 主机构建、运行时镜像和可选 Nginx 路由。 |
 
@@ -60,7 +60,8 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
 | 输入保证、校验归属、异常处理 | [校验与边界](references/shared/validation-and-boundaries.md)，涉及这些决策时加载。 |
 | 审查适用条件、调度、只读流程与报告 | [规范审查](references/shared/standards-review.md)，明确要求审查或改动可能跨越审查边界时加载。 |
 | Git 操作授权与提交信息格式 | [Git 操作与提交](references/shared/git-commits.md)，执行任何 Git 状态变更前加载。 |
-| 项目说明与可选能力组合 | [AGENTS.md Authoring](references/project/agents-md-authoring.md)，仅在编写请求中加载；选型时再读取 [Capability Recommendations](references/project/capability-recommendations.md)。 |
+| 规范检查脚本库 | 指派的规范审查者在 JetBrains 检查通道可用时加载；显式维护、适配或安装脚本库时也加载。 | [Inspection Scripts](references/shared/inspection-scripts.md) |
+| 项目说明与可选能力组合 | [AGENTS.md Authoring](references/project/agents-md-authoring.md)，仅在编写请求中加载；选型时再读取 [Capability Recommendations](references/project/capability-recommendations.md)；安装与初始化已选能力时读取 [Capability Setup](references/project/capability-setup.md)。 |
 | 技术栈专用职责 | 按需加载 Java、Python、Android 或本地部署参考。 |
 
 比如，Spring Boot 任务加载通用设计规则和后端基础规范，再按实际涉及的架构、HTTP／领域对象、
@@ -87,13 +88,19 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
 ├── SKILL.md
 ├── agents/
 │   ├── openai.yaml
+│   ├── scrapider-code-reviewer.md
+│   ├── scrapider-developer.md
+│   ├── scrapider-explorer.md
+│   ├── scrapider-generalist.md
 │   └── scrapider-standards-reviewer.md
-└── references/
-    ├── android/
-    ├── java/
-    ├── project/
-    ├── python/
-    └── shared/
+├── references/
+│   ├── android/
+│   ├── java/
+│   ├── project/
+│   ├── python/
+│   └── shared/
+└── scripts/
+    └── inspections/
 ```
 
 ## 调研与评估
@@ -102,7 +109,10 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
 实际用量、质量复核、限制和方案选择，也提供可核对的
 [逐次指标](.research/2026-10-18-retrieval-token-benchmark/metrics.csv)。
 [12 次 Serena 补测](.research/2026-10-18-serena-incremental-benefit/REPORT.md) 记录去重修复、预先固定的评分、
-重复对照结果，以及未实际调用的可选工具无法归因收益这一限制。`.research/` 供浏览仓库的开发者查阅，
+重复对照结果，以及未实际调用的可选工具无法归因收益这一限制。后续归档记录了近期功能背后的评估：机械检查通道对应的
+[inspection.kts 规则库](.research/2026-10-24-inspection-kts-rule-library/REPORT.md)、外部库文档服务与 IDE 工具面推荐对应的
+[JetBrains MCP 与 Context7 能力试点](.research/2026-10-24-jetbrains-context7-capability-pilot/REPORT.md)，以及能力条目示例对应的
+[能力场景与编写运行记录](.research/2026-10-25-capability-scenarios-and-authoring/REPORT.md)。`.research/` 供浏览仓库的开发者查阅，
 安装 Skill 时忽略该目录；Skill 的加载路由不引用这些记录。
 
 ## 贡献

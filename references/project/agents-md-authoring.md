@@ -229,7 +229,9 @@ content. Verify that only the requested target changed, excluding pre-existing u
 Document authoring needs no new unit tests or application build.
 
 Deliver the file, meaningful changes, selection rationale, and checks actually performed. Mention setup
-needs only when relevant to an adopted choice. Keep operational observations in this message when they
+needs only when relevant to an adopted choice, with a pointer to the
+[setup flows](capability-setup.md); run the setup only after the author confirms the delivered file
+and asks for it. Keep operational observations in this message when they
 matter; do not report every absent optional capability. Later coding tasks follow the resulting project
 instructions without rerunning this authoring workflow.
 

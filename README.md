@@ -22,7 +22,7 @@ Engineering guidelines for coding agents working in Scrapider projects. This reu
 | Python | Package and module organization. |
 | Android Kotlin & Jetpack Compose | UI state, data mapping, error handling, and Compose architecture. |
 | Android UI implementation | Additional guidance for design-driven UI and product UI work. |
-| Standards review | A complete, read-only conformance-review workflow. |
+| Standards review | A complete, read-only conformance-review workflow, with an optional JetBrains inspection-script channel for mechanical checks. |
 | Project AGENTS.md | Help authors select clear, structured project instructions and refresh existing sections with relevant capability combinations and collaboration guidance. |
 | Local full-stack deployment | Docker Compose, Jenkins host builds, runtime images, and optional Nginx routing when that profile is in scope. |
 
@@ -60,7 +60,8 @@ The main [SKILL.md](SKILL.md) defines the working principles, coding workflow, a
 | Input guarantees, validation ownership, and exception handling | [Validation and Boundaries](references/shared/validation-and-boundaries.md), loaded when those decisions are in scope. |
 | Review applicability, dispatch, read-only procedure, and report | [Standards Review](references/shared/standards-review.md), loaded for explicit reviews or changes that may cross its review boundaries. |
 | Git authorization and commit message format | [Git Operations and Commits](references/shared/git-commits.md), loaded before any Git state mutation. |
-| Project instructions and optional capability combinations | [AGENTS.md Authoring](references/project/agents-md-authoring.md), loaded only for authoring requests; [Capability Recommendations](references/project/capability-recommendations.md) when selecting workflows. |
+| Inspection script library | The assigned standards reviewer loads this when the JetBrains inspection channel is available; also load for explicit library maintenance, adaptation, or installation. | [Inspection Scripts](references/shared/inspection-scripts.md) |
+| Project instructions and optional capability combinations | [AGENTS.md Authoring](references/project/agents-md-authoring.md), loaded only for authoring requests; [Capability Recommendations](references/project/capability-recommendations.md) when selecting workflows; [Capability Setup](references/project/capability-setup.md) when installing or initializing the selected tools. |
 | Technology-specific responsibilities | The applicable Java, Python, Android, or local deployment references. |
 
 For example, a Spring Boot task loads the general code-design rules and backend baseline, then follows
@@ -91,13 +92,19 @@ The [coding workflow](SKILL.md#coding-workflow) applies these principles alongsi
 ├── SKILL.md
 ├── agents/
 │   ├── openai.yaml
+│   ├── scrapider-code-reviewer.md
+│   ├── scrapider-developer.md
+│   ├── scrapider-explorer.md
+│   ├── scrapider-generalist.md
 │   └── scrapider-standards-reviewer.md
-└── references/
-    ├── android/
-    ├── java/
-    ├── project/
-    ├── python/
-    └── shared/
+├── references/
+│   ├── android/
+│   ├── java/
+│   ├── project/
+│   ├── python/
+│   └── shared/
+└── scripts/
+    └── inspections/
 ```
 
 ## Research and evaluation
@@ -107,7 +114,12 @@ records the tested scenarios, measured usage, quality review, limitations, and r
 choices. Its [per-run metrics](.research/2026-10-18-retrieval-token-benchmark/metrics.csv) are
 available for inspection. The [12-run Serena follow-up](.research/2026-10-18-serena-incremental-benefit/REPORT.md)
 records the repaired response rendering, fixed scoring, repeated comparisons, and limits on attributing
-benefits to an optional tool that workers did not invoke.
+benefits to an optional tool that workers did not invoke. Later archives record the evaluations behind
+recent features: the [inspection-script rule library](.research/2026-10-24-inspection-kts-rule-library/REPORT.md)
+behind the mechanical-check channel, the [JetBrains MCP and Context7 capability pilot](.research/2026-10-24-jetbrains-context7-capability-pilot/REPORT.md)
+behind the external library docs service and IDE tool surface recommendations, and the
+[capability scenario and authoring runs](.research/2026-10-25-capability-scenarios-and-authoring/REPORT.md)
+behind the capability entry examples.
 The `.research/` directory is for developers browsing this repository;
 omit it when installing the skill. It is not referenced by the skill's loading routes.
 

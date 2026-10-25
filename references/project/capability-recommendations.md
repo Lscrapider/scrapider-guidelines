@@ -3,7 +3,9 @@
 Load this reference when selecting workflows for a project's `AGENTS.md`. When code retrieval is in
 scope, choose one retrieval profile alongside any selected coding, planning, or UI capabilities.
 Do not install tools, change configuration, build indexes, or create files beyond the target
-`AGENTS.md` during authoring.
+`AGENTS.md` during authoring. Installing, initializing, and verifying the tools cataloged here is a
+separate setup pass, run only after the author confirms the delivered file; see
+[Capability Setup](capability-setup.md).
 
 Recommend capability configurations that can be used without paid licenses or subscriptions.
 Check that the required operations are available in the free configuration; exclude paid-only
