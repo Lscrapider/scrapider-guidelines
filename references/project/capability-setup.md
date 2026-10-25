@@ -58,7 +58,7 @@ The `@colbymchenry/codegraph` npm package provides a CLI and an MCP server whose
   above the given `projectPath`; a copy or sibling checkout must point at a path whose index
   exists, or build its own.
 - Boundary: the index is per project root. Handle stale or missing coverage per the
-  [query-scope rules](capability-recommendations.md#codegraph-query-scope); a coverage gap is not a
+  [query-scope rules](retrieval-operations.md#codegraph-query-scope); a coverage gap is not a
   reason to re-index on every task.
 
 ## JetBrains IDE Tool Surface

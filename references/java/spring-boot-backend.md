@@ -7,9 +7,6 @@ debugging, or review. It defines repository precedence, core layering, shared co
 contract rules, and Java conventions. Load scenario references below according to the actual
 behavior and call paths affected by the task.
 
-For a Maven multi-module backend, also load [Spring Boot Multi-Module](spring-boot-multi-module.md)
-before choosing a target module or file location.
-
 Apply rules in this order:
 
 1. The user's explicit instruction.
@@ -156,6 +153,7 @@ Load every scenario reference whose trigger matches the behavior or call paths a
 
 | Reference | Load when the task or affected code path involves |
 | --- | --- |
+| [Spring Boot Multi-Module](spring-boot-multi-module.md) | A Maven multi-module backend, parent/aggregator POMs, module ownership or dependencies, module splitting, or Spring configuration placement. Load before choosing a target module or file location. |
 | [Spring Boot Architecture](spring-boot-architecture.md) | Adding or moving a Java file, choosing its package or responsibility, or changing an existing role or responsibility. This includes changes to `handler` or `provider` behavior/responsibility and third-party `api` client behavior/responsibility. |
 | [Spring Boot HTTP and Domain](spring-boot-http-and-domain.md) | HTTP/controller boundaries; data contracts for internal layer transfer or third-party responses, including choosing their representation; `Param`/`DTO`/`PO`/`VO`; and any bean/object conversion, including object-to-Map and Map-to-object conversion. This includes service return contracts across those boundaries. |
 | [Spring Boot Data Access](spring-boot-data-access.md) | Adding or changing database access, including query/ORM calls, persistence behavior, or conditions that affect persistence even when changed indirectly outside `manage` or `mapper`. |

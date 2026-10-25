@@ -7,20 +7,6 @@ description: Use when a coding agent writes, edits, refactors, debugs, or review
 
 Apply Scrapider engineering rules to implementation, refactoring, debugging, and review.
 
-## Project AGENTS.md Authoring (On Demand)
-
-When the user asks to create, complete, update, or rebuild a project's `AGENTS.md`, follow the
-[authoring workflow](references/project/agents-md-authoring.md). Load the
-[capability recommendations](references/project/capability-recommendations.md) only when selecting
-workflows and optional MCP, skill, plugin, or CLI combinations.
-When writing selected capability entries, use the relevant
-[examples](references/project/examples/capability-entries.md); do not load the full catalog for ordinary coding.
-
-Write only the target `AGENTS.md`; apply confirmed choices and let the author resolve unselected
-workflow changes without installing capabilities or generating other files.
-Ordinary coding tasks use the workflow below and the project's instructions without loading these
-authoring references.
-
 ## Working Principles
 
 ### Think Before Coding
@@ -68,12 +54,8 @@ blocker is reported; an attempted edit or a passing unrelated check does not est
 
 ### Implement or Refactor
 
-- Search for equivalent project, standard-library, framework, or approved-library capabilities
-  before adding helpers, wrappers, validators, or queries.
-- Make the smallest coherent change under the applicable rules. Preserve the business behavior the
-  task does not change, keep responsibilities clear, and migrate affected callers when replacing code.
-- Decide whether a check or abstraction is needed before adding it. Apply the validation and error
-  rules during implementation, rather than adding defenses first and removing them in review.
+- Before adding a check or abstraction, decide whether current requirements and the applicable routed
+  rules justify it.
 - Refactor only when requested or needed for the change. Identify a concrete improvement before
   editing; a refactoring request can finish with no code changes when the current implementation
   already satisfies it. Compare the relevant behavior before and after, and verify meaningful
@@ -107,9 +89,10 @@ blocker is reported; an attempted edit or a passing unrelated check does not est
 
 ## Reference Routing
 
-Load the categories relevant to the actual task. General rules and technology-specific rules work
-together; package maps and examples do not require creating layers the project does not need.
-Read the applicable technology baseline, then follow its scenario routes. Select all routes whose
+Load the applicable shared rules below and the relevant technology entry point. Read that baseline
+first, then follow its matching scenario routes; each entry point owns its downstream references and
+their loading conditions. Do not preload whole directories or every linked file. Package maps and
+examples do not require creating layers the project does not need. Select all routes whose
 behavior, contracts, or responsibilities the task affects, including through callers; selection is
 not limited to words in the request or edited filenames. Inspect uncertain connections narrowly and
 load the relevant reference if its applicability remains unresolved. Reassess when the scope expands.
@@ -127,19 +110,14 @@ unchanged material.
 | Standards review | An explicit review request, or changes affecting other modules, public/business contracts, data, integrations, concurrency, deployment, or coordinated behavior across files; the reference defines triggers, exclusions, and dispatch | [Standards Review](references/shared/standards-review.md) |
 | Git operations | Before any Git state mutation, including staging, committing, branching, or pushing; the reference defines authorization and commit format | [Git Operations and Commits](references/shared/git-commits.md) |
 | Inspection script library | The assigned standards reviewer loads this when the JetBrains inspection channel is available; also load for explicit library maintenance, adaptation, or installation. | [Inspection Scripts](references/shared/inspection-scripts.md) |
+| Project AGENTS.md | Creating, completing, updating, or rebuilding a project's `AGENTS.md`. | [AGENTS.md Authoring](references/project/agents-md-authoring.md) |
 
-### Technology and Scenario Rules
+### Technology Entry Points
 
-| Technology or task | When to load | Reference |
-| --- | --- | --- |
-| Spring Boot backend | Any Java Spring Boot implementation, refactoring, debugging, or review; read this baseline and follow its routes for architecture, HTTP/domain objects, data access, and messaging as applicable | [Spring Boot Backend](references/java/spring-boot-backend.md) |
-| Maven multi-module | Multiple Maven modules, parent/aggregator POMs, module ownership, dependencies, splitting, or Spring configuration placement; load with the backend reference | [Spring Boot Multi-Module](references/java/spring-boot-multi-module.md) |
-| Python | Any Python implementation, refactoring, debugging, or review; read this baseline and follow its package-layout route when creating, moving, or reorganizing code | [Python Code Organization](references/python/python-code-organization.md) |
-| Android Kotlin / Compose | Any Android implementation or review | [Android Kotlin Compose](references/android/android-kotlin-compose.md) |
-| Android UI from a design | A screenshot, mockup, design image, or existing product UI is the implementation source; load with the Android reference | [Android UI Implementation](references/android/android-ui-implementation-from-design.md) |
-| Android product UI design | Designing or generating Android product UI without a fixed design image; load with the Android reference | [Android Product UI Design](references/android/android-product-ui-design.md) |
-| Local full-stack deployment | The user's Jenkins host-build, runtime-only Docker, Compose, CI secret-file, and optional Nginx profile is in scope | [Local Deployment](references/shared/full-stack-docker-compose-ci-deployment.md) |
+| Entry point | When to load |
+| --- | --- |
+| [Spring Boot Backend](references/java/spring-boot-backend.md) | Any Java Spring Boot implementation, refactoring, debugging, or review, including Maven build and module work. |
+| [Python Code Organization](references/python/python-code-organization.md) | Any Python implementation, refactoring, debugging, or review. |
+| [Android Kotlin Compose](references/android/android-kotlin-compose.md) | Any Android implementation or review, including UI implementation and product UI design. |
 
-For plain Java outside Spring Boot, use the repository's own conventions. The local deployment
-reference is optional and user-local: load it only if present and this profile applies. Its absence
-does not block work, and generic Docker/CI work does not trigger it.
+For plain Java outside Spring Boot, use the repository's own conventions.

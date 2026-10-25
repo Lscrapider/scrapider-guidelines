@@ -24,7 +24,6 @@ Engineering guidelines for coding agents working in Scrapider projects. This reu
 | Android UI implementation | Additional guidance for design-driven UI and product UI work. |
 | Standards review | A complete, read-only conformance-review workflow, with an optional JetBrains inspection-script channel for mechanical checks. |
 | Project AGENTS.md | Help authors select clear, structured project instructions and refresh existing sections with relevant capability combinations and collaboration guidance. |
-| Local full-stack deployment | Docker Compose, Jenkins host builds, runtime images, and optional Nginx routing when that profile is in scope. |
 
 ## Usage
 
@@ -60,17 +59,18 @@ The main [SKILL.md](SKILL.md) defines the working principles, coding workflow, a
 | Input guarantees, validation ownership, and exception handling | [Validation and Boundaries](references/shared/validation-and-boundaries.md), loaded when those decisions are in scope. |
 | Review applicability, dispatch, read-only procedure, and report | [Standards Review](references/shared/standards-review.md), loaded for explicit reviews or changes that may cross its review boundaries. |
 | Git authorization and commit message format | [Git Operations and Commits](references/shared/git-commits.md), loaded before any Git state mutation. |
-| Inspection script library | The assigned standards reviewer loads this when the JetBrains inspection channel is available; also load for explicit library maintenance, adaptation, or installation. | [Inspection Scripts](references/shared/inspection-scripts.md) |
-| Project instructions and optional capability combinations | [AGENTS.md Authoring](references/project/agents-md-authoring.md), loaded only for authoring requests; [Capability Recommendations](references/project/capability-recommendations.md) when selecting workflows; [Capability Setup](references/project/capability-setup.md) when installing or initializing the selected tools. |
-| Technology-specific responsibilities | The applicable Java, Python, Android, or local deployment references. |
+| Inspection script library | [Inspection Scripts](references/shared/inspection-scripts.md), loaded by the assigned standards reviewer when the JetBrains inspection channel is available; also loaded for explicit library maintenance, adaptation, or installation. |
+| Project instructions and optional capability combinations | [AGENTS.md Authoring](references/project/agents-md-authoring.md), the entry point for authoring requests; it routes to recommendations, selected examples, role definitions, and separately requested setup. |
+| Technology-specific responsibilities | Start with the applicable [Spring Boot](references/java/spring-boot-backend.md), [Python](references/python/python-code-organization.md), or [Android](references/android/android-kotlin-compose.md) baseline, then follow its matching scenario routes. |
 
-For example, a Spring Boot task loads the general code-design rules and backend baseline, then follows
-its routes for architecture, HTTP/domain objects, data access, and messaging only where applicable.
-A multi-module Maven task also loads module-placement guidance. Python tasks load the Python baseline;
-package-layout rules and examples are added when creating, moving, or reorganizing code. Mixed tasks
-load every applicable route, including behavior affected through callers, and revisit routing when
-the scope expands. Implementation and review use the same routes. Reference examples do not require
-adding layers the project does not need.
+Each entry point owns the triggers for its downstream references; loading it does not load every
+linked file. A Spring Boot task follows the backend baseline's routes for multi-module placement,
+architecture, HTTP/domain objects, data access, and messaging only where applicable. Python tasks
+follow the Python baseline's package-layout route when creating, moving, or reorganizing code.
+Android tasks follow the Android baseline's separate routes for implementation from a design and
+product UI design without a fixed image. Mixed tasks load every applicable route, including behavior
+affected through callers, and revisit routing when the scope expands. Implementation and review use
+the same routes. Reference examples do not require adding layers the project does not need.
 
 The shared code-design rules distinguish the reported location from the cause's actual scope:
 inspect related paths when evidence connects them, repair shared causes within the authorized scope,
@@ -117,9 +117,7 @@ records the repaired response rendering, fixed scoring, repeated comparisons, an
 benefits to an optional tool that workers did not invoke. Later archives record the evaluations behind
 recent features: the [inspection-script rule library](.research/2026-10-24-inspection-kts-rule-library/REPORT.md)
 behind the mechanical-check channel, the [JetBrains MCP and Context7 capability pilot](.research/2026-10-24-jetbrains-context7-capability-pilot/REPORT.md)
-behind the external library docs service and IDE tool surface recommendations, and the
-[capability scenario and authoring runs](.research/2026-10-25-capability-scenarios-and-authoring/REPORT.md)
-behind the capability entry examples.
+behind the external library docs service and IDE tool surface recommendations.
 The `.research/` directory is for developers browsing this repository;
 omit it when installing the skill. It is not referenced by the skill's loading routes.
 

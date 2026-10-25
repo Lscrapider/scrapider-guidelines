@@ -17,6 +17,11 @@ Codegraph and IDE workflow. Use available IDE and local dependency evidence for 
 - [R5. DeusData Codebase Memory with native retrieval](#r5-deusdata-codebase-memory-with-native-retrieval)
 - [R6. Explicitly partitioned Codegraph and Codebase Memory](#r6-explicitly-partitioned-codegraph-and-codebase-memory)
 
+### Project workflow examples
+
+- [Relationship-aware project workflow](#relationship-aware-project-workflow)
+- [Precise-symbol project workflow](#precise-symbol-project-workflow)
+
 ### Support layers and complete combinations
 
 - [A1. Repomap with native retrieval](#a1-repomap-with-native-retrieval); [A2. Repomap with Codegraph and native retrieval](#a2-repomap-with-codegraph-and-native-retrieval)
@@ -94,6 +99,46 @@ Codegraph and IDE workflow. Use available IDE and local dependency evidence for 
   - **Boundary:** Codebase Memory handles only its assigned outline or symbol-source gaps; Codegraph retains cross-file relationship queries, and native search and reads handle direct source and other evidence.
   - **Skip:** Do not send a query to Codebase Memory when the selected Codegraph route already covers it.
   - **Fallback:** Complete truncated source before interpreting it; use native evidence for empty results and uncovered content.
+```
+
+## Project Workflows with Coding Guidance
+
+Use a scenario only when the author selected its capabilities. Keep them as separate peer entries,
+with task-specific calls conditional; they do not all have to run on every task.
+
+### Relationship-Aware Project Workflow
+
+```md
+- **Codegraph** — Cross-file relationships and impact evidence.
+  - **Scenario**: Unresolved call paths, dependencies, or impact questions covered by the project index.
+  - **Boundary**: Codegraph supplies relationship evidence; local search covers literals and uncovered source. Coding policy remains with project instructions and the selected engineering guidance.
+  - **Fallback**: Use local search and targeted reads for unavailable, stale, or incomplete graph evidence.
+
+- **Scrapider Guidelines** — Engineering rules for implementation and review.
+  - **Scenario**: Implementing, refactoring, debugging, or reviewing code under the selected Scrapider rules.
+  - **Boundary**: Retrieval establishes current code facts; Scrapider guides changes and review without overriding explicit project contracts or user instructions.
+  - **Fallback**: Follow existing project standards and report any material rule gap if the skill is unavailable.
+```
+
+### Precise-Symbol Project Workflow
+
+Use this scenario only for an explicit Serena selection; it is not a default recommendation.
+
+```md
+- **Codegraph** — Relationship evidence for the selected code paths.
+  - **Scenario**: Call, dependency, or impact questions remain unresolved and are covered by the graph.
+  - **Boundary**: Codegraph owns relationships; Serena handles only remaining precise-symbol gaps, and local search handles direct text and uncovered source.
+  - **Fallback**: Use local search and targeted reads when the graph is unavailable or incomplete.
+
+- **Serena (LSP)** — Supplementary symbol evidence.
+  - **Scenario**: Recurring symbol questions remain after graph and local investigation, with verified language support and resource capacity.
+  - **Boundary**: Serena fills only the unresolved binding or reference gap; it does not repeat answered graph queries or replace the selected coding rules.
+  - **Fallback**: Use available graph or local evidence and state any unresolved symbol question.
+
+- **Scrapider Guidelines** — Engineering rules for the resulting changes.
+  - **Scenario**: Implementing or reviewing code under the project's selected Scrapider rules.
+  - **Boundary**: Retrieval services supply evidence; project contracts and Scrapider guidance govern implementation and review.
+  - **Fallback**: Follow existing project standards if the skill is unavailable.
 ```
 
 ## Support Layers

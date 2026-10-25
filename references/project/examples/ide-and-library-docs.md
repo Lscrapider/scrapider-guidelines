@@ -9,7 +9,7 @@ Apply the [description rules](../agents-md-authoring.md#capability-entry-format)
 ```md
 - **JetBrains IDE MCP** — IDE semantic operations and checks.
   - **Scenario**: In the explicitly identified IDE-open project:
-    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; check reflective strings separately.
+    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - After native code edits, diagnose edited files, run supported single-file incremental compilation, and finish with IDE formatting that respects project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
     - Debug a reproduced runtime failure when static evidence is insufficient.
@@ -43,7 +43,7 @@ Apply the [description rules](../agents-md-authoring.md#capability-entry-format)
 
 - **JetBrains IDE MCP** — IDE semantic operations and checks.
   - **Scenario**: In the explicitly identified IDE-open project:
-    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; check reflective strings separately.
+    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - After native code edits, diagnose edited files, run supported single-file incremental compilation, and finish with IDE formatting that respects project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
     - Debug a reproduced runtime failure when static evidence is insufficient.
@@ -77,7 +77,7 @@ Apply the [description rules](../agents-md-authoring.md#capability-entry-format)
 ```md
 - **JetBrains IDE MCP** — IDE semantic operations and checks.
   - **Scenario**: In the explicitly identified IDE-open project:
-    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; check reflective strings separately.
+    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - After native code edits, diagnose edited files, run supported single-file incremental compilation, and finish with IDE formatting that respects project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
     - Debug a reproduced runtime failure when static evidence is insufficient.
@@ -107,7 +107,7 @@ Apply the [description rules](../agents-md-authoring.md#capability-entry-format)
 
 - **JetBrains IDE MCP** — IDE semantic operations and checks.
   - **Scenario**: In the explicitly identified IDE-open project:
-    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; check reflective strings separately.
+    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - After native code edits, diagnose edited files, run supported single-file incremental compilation, and finish with IDE formatting that respects project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
     - Debug a reproduced runtime failure when static evidence is insufficient.
@@ -132,7 +132,7 @@ Apply the [description rules](../agents-md-authoring.md#capability-entry-format)
 ```md
 - **JetBrains IDE MCP** — Semantic operations and checks in the open project.
   - **Scenario**: In the explicitly identified IDE-open project:
-    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; check reflective strings separately.
+    - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - After native code edits, diagnose edited files, run supported single-file incremental compilation, and finish with IDE formatting that respects project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
     - Debug a reproduced runtime failure when static evidence is insufficient.

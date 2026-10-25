@@ -20,12 +20,22 @@ definitions, plan files, or companion project documents during authoring. These 
 restrictions imposed only on the authoring run, concern this operation; do not turn them into
 permanent project policy. An explanation-only request does not authorize a file edit.
 Adopt Scrapider's coding rules or bundled agents only from existing project rules or the author's choice.
+Write host-specific tool-routing mandates only when the target project's instructions or author
+establish them; a requirement of the authoring host alone is not target-project policy.
+
+When creating or restructuring entries for confirmed capabilities, read the matching
+[scenario examples](examples/capability-entries.md) and apply
+[Capability Entry Format](#capability-entry-format). Reuse confirmed choices without reopening recommendation.
 
 ## Establish the Purpose
 
 For creation, identify the project responsibilities and decisions that future agents need. For an
 update, address the named changes in their existing sections. For a rebuild, establish what the author
 wants to refresh: capability choices, workflows, collaboration, project conventions, or overall brevity.
+
+When defining or revising execution details for an already selected retrieval profile, read
+[Retrieval Operations](retrieval-operations.md) for query scope, source completeness, batching, and
+handoff. Reuse the confirmed profile choice rather than reopening selection for these changes.
 
 Use the conversation and existing rules first. If the rebuild focus is still unclear, offer a short
 choice of relevant directions with a recommendation; do not make the author invent a specification.
@@ -104,8 +114,7 @@ Native search, file reads, and ordinary edits are default operations, not separa
 Mention them within another capability's applicable scenario, boundary, or fallback; a combination
 may be named "Codegraph + native retrieval" without giving native retrieval its own field set.
 
-Use the [scenario examples](examples/capability-entries.md) for the selected capabilities. A combined
-scenario contains separate entries for its tools and skills, with their cooperation expressed through
+A combined scenario contains separate entries for its tools and skills, with their cooperation expressed through
 boundaries; do not collapse the scenario into one large capability entry. For overlapping alternatives,
 select one unless the author chose distinct responsibilities for both. Translate and adapt the example
 without importing unselected capabilities or the full example catalog.
@@ -173,7 +182,8 @@ document-maintenance rules, and deeper reading entry points stay in the module R
 states them as requirements. Reference them through the module-reading rule without repeating paths
 or navigation in the root file. Do not edit other documents to relocate content during authoring.
 
-For an adopted skill, normally use one short entry stating when it applies, what it contributes, and
+For an adopted skill, normally use one short peer entry in the
+[capability-entry format](#capability-entry-format). State when it applies, what it contributes, and
 any explicit project requirement such as mandatory use. In a new document, keep its mandate and priority
 in that entry rather than repeating them in an engineering section. Do not copy the skill's general
 conventions, loading procedures, setup, or reference-file paths into the project file. Add only verified
@@ -240,6 +250,8 @@ instructions without rerunning this authoring workflow.
 Prefer existing user roles. When collaboration choices are open, offer only the responsibilities the
 project needs from the following definitions; read definitions on demand. Their presence in this skill
 does not install or register agents, and selecting them does not mean running all roles on every task.
+Apply a no-delegation rule only to roles whose definitions or project instructions impose it; primary-agent
+acceptance does not make every other role a leaf agent.
 
 | Role | Responsibility |
 | --- | --- |

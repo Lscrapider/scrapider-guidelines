@@ -5,9 +5,11 @@ Use this reference for Android code. Follow the repository's existing UI technol
 When implementing or reviewing Compose UI, use an available Compose-specific expert skill or
 capability first. If the host provides none, apply this reference directly.
 
-For Android UI implementation from screenshots, mockups, design images, or existing product UI, also load `android-ui-implementation-from-design.md`.
+For Android UI implementation from screenshots, mockups, design images, or existing product UI, also
+load [Android UI Implementation](android-ui-implementation-from-design.md).
 
-For Android product UI design or screen generation without a fixed design image, also load `android-product-ui-design.md`.
+For Android product UI design or screen generation without a fixed design image, also load
+[Android Product UI Design](android-product-ui-design.md).
 
 ## Contents
 

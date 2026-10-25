@@ -9,8 +9,8 @@ may contain several cooperating capabilities, each written as its own peer entry
 
 | Capability or responsibility | Separate selection | Combined scenarios |
 | --- | --- | --- |
-| Codegraph | [Codegraph + native](retrieval.md#r2-codegraph-with-native-retrieval) | [Relationship-aware project workflow](#relationship-aware-project-workflow); [IDE support](ide-and-library-docs.md#codegraph-native-tools-and-jetbrains); [external docs](ide-and-library-docs.md#codegraph-native-tools-and-context7) |
-| Serena (LSP), only when explicitly selected | [Serena + native](retrieval.md#r4-serena-lsp-with-native-retrieval) | [Codegraph + Serena + native](retrieval.md#r3-codegraph-with-serena-lsp-and-native-retrieval); [IDE + Serena](ide-and-library-docs.md#jetbrains-and-serena); [coding workflow](#precise-symbol-project-workflow) |
+| Codegraph | [Codegraph + native](retrieval.md#r2-codegraph-with-native-retrieval) | [Relationship-aware project workflow](retrieval.md#relationship-aware-project-workflow); [IDE support](ide-and-library-docs.md#codegraph-native-tools-and-jetbrains); [external docs](ide-and-library-docs.md#codegraph-native-tools-and-context7) |
+| Serena (LSP), only when explicitly selected | [Serena + native](retrieval.md#r4-serena-lsp-with-native-retrieval) | [Codegraph + Serena + native](retrieval.md#r3-codegraph-with-serena-lsp-and-native-retrieval); [IDE + Serena](ide-and-library-docs.md#jetbrains-and-serena); [coding workflow](retrieval.md#precise-symbol-project-workflow) |
 | DeusData Codebase Memory | [Codebase Memory + native](retrieval.md#r5-deusdata-codebase-memory-with-native-retrieval) | [Explicitly partitioned graph services](retrieval.md#r6-explicitly-partitioned-codegraph-and-codebase-memory) |
 | Repomap | [Repomap + native](retrieval.md#a1-repomap-with-native-retrieval) | [Repomap + Codegraph + native](retrieval.md#a2-repomap-with-codegraph-and-native-retrieval) |
 | Semantic search, including `@teknologika/mcp-codebase-search` | [Semantic search + native](retrieval.md#a3-semantic-search-with-native-retrieval) | [Semantic and structural retrieval](retrieval.md#a4-codegraph-with-semantic-search-and-native-retrieval) |
@@ -35,46 +35,12 @@ may contain several cooperating capabilities, each written as its own peer entry
 Use a scenario only when the author selected its capabilities. Keep them as separate peer entries,
 with task-specific calls conditional; they do not all have to run on every task.
 
-### Lightweight Project Workflow
-
 For local changes without an additional retrieval service, use the selected
 [coding-guidance entry](design-and-coding.md#coding-standards). Local search and file operations
 remain the direct execution path; do not add a separate native-search capability entry.
 
-### Relationship-Aware Project Workflow
-
-```md
-- **Codegraph** — Cross-file relationships and impact evidence.
-  - **Scenario**: Unresolved call paths, dependencies, or impact questions covered by the project index.
-  - **Boundary**: Codegraph supplies relationship evidence; local search covers literals and uncovered source. Coding policy remains with project instructions and the selected engineering guidance.
-  - **Fallback**: Use local search and targeted reads for unavailable, stale, or incomplete graph evidence.
-
-- **Scrapider Guidelines** — Engineering rules for implementation and review.
-  - **Scenario**: Implementing, refactoring, debugging, or reviewing code under the selected Scrapider rules.
-  - **Boundary**: Retrieval establishes current code facts; Scrapider guides changes and review without overriding explicit project contracts or user instructions.
-  - **Fallback**: Follow existing project standards and report any material rule gap if the skill is unavailable.
-```
-
-### Precise-Symbol Project Workflow
-
-Use this scenario only for an explicit Serena selection; it is not a default recommendation.
-
-```md
-- **Codegraph** — Relationship evidence for the selected code paths.
-  - **Scenario**: Call, dependency, or impact questions remain unresolved and are covered by the graph.
-  - **Boundary**: Codegraph owns relationships; Serena handles only remaining precise-symbol gaps, and local search handles direct text and uncovered source.
-  - **Fallback**: Use local search and targeted reads when the graph is unavailable or incomplete.
-
-- **Serena (LSP)** — Supplementary symbol evidence.
-  - **Scenario**: Recurring symbol questions remain after graph and local investigation, with verified language support and resource capacity.
-  - **Boundary**: Serena fills only the unresolved binding or reference gap; it does not repeat answered graph queries or replace the selected coding rules.
-  - **Fallback**: Use available graph or local evidence and state any unresolved symbol question.
-
-- **Scrapider Guidelines** — Engineering rules for the resulting changes.
-  - **Scenario**: Implementing or reviewing code under the project's selected Scrapider rules.
-  - **Boundary**: Retrieval services supply evidence; project contracts and Scrapider guidance govern implementation and review.
-  - **Fallback**: Follow existing project standards if the skill is unavailable.
-```
+- [Relationship-aware project workflow](retrieval.md#relationship-aware-project-workflow): selected Codegraph retrieval and Scrapider coding guidance.
+- [Precise-symbol project workflow](retrieval.md#precise-symbol-project-workflow): selected Codegraph, explicitly selected Serena, and Scrapider coding guidance.
 
 ## Overlapping Responsibilities
 

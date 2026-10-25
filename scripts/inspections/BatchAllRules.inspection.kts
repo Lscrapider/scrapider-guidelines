@@ -13,6 +13,7 @@ val MAX_FINDINGS = 60
 val PER_RULE_PER_FILE = 5
 val REQUIRE_MANAGE_LAYER = true
 val EXCLUDED_TYPES = setOf("com.fasterxml.jackson.databind.ObjectMapper")
+val EXCLUDED_MAPPER_NAMES = setOf("ObjectMapper")
 val EXPLICIT_UTILITY_CLASSES = setOf("java.util.Objects", "org.apache.commons.lang3.StringUtils", "org.apache.commons.lang3.ObjectUtils")
 val VAGUE_NAMES = setOf("common", "utils", "util", "helpers", "helper", "misc")
 // Defaults disable convention-only checks; J19's empty-catch check remains active.
@@ -329,7 +330,7 @@ fun checkJ17(f: PsiJavaFile, out: MutableList<String>) {
     }
     f.classes.forEach { c ->
         val n = c.name ?: ""
-        val dbAccess = n !in setOf("ObjectMapper") && (n.endsWith("Mapper") || n.endsWith("Manage"))
+        val dbAccess = n !in EXCLUDED_MAPPER_NAMES && (n.endsWith("Mapper") || n.endsWith("Manage"))
         if (module == "bootstrap" && (c.getAnnotation(RC) != null || c.getAnnotation(CC) != null || c.getAnnotation(SVC) != null || dbAccess))
             out.add("[J17] ${f.name}:${lineOf(f, c)} ${snip(c)}")
         if (module == "model" && (c.getAnnotation(RC) != null || c.getAnnotation(CC) != null || c.getAnnotation(SVC) != null || c.getAnnotation(RA) != null || dbAccess))

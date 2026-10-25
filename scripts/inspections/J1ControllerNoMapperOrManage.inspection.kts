@@ -6,7 +6,7 @@ import com.intellij.psi.*
  */
 val EXCLUDED_TYPES = setOf("com.fasterxml.jackson.databind.ObjectMapper")
 
-val j1ControllerNoMapperManage = localInspection { psiFile, inspection ->
+val j1ControllerNoMapperOrManage = localInspection { psiFile, inspection ->
     val RC = "org.springframework.web.bind.annotation.RestController"
     val CC = "org.springframework.web.bind.annotation.Controller"
     fun isDbAccess(typeName: String) =
@@ -29,7 +29,7 @@ val j1ControllerNoMapperManage = localInspection { psiFile, inspection ->
         }
 }
 
-listOf(InspectionKts(id = "J1ControllerNoMapperManage",
-    localTool = j1ControllerNoMapperManage,
+listOf(InspectionKts(id = "J1ControllerNoMapperOrManage",
+    localTool = j1ControllerNoMapperOrManage,
     name = "inspections/J1ControllerNoMapperOrManage.inspection.kts",
     level = HighlightDisplayLevel.ERROR))
