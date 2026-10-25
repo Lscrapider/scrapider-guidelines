@@ -1,9 +1,6 @@
 # Project AGENTS.md Authoring
 
-Help the author choose and organize useful project instructions when asked to create, update, or
-rebuild `AGENTS.md`. Derive rules from the project and the author's choices; this workflow does not
-supply a new engineering policy. Remove unnecessary repetition while keeping rules complete and easy
-to scan. Brevity serves comprehension; it is not a compression target.
+Create, update, or rebuild project `AGENTS.md` instructions from project evidence and the author's choices.
 
 - [Scope](#scope)
 - [Establish the purpose](#establish-the-purpose)
@@ -18,12 +15,11 @@ Write only the requested `AGENTS.md`. Establish the actual project root rather t
 host's launch directory. Read applicable parent, root, and scoped instructions and the complete
 existing target before editing. Inspect relevant project documents, manifests, and capability metadata.
 
-Do not install capabilities, configure hosts, build indexes, or create agent definitions, plan files,
-or companion project documents during authoring. These limits, and restrictions imposed only on the
-authoring run, concern this operation; do not turn them into permanent project policy. An
-explanation-only request does not authorize a file edit.
-Using this authoring mode does not select Scrapider's coding rules or bundled agents for future work.
-Offer them as options when relevant; adopt them only from existing project rules or the author's choice.
+Do not install capabilities, configure hosts, build indexes, register agents, or create agent
+definitions, plan files, or companion project documents during authoring. These limits, and
+restrictions imposed only on the authoring run, concern this operation; do not turn them into
+permanent project policy. An explanation-only request does not authorize a file edit.
+Adopt Scrapider's coding rules or bundled agents only from existing project rules or the author's choice.
 
 ## Establish the Purpose
 
@@ -35,16 +31,13 @@ Use the conversation and existing rules first. If the rebuild focus is still unc
 choice of relevant directions with a recommendation; do not make the author invent a specification.
 Do not repeat a question already answered or refresh the entire tool catalog for every rebuild.
 
-A request to rebuild the skill/tool area asks for a capability refresh, not merely wording cleanup.
-Determine its scope from the document's meaning: an area may contain skills, MCP services, plugins,
-native tools, and their combined workflows even when the author calls it the "skill" area. Reassess
-the categories present there for current behavior, missing handoffs, overlap, cost, and useful
-combinations. Do not narrow the refresh to the first obvious problem or to literal Skill packages.
-An explicitly named single-tool edit or wording-only request remains narrower.
+For a skill/tool-area rebuild, reassess every capability category and combination in that area for
+current behavior, missing handoffs, and overlap. Limit a single-tool or wording-only request to its
+stated scope.
 
-Existing entries are the baseline to evaluate, not a reason to skip recommendations. Use the same
-relevant recipe guidance as initialization: offer what to retain, augment, replace, or retire and why,
-including the current setup when it remains suitable. A section-level refresh does not authorize
+Evaluate existing entries using the same recipe guidance as initialization: offer what to retain,
+augment, replace, or retire and why, including the current setup when it remains suitable.
+A section-level refresh does not authorize
 adopting an unselected alternative or changing unrelated project policies. Apply an in-scope choice
 already confirmed in the conversation even when the old file still names only part of that combination.
 
@@ -64,25 +57,19 @@ backup snapshots when that source suffices for the requested comparison.
 
 ## Recommend and Let the Author Choose
 
-Load [Capability Recommendations](capability-recommendations.md) for relevant categories. The author
-may not know which tools or skills exist: proactively offer two or three useful, named workflow
-combinations based on the project's tasks, rather than asking them to supply tool names. Explain the
-scenario, division of work, handoff, and meaningful setup or usage cost; recommend one and say why it
+Load [Capability Recommendations](capability-recommendations.md) when selecting capability combinations.
+Offer two or three named workflows based on the project's tasks. Explain the scenario, division of
+work, handoff, and meaningful setup or usage cost; recommend one and say why it
 fits. Include a simple existing-tools option when it meets the need. Let the author select a proposal
-or provide an alternative. Related profiles may share a baseline, but should differ meaningfully.
-Keep complementary retrieval, coding, planning, and UI roles clear: they can form a workflow together,
-not compete as if they served the same purpose. Separate independent optional additions when useful;
-do not make the author choose between a coding standard and a retrieval service just to select both.
+or provide an alternative. Keep retrieval, coding, planning, and UI responsibilities distinct, and
+allow complementary roles in one combination. Offer independent optional additions separately.
 When code retrieval is in scope, select one profile for the project. Write only that profile's included
 tools and conditional routes into `AGENTS.md`; keep alternative profiles in the recommendation conversation.
-Within an enhanced profile, state when native retrieval is sufficient, when graph relationships are
-needed, and when precise symbol queries add missing evidence. Repository size alone does not require
-the most extensive profile or a call to every included tool.
+Use the profile's documented conditions for each tool; do not require every included tool on each task.
 
 Reuse an explicit selection without asking again. For an unresolved choice that materially changes
 the project's workflow or dependencies, wait for the answer before writing it as an adopted rule;
-continue independent inspection and organization meanwhile. A recommendation is not a selection,
-and selecting a capability does not authorize its installation.
+continue independent inspection and organization meanwhile.
 After the author chooses, apply all agreed changes and their necessary cross-references. Preserve
 entries whose evaluation calls for no change. An answer about one category does not resolve the other
 open categories in a section-level refresh; continue their assessment and relay any necessary choices.
@@ -101,43 +88,47 @@ support before proposing a replacement. Do not declare it obsolete from its name
 only selected capabilities in the document, including deliberately selected optional additions.
 Unselected candidates and setup advice belong in the conversation.
 
-Describe cooperating MCPs, skills, plugins, and native tools as one grouped capability entry. State the
-trigger, each tool's role, when enough evidence has been obtained, and a useful fallback. Express
-these roles as fixed labeled fields in the entry — **trigger** (opened by a qualifier such as "only
-when"), **division** (the boundary with neighboring capabilities and what routes where), **skip**
-(explicit exclusions with their replacement), and **fallback** (behavior when unavailable or in
-conflict) — in that order, so semantic roles survive rewrites; omit a field only when it has no real
-content, such as division when no neighboring capability overlaps. Write the labels in the document's
-language and keep one label set across the whole file. A trigger states a decidable condition, not a
-need description, and parameter semantics or usage tutorials stay out of the fields. When rebuilding,
-convert existing capability prose to these labeled fields without changing its meaning. Place the
-combination alongside other entries in the existing capability list or table, without giving it a
-separate section or subsection. In a list, keep the parent item to the combination's name and purpose;
-put distinct tool responsibilities and shared handoff or fallback rules in short nested items. In a
-table, retain one capability row with readable line breaks inside it. Keep the combination grouped
-without flattening its distinct responsibilities into a long paragraph. Availability checks inform
-selection; an inventory of installed tools or existing indexes is not a project rule.
-Apply the same readable grouping when creating a new capability area; if using prose, give distinct
-responsibilities separate paragraphs rather than putting the whole combination into one paragraph.
+### Capability Entry Format
+
+Describe each selected capability in its own peer entry. Use fields in this order when applicable:
+**scenario** (the tasks this capability serves), **boundary** (which tool owns overlapping work),
+**skip** (an additional excluded scenario), and **fallback** (unavailability or conflicts).
+Use each label at most once; omit empty or redundant fields. Preserve all adopted scenarios,
+decision conditions, and fallback paths; do not trim necessary information to meet a sentence or
+length target. List distinct tasks under the single scenario field when an umbrella description
+would hide when to use the capability.
+Write labels in the target document's language and keep one label set throughout. Exclude need-only
+scenarios, tool parameters and invocation tutorials, installation snapshots, benchmarks, and savings
+claims.
+Native search, file reads, and ordinary edits are default operations, not separate tools to adopt.
+Mention them within another capability's applicable scenario, boundary, or fallback; a combination
+may be named "Codegraph + native retrieval" without giving native retrieval its own field set.
+
+Use the [scenario examples](examples/capability-entries.md) for the selected capabilities. A combined
+scenario contains separate entries for its tools and skills, with their cooperation expressed through
+boundaries; do not collapse the scenario into one large capability entry. For overlapping alternatives,
+select one unless the author chose distinct responsibilities for both. Translate and adapt the example
+without importing unselected capabilities or the full example catalog.
+
+When rebuilding, convert capability prose to these fields without changing its meaning. Keep cooperating
+tools as peer entries in the existing capability list or table. In a list, keep the parent item to the
+capability's name and purpose;
+put each field in its own subitem. In a table, retain one row with line breaks between fields.
+Keep invocation mechanics in the capability's reference; do not remove use scenarios to shorten an entry.
 In a new document, organize selected skills, plugins, and MCP/native-tool combinations together in
-one capability area under a heading suited to its content. Make each capability or combination a peer
+one capability area under a heading suited to its content. Make each capability a peer
 entry there. Do not put a coding skill only under engineering conventions while giving its companion
 retrieval tools a separate top-level section. Detailed conventions and scoped workflows may refer back
 to these responsibilities without duplicating them.
 
 ## Select Content and Integrate It
 
-Check that the following meanings are covered where applicable, regardless of the author's headings,
-wording, or order. These are content expectations, not prescribed section names, a fixed template, or
-a limit on what the project may include. Equivalent existing descriptions or references already satisfy
-the relevant expectation: retain them instead of renaming, duplicating, or replacing them. Semantic
-matching recognizes existing coverage; it does not authorize renaming a matching section.
+Check applicable dimensions below by meaning; preserve equivalent existing descriptions, references,
+and headings. Do not impose the table's labels or order on the document.
 
-Within the requested scope, fill a genuine content gap in the appropriate existing location; introduce
-a heading only when the content needs one. Keep other useful project-specific sections. For a new
-document, choose headings that fit its content. For an existing document, retain its useful separation of responsibilities;
-do not collapse established sections merely to reduce their count. Do not invent business policies or
-unneeded capabilities to fill a category; clarify a material missing decision when needed.
+Fill uncovered applicable rules in their existing sections; add a heading only for a subject with no
+existing section. Do not invent policies or capabilities to fill a dimension. Ask the author when a
+missing decision changes workflow, dependencies, or business behavior.
 
 | Dimension | Useful lasting content |
 | --- | --- |
@@ -148,10 +139,9 @@ unneeded capabilities to fill a category; clarify a material missing decision wh
 | Execution and delivery | Actual authorization limits, proportionate verification, and the evidence expected in delivery. |
 | Language | The author's chosen language for documents, comments, commits, or responses, where specified. |
 
-For creation, assess collaboration explicitly rather than silently omitting it because no custom agents
-were named. When useful delegation is possible and the choice is open, offer suitable existing or
-bundled roles and a direct-work option. Record the chosen responsibilities and acceptance boundary;
-the author may choose direct work without adopting named agents. Do not register agents during authoring.
+For creation, assess collaboration even when no custom roles were named. If independent tasks can be
+delegated and the choice is open, offer existing or bundled roles and a direct-work option. Record the
+chosen responsibilities and acceptance boundary.
 If direct work is the confirmed choice, record that choice without adding conditional delegation.
 When selected roles are not exposed by the host, retain the responsibilities and have the primary agent
 perform them or map them to available agents; do not leave work blocked on a role name.
@@ -162,7 +152,7 @@ rules, and multi-agent collaboration in its own established section. Keep develo
 execution requirements, and language rules distinct when the source already separates them.
 Route document reading by the task's affected areas; do not require every task to read all project
 overviews or product documents unless that is an existing project rule or an explicit author choice.
-Use the root README for orientation when needed, not as an unconditional reread before every task.
+Read the root README when module ownership or entry points remain unclear; do not require it on every task.
 
 When initializing a root document, briefly identify the top-level modules and their responsibilities.
 State the module-reading requirement once, in one short sentence: before working in a module, read its
@@ -172,32 +162,25 @@ do not expand the root rule into a reading catalog, a module-to-README table, re
 explanation of which kinds of documents to read next. Do not invent missing README files or write them
 during this operation.
 
-Keep documentation ownership clear. Detailed module descriptions, internal structure, subdirectory
-contents, historical or prototype material, and architecture or protocol descriptions belong in the corresponding
-README or module documentation. Do not copy them into root `AGENTS.md` merely because they are useful
-or important. The root file owns agent-facing instructions: selected Skill/MCP/plugin duties and
-workflows, collaboration, author constraints, reading requirements, and verification or delivery rules.
+Keep detailed module structure, history, architecture, and protocols in the corresponding README or
+module documentation. Keep selected capability duties, workflows, collaboration, author constraints,
+reading requirements, and verification or delivery rules in root `AGENTS.md`.
 Do not move those agent instructions into README files to make `AGENTS.md` shorter.
 
 Retain genuine project-wide work constraints, such as checking both sides of a cross-module change,
 without summarizing the underlying architecture or message format. Module-specific procedures,
 document-maintenance rules, and deeper reading entry points stay in the module README, even when it
-states them as requirements. The general module-reading rule already makes them available; do not
-repeat those paths or navigation elsewhere in the root file. Existing README and Skill content remains
-authoritative through its reading route. Only the requested `AGENTS.md` is written; do not create or edit
-other documents just to relocate content.
+states them as requirements. Reference them through the module-reading rule without repeating paths
+or navigation in the root file. Do not edit other documents to relocate content during authoring.
 
 For an adopted skill, normally use one short entry stating when it applies, what it contributes, and
 any explicit project requirement such as mandatory use. In a new document, keep its mandate and priority
-in that entry rather than repeating them in an engineering section. Referencing an adopted engineering
-skill also covers the general conventions it owns; do not paraphrase its coding principles into a new
-section just to fill a content dimension. Add verified project-specific requirements, explicit overrides,
-or necessary cross-module coordination rules instead. Its own instructions govern how to load
-`SKILL.md`, resolve source directories, progressively read references, run internal workflows, or
-handle setup. Do not restate those mechanics or reference-file paths in the project file. For an
-adopted role, keep only its responsibility and handoff, leaving its execution procedure in the role
-definition. In a new document, put each chosen role in its own item or row under collaboration, not
-in one long capability entry. Tool combinations may need short subitems for their actual division of work.
+in that entry rather than repeating them in an engineering section. Do not copy the skill's general
+conventions, loading procedures, setup, or reference-file paths into the project file. Add only verified
+project-specific requirements, explicit overrides, or cross-module coordination rules. For an
+adopted role, keep only its responsibility and handoff; leave its internal tool selection, reference
+loading, and execution procedure in the role definition. In a new document, put each chosen role in
+its own item or row under collaboration, not in one long capability entry.
 These creation defaults do not authorize shortening valid existing rules during an unrelated rebuild.
 
 Give independently useful rules their own list items or paragraphs. Use headings where the subject
@@ -214,8 +197,8 @@ blocker or a decision the author needs to make. Do not copy manuals, research li
 Honor the selected scope of a plugin across the whole file. If the author limits it to certain skills,
 replace conflicting broader assignments elsewhere rather than adding an exception at the end. Keep
 model and permission restrictions only when they are the target project's actual choices.
-A plugin feature allowlist does not make that plugin mandatory for every matching task or prohibit
-other project capabilities. Preserve whether its use is optional, conditional, or required.
+Preserve whether each plugin is optional, conditional, or required; a feature allowlist must not
+introduce a mandate or exclude other selected capabilities.
 
 Preserve the existing scope and precedence of project instructions. In new wording, distinguish priority
 among coding conventions from authority over the user's task: selecting a skill does not put it above
@@ -227,25 +210,14 @@ before deciding; editing one file does not authorize changing the meaning of ano
 
 ## Check and Deliver
 
-Read the complete result for consistency, relevance, and readable structure. Confirm that selected combinations
-are actionable, original valid constraints survive, and no unselected dependencies or new policies
-were introduced. A named role does not prove registration; a plugin name does not select every feature.
-For each new mandatory reading, approval, or capability rule, identify its project source or explicit
-author choice. Remove rules inferred only from this authoring run's permissions or temporary limits.
-Map these content expectations to the actual descriptions in the document. Check practical gaps in
-meaning, not whether headings match this reference; do not manufacture missing sections to fill a table.
-For a capability rebuild, check that every relevant category in the requested area was assessed and
-every confirmed in-scope choice reached the result. Preserving headings and correcting one plugin's
-wording is not enough when an accepted retrieval combination or other workflow update was omitted.
-For in-scope retrieval changes, check that one profile is adopted, its use and skip conditions are
-actionable, and no unchosen profile or mandatory all-tools sequence was copied into the project instructions.
-Explain meaningful retained or changed choices in delivery; keep the assessment out of `AGENTS.md`.
-For initialization, compare the draft with its source documents and selected skills. Keep only a brief
-top-level module description and one general module-reading rule. Remove repeated reading routes
-regardless of formatting, descriptions of nested directories, historical artifacts,
-module internals, protocol or operational details, and internal Skill instructions; their source
-documents own that content. Check that reading requirements and agent-specific duties remain explicit.
-Keep headings and independent responsibilities readable; do not achieve brevity by packing rules together.
+Read the complete result against the scope, selection, entry-format, and content rules above. For
+every adopted capability or new mandate, identify its project source or explicit author choice.
+Check that the entry preserves its adopted scenarios, decision conditions, overlaps, and fallback;
+remove duplicate explanations and invocation mechanics, not scenario coverage. Verify role availability
+before claiming registration and preserve the selected plugin feature scope. For a capability rebuild,
+account for every category in the requested area and every confirmed choice.
+For combined scenarios, check that each selected capability retains its own entry, a distinct
+responsibility, and a usable fallback; keep unselected alternatives in the recommendation conversation.
 
 Compare meaning, headings, and rule separation against the agreed baseline. Check that useful detail
 and distinct responsibilities survived. Account for every changed or deleted heading and rule against

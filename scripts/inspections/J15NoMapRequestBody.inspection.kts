@@ -1,9 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J15 (opt-in): no Map/JsonNode request bodies where a stable typed contract exists.
- * Source: references/java/spring-boot-http-and-domain.md. Level: WEAK_WARNING. The rule's
- * condition is semantic: findings are candidates that need manual confirmation.
+ * Rule J15 (opt-in): flag controller @RequestBody parameters typed as Map or JsonNode; see
+ * Applicability and Findings for the semantic activation condition.
  */
 val j15NoMapRequestBody = localInspection { psiFile, inspection ->
     val RC = "org.springframework.web.bind.annotation.RestController"

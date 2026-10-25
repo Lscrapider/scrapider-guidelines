@@ -1,9 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J9 (opt-in): log with {} placeholders instead of string concatenation. Source:
- * references/java/spring-boot-backend.md, Logging. Level: WEAK_WARNING. Logger recognition
- * is heuristic: a log/logger/LOG/LOGGER-named field or a Logger-typed receiver.
+ * Rule J9 (opt-in): flag concatenation in the first argument of recognized logger calls;
+ * recognition uses a log/logger/LOG/LOGGER-named field or a Logger-typed field.
  */
 val j9ParameterizedLogging = localInspection { psiFile, inspection ->
     val LOG_METHODS = setOf("trace", "debug", "info", "warn", "error")

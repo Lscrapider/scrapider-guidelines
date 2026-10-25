@@ -1,10 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule PY3 (opt-in): vague module names (common/utils/helper/misc) carrying business logic
- * violate the naming rules; pure infrastructure locations are legitimate. Source:
- * references/python/python-code-organization.md, Naming Rules. Level: WEAK_WARNING.
- * Findings are candidates that need manual confirmation. File-level anchor.
+ * Rule PY3 (opt-in): apply vague-name checks only to modules with business logic; exclude
+ * infrastructure-only modules.
  */
 val VAGUE_NAMES = setOf("common", "utils", "util", "helpers", "helper", "misc")
 

@@ -1,18 +1,15 @@
 import com.intellij.psi.*
 
 /**
- * Rule J17: module dependency directions and placement bans for Maven multi-module
- * repositories — lower modules must not import business/bootstrap packages, bootstrap holds
- * no business components, the model module holds no runtime components, and the persistence
- * module holds no controllers. Source: references/java/spring-boot-multi-module.md.
- * Level: ERROR. Config: moduleOf maps package prefixes to modules; it ships with
- * placeholder prefixes, so the running agent replaces them with the target repository's
- * real topology before use — unmatched packages leave the rule inert. Name-suffix checks
- * exclude non-database *Mapper names (ObjectMapper is preset).
+ * Rule J17: for mapped Maven modules, block model imports from business/bootstrap/persistence/
+ * shared, persistence/shared imports from business/bootstrap, and business imports from bootstrap.
+ * Placement bans: model excludes controller/service/advice/database-access classes, bootstrap
+ * excludes controllers/services/database access, and persistence excludes controllers.
+ * Update the moduleOf mappings and banned-import prefixes to the target topology; unmatched
+ * packages are ignored.
+ * EXCLUDED_MAPPER_NAMES excludes name-based collisions (ObjectMapper is preset).
  */
 
-// Repository adaptation: replace the placeholder prefixes with the target repository's
-// real package prefixes and module names; unmatched packages leave the rule inert.
 fun moduleOf(pkg: String): String = when {
     pkg.startsWith("com.example.model.") -> "model"              // entity/contract module
     pkg.startsWith("com.example.persistence.") -> "persistence"  // mapper/manage module

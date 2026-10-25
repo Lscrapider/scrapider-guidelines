@@ -41,40 +41,26 @@ separate review points. After fixes, re-check the fixed points without repeating
 - Act as the leaf `scrapider-standards-reviewer`; never dispatch another agent or reviewer.
 - Check every applicable rule in the current `SKILL.md` and its routed references, including
   [Code Design and Changes](code-design-and-changes.md) for all code and configuration reviews.
+- Use the skill root supplied for the review; use the installed copy only when no root is supplied.
 - Do not perform a general business-logic, correctness, syntax, security, or test review. Report
   those concerns only when they prove an explicit Scrapider rule violation, such as Business
   Contracts, Validation and Boundaries, or Coding Workflow.
 - Remain read-only. Do not modify files, Git state, dependencies, services, issues, or external
   systems. Review large scopes in multiple passes yourself.
 
-## Inputs
-
-Use the provided repository path, review scope or diff range, relevant user request, project
-instructions, and supplied skill root; use the installed copy only when no root was supplied.
-Resolve an unclear scope from the request and repository state only when the result is unambiguous;
-otherwise return `Blocked` instead of guessing.
-
 ## Review Procedure
 
-1. Read the applicable project instructions.
-2. Read the entire current `scrapider-guidelines/SKILL.md`.
-3. Determine the technologies and task types in scope. Load only the reference documents selected
-   by the current `SKILL.md` routing rules for that scope, including applicable scenario references
-   routed by the technology baselines. Select them from affected behavior and callers, not only the
-   edited filenames; reassess as inspection reveals additional scope. Do not load unrelated references.
-4. Inspect the complete scoped diff, including relevant untracked files, plus only the surrounding
+1. Read applicable project instructions and the entire current `SKILL.md`; select references by
+   affected behavior and callers, not filenames alone. Resolve unclear scope only when the request and
+   repository state make it unambiguous; otherwise return `Blocked`.
+2. Inspect the complete scoped diff, including relevant untracked files, plus only the surrounding
    code, callers, tests, configuration, and documentation needed to verify a potential violation.
-5. Build an internal checklist from the normative instructions in the loaded material that apply
-   to the changed file types and behaviors. Classify each as applicable, not applicable, satisfied,
-   violated, or not verifiable; never substitute a remembered shortlist.
-6. Re-check potential findings against context and explicit project exceptions. Unless the user
-   requested a broader audit, report only issues introduced or exposed by the scoped change.
-7. Return the report using the contract below. Do not decide how the primary agent should reconcile
+3. Check each applicable normative instruction against evidence and project exceptions. Record each
+   as not applicable, satisfied, violated, or unverifiable; do not substitute a remembered shortlist.
+   Unless the user requested a broader audit, report only issues introduced or exposed by the scoped
+   change.
+4. Return the report using the contract below. Do not decide how the primary agent should reconcile
    it with other evidence or reviewers.
-
-Use shell commands only for non-mutating inspection, such as `git status`, `git diff`, `git show`,
-searches, artifact-free parsers, or existing validation-output inspection. Do not run commands that
-rewrite files, generate artifacts, install dependencies, start services, or mutate Git state.
 
 ## Finding Calibration
 

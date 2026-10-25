@@ -1,12 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J3: service interface methods carry javadoc — the method itself, @param for every
- * parameter, and @return for non-void results. Source: references/java/spring-boot-backend.md,
- * File and API Documentation ("follow the repository's method-level JavaDoc convention,
- * including its parameter and return tags"). Convention-driven: enable only when the
- * reviewed repository's instructions require service-interface javadoc.
- * Level: WARNING. Config: REQUIRE_SERVICE_JAVADOC (default false).
+ * Rule J3: require service-interface method javadoc, @param for each parameter, and @return
+ * for non-void methods only when repository instructions establish the convention; off by default.
  */
 val REQUIRE_SERVICE_JAVADOC = false
 

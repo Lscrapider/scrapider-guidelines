@@ -4,8 +4,8 @@
 
 Decide whether a check belongs before writing it. Implement the business operation directly using
 existing guarantees; do not start with exhaustive defenses and rely on review to remove them.
-Apply the same standard during review. These are coding decisions, not a requirement to expose
-internal reasoning, write per-field explanations, or produce another checklist for the user.
+Apply the same standard during review. These coding decisions do not require exposing internal
+reasoning, explaining every field, or producing an extra checklist for the user.
 
 A check needs a current business requirement or concrete failure consequence, an actual gap in
 existing guarantees, and a reason to handle that gap here. “Just in case”, “external input”,
@@ -39,10 +39,6 @@ Use the smallest existing mechanism that provides the required behavior. This ap
   If the actual path permits an unintended write, address that mapping or permission boundary;
   do not use a hypothetical risk to justify an exact-field gate on every payload.
 
-Example: an operation consumes `orderId` and `quantity`. Adding an unused `displayLabel` must not
-make the request fail. Whether `quantity` satisfies the actual ordering rule is a separate business
-question; it does not justify inspecting all incoming keys.
-
 ## Trust Guarantees on the Actual Call Path
 
 - Once an entry point or caller establishes a condition, downstream functions consume it directly
@@ -59,10 +55,6 @@ question; it does not justify inspecting all incoming keys.
   concurrency. Address that gap rather than rechecking the entire payload.
 - Preserve atomic conditional updates, uniqueness constraints, and state-transition guards that
   protect concurrent operations. An earlier read is not a substitute for protection at the write.
-
-Example: `submit` validates a value and passes it unchanged to its only helper `save`. The helper
-uses it directly. Add a new boundary check if a later change introduces a real caller that does not
-establish the condition, not in anticipation of that hypothetical change.
 
 ## Use Existing Type, Framework, and Storage Guarantees
 
@@ -109,16 +101,13 @@ establish the condition, not in anticipation of that hypothetical change.
 
 ## Apply the Same Standard in Review
 
-Assess the actual guarantees and consequences in the scoped code. Report unnecessary restrictions,
-repeated checks, and exception plumbing when their redundancy is supported by the current path.
-Do not propose missing checks without identifying a concrete required behavior that existing
-mechanisms fail to provide. “More defensive” and “covers every case” are not review findings.
+Assess actual guarantees and business consequences; report a missing or redundant check only when
+the affected behavior demonstrates the gap or redundancy. Do not add checks solely for strictness or
+defensiveness. The number of checks or use of a validator does not determine quality; business
+branches for status, routing, permissions, and eligibility remain necessary when their behavior
+requires them.
 
-Neither the number of `if` statements nor replacing them with a validator determines quality.
-Business branches for status, routing, permissions, and eligibility remain ordinary necessary code.
-An already-correct implementation needs no extra checks or abstractions to satisfy this reference.
-
-When editing existing code, establish what a check protects before removing it. This reference does
-not authorize broad deletion of unrelated checks or silent changes to established error, retry,
-or protocol behavior. A request to remove overvalidation authorizes the scoped simplification;
-do not preserve a demonstrated redundant check merely because it already exists.
+Before removing an existing check, establish what it protects. This reference does not authorize
+broad deletion of unrelated checks or silent changes to established error, retry, or protocol
+behavior. A request to remove overvalidation authorizes the scoped simplification; do not preserve a
+demonstrated redundant check merely because it already exists.

@@ -1,9 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J10: compare enums with ==, never equals or ordinal() comparisons. Source:
- * references/java/spring-boot-backend.md, Utilities and Value Handling. Level: WARNING.
- * Enum receivers are detected via super types containing java.lang.Enum<...>.
+ * Rule J10: flag enum equals() calls and ordinal() calls used in binary comparisons; enum
+ * receiver types are detected through their resolved supertypes.
  */
 val j10EnumIdentityComparison = localInspection { psiFile, inspection ->
     psiFile.descendantsOfType<PsiMethodCallExpression>().forEach { call ->

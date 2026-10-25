@@ -56,7 +56,6 @@ responsibility boundaries, and refactoring.
   validation or otherwise change required semantics.
 - Prefer a precise query over loading a full collection and filtering in memory when ordering and
   conditions are equivalent. Keep the full read when the caller needs it or equivalence is unproven.
-- If the change grows large, check whether a smaller direct implementation solves the same problem.
 
 ## Abstraction and Responsibility
 
@@ -65,20 +64,19 @@ responsibility boundaries, and refactoring.
   or stable multi-step operation. A name or architectural pattern alone is not a responsibility.
 - Do not add a layer merely to forward or rename a call, perform a trivial null/empty check, or make
   a short method look organized. Remove intermediate calls that own no behavior or contract.
-- A private function in an existing file is not an architectural layer. Extract one when it removes
-  verified duplication or materially improves readability. Do not create a cross-file abstraction
-  solely for hypothetical reuse or split cohesive code for theoretical extensibility. A required
-  responsibility boundary can have one caller; caller count alone does not justify or forbid it.
+- Extract private helpers for verified duplication or materially improved readability; a private
+  helper is not an architectural layer. Add cross-file abstractions only for a stable, present shared
+  responsibility that reduces the work needed to understand or change it. Do not split cohesive code
+  for hypothetical reuse or theoretical extensibility. Weigh that benefit against added indirection,
+  inheritance, and dependencies; a required boundary can have one caller. Repeated trivial delegation
+  or result construction alone does not justify a layer. Preserve needed semantic entry points without
+  another dispatch or forwarding layer.
 - Keep distinct handlers, strategies, or stage-specific classes when they represent actual dispatch
   identities, business semantics, state keys, or lifecycle stages, even if their bodies match today.
   Identical text alone does not prove interchangeable responsibilities.
 - Decide keep-versus-merge from code, documentation, tests, callers, and the request. Ask only if an
   unresolved choice changes registered identities, lifecycle stages, public or business contracts,
   or an established extension boundary. Explain the concrete tradeoff once.
-- Extract shared behavior only when it is stable and reduces the work needed to understand or
-  change it. Weigh removed duplication against added indirection, inheritance, and dependencies;
-  repeated trivial delegation or result construction alone does not justify a shared layer.
-  Preserve needed semantic entry points without adding another dispatch or forwarding layer.
 
 ## Refactoring and Replacement
 
@@ -103,10 +101,6 @@ responsibility boundaries, and refactoring.
   branch, mode switch, or adapter merely to hide a broken invariant or keep obsolete code working.
   Required external SDK/protocol conversion remains a valid boundary, not permission for a bridge
   between superseded internal versions.
-
-Example: when replacing `loadOld` with `load`, update its callers and remove `loadOld`. Keeping
-`loadOld(...) -> load(...)`, trying `load` then falling back to `loadOld`, or accepting both signatures
-leaves the obsolete contract alive and violates the replacement rule.
 
 ## Existing Deployment Boundaries
 

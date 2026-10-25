@@ -7,11 +7,6 @@ query/ORM calls, persistence behavior, or conditions that affect persistence eve
 indirectly outside `manage` or `mapper`. Apply the same routing during implementation, refactoring,
 debugging, and review.
 
-Read the [Spring Boot Backend](spring-boot-backend.md) baseline first; reuse it if already read and
-unchanged for this task. It supplies repository precedence, core layering, configuration and contract
-rules, credentials guidance, and Java conventions. Load the architecture,
-HTTP/domain, or messaging references only when their own routing triggers also apply.
-
 ## Manage
 
 - Apply these rules only when the repository already has a `manage` layer or the user explicitly

@@ -1,14 +1,10 @@
 import com.intellij.psi.*
 
 /**
- * Rule J19: no silently swallowed exceptions, in two tiers.
- * Tier 1 (always on, purely structural): an empty catch block — zero statements — swallows
- * the exception with no handling at all.
- * Tier 2 (convention-driven, DETECT_SILENT_SWALLOW): a non-empty catch block that never
- * references the exception, logs nothing, and throws nothing. InterruptedException is
- * exempt (the standard interrupt-restore pattern). Defined by the inspection library;
- * enable when the reviewed repository's instructions require logging swallowed exceptions.
- * Level: WARNING. Config: DETECT_SILENT_SWALLOW (default false).
+ * Rule J19: always flag empty catches; flag non-empty catches only when
+ * DETECT_SILENT_SWALLOW is enabled and they do not reference the exception, call a method named
+ * trace/debug/info/warn/error/log, or contain a throw keyword. Non-empty InterruptedException
+ * catches are exempt; the non-empty check is disabled by default.
  */
 val DETECT_SILENT_SWALLOW = false
 

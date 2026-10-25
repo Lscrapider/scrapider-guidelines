@@ -1,9 +1,7 @@
 import com.intellij.psi.*
 
 /**
- * Rule PY1: Python module file names are snake_case. Source: references/python/
- * python-code-organization.md, Naming Rules. Level: WARNING. Text-level check; no Python
- * plugin needed. File-level anchor: the message carries the verdict token.
+ * Rule PY1: require Python module filenames to match ASCII snake_case.
  */
 val py1SnakeCaseModuleName = localInspection { psiFile, inspection ->
     val name = psiFile.name

@@ -52,7 +52,7 @@ Do not write an approximate version first and rely on later visual corrections.
 
 - Treat spacing, alignment, fixed dimensions, row height, button width, and padding as functional quality.
 - Decide stable column widths, row heights, horizontal weights, and touch targets before filling content.
-- Keep primary actions reachable by thumb when practical.
+- Prefer thumb-reachable placement for primary actions.
 - Preserve enough visual area for the primary scene, such as map, content, camera, or editor surface.
-- Do not let text, borvxes, icons, or dynamic content resize controls unexpectedly.
+- Do not let text, borders, icons, or dynamic content resize controls unexpectedly.
 - Verify that text fits and aligns on realistic mobile widths.

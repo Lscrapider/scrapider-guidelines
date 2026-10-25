@@ -8,7 +8,6 @@ baseline first; reuse it if already read and unchanged for this task.
 
 - [Business Module Boundaries](#business-module-boundaries)
 - [Common Python Package Roles](#common-python-package-roles)
-- [Flat Directory Anti-Patterns](#flat-directory-anti-patterns)
 - [Splitting Rules](#splitting-rules)
 
 ## Business Module Boundaries
@@ -91,55 +90,6 @@ Use only the roles that fit the current project.
 - `pipelines`: ETL, ingestion, chunking, parsing, indexing, or data processing pipelines.
 - `config`: Runtime settings, environment parsing, feature flags.
 - `utils`: Small generic helpers only. Do not dump business, agent, training, or pipeline logic here.
-
-## Flat Directory Anti-Patterns
-
-Avoid flat structures that mix unrelated capabilities and business domains:
-
-```text
-src/
-  agent.py
-  train.py
-  dataset.py
-  model.py
-  eval.py
-  prompts.py
-  tools.py
-  vector_store.py
-  openai_client.py
-  preprocess.py
-  inference.py
-```
-
-Prefer packages with clear ownership:
-
-```text
-src/
-  agents/
-    research_agent.py
-  tools/
-    search_tools.py
-  prompts/
-    research_prompts.py
-  retrievers/
-    hybrid_retriever.py
-  training/
-    trainer.py
-  datasets/
-    qa_dataset.py
-  models/
-    reranker.py
-  evaluation/
-    rag_eval.py
-  inference/
-    generator.py
-  clients/
-    llm_client.py
-    vector_store_client.py
-  pipelines/
-    document_ingestion.py
-    preprocessing.py
-```
 
 ## Splitting Rules
 

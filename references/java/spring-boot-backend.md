@@ -79,14 +79,12 @@ at the backend boundary when temporary direct access is required.
 ### Dependency Injection, Configuration, and Lombok
 
 - Use constructor injection for required Spring dependencies, and declare injected fields `final`.
-- If Lombok is already available and its use matches the repository, `@RequiredArgsConstructor`
-  is acceptable.
 - Do not add Lombok solely for dependency injection. Avoid `@Autowired` field injection.
 - Bind related configuration values through typed `@ConfigurationProperties` classes, following
   the repository's existing configuration pattern.
 - Reserve `@Value` for isolated values when a dedicated properties class would add no clarity.
-- Use Lombok only when it is already a project dependency and follows the established style.
-- Prefer focused Lombok annotations such as `@Getter`, `@Setter`, and
+- Use Lombok only when it is already a project dependency and follows the established style;
+  prefer focused annotations such as `@Getter`, `@Setter`, and
   `@RequiredArgsConstructor`.
 - Avoid broad `@Data` when generated setters, `equals`, `hashCode`, or `toString` are not all part
   of the intended contract.
@@ -154,11 +152,7 @@ at the backend boundary when temporary direct access is required.
 
 ## Scenario Reference Routing
 
-Use the same routing for implementation, refactoring, debugging, and review. Choose references by
-the behavior and call paths that the task or code inspection shows are affected. These references
-are additive, not mutually exclusive; load every applicable reference for a mixed task. Inspect the
-relevant code and callers when the trigger is uncertain, then load the relevant reference if the
-connection remains unclear. If the scope expands, add the newly applicable references.
+Load every scenario reference whose trigger matches the behavior or call paths affected:
 
 | Reference | Load when the task or affected code path involves |
 | --- | --- |
@@ -166,6 +160,3 @@ connection remains unclear. If the scope expands, add the newly applicable refer
 | [Spring Boot HTTP and Domain](spring-boot-http-and-domain.md) | HTTP/controller boundaries; data contracts for internal layer transfer or third-party responses, including choosing their representation; `Param`/`DTO`/`PO`/`VO`; and any bean/object conversion, including object-to-Map and Map-to-object conversion. This includes service return contracts across those boundaries. |
 | [Spring Boot Data Access](spring-boot-data-access.md) | Adding or changing database access, including query/ORM calls, persistence behavior, or conditions that affect persistence even when changed indirectly outside `manage` or `mapper`. |
 | [Spring Boot Messaging](spring-boot-messaging.md) | Adding or changing message production, consumption, payloads, routing, or listener/publisher behavior, including indirect changes to those paths. |
-
-Database access and messaging references are conditional; an ordinary Spring Boot task does not load
-them unless its affected behavior or call path meets the trigger above.

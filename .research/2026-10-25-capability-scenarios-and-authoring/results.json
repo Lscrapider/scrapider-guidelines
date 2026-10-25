@@ -1,0 +1,325 @@
+{
+  "date": "2026-10-25",
+  "methodology": "Four project/mode fixtures; final drafts include parent review. Earlier iterations reused agent history and are not independent fresh-context samples.",
+  "records": {
+    "orvx-init": {
+      "raw_sha256": "16f764e9e9020339f53590982c9da056beef6075bd667d79f4dc4db02e43c854",
+      "reviewed_sha256": "52258fa35817c04f4536ec74bd4864c974f33ba6ae83284ca2c4c8fde01cb56c",
+      "raw_excerpt": "orvx-init-raw.md",
+      "reviewed_excerpt": "orvx-init-reviewed.md"
+    },
+    "orvx-rebuild": {
+      "raw_sha256": "f281616f132786c8b6e13488cd9a56cf867c428ddbd9558e7bb9e7613bd24cf1",
+      "reviewed_sha256": "df000f746ce1823d69c23cc05f8061a3f0aef5940ca1c250144221fd22020b62",
+      "raw_excerpt": "orvx-rebuild-raw.md",
+      "reviewed_excerpt": "orvx-rebuild-reviewed.md"
+    },
+    "finance-init": {
+      "raw_sha256": "6a90992583a57e9ae0794e883b3139ffdeebb3219b662ad4be5a5929ba805a41",
+      "reviewed_sha256": "9a0468df20fb78b02f5fba6a3fe463913b604d222ff4483062c6f0ff100f332d",
+      "raw_excerpt": "finance-init-raw.md",
+      "reviewed_excerpt": "finance-init-reviewed.md"
+    },
+    "finance-rebuild": {
+      "raw_sha256": "4b6d0aba0e0f826e3d1f5e630c975b9aeffd194305b41a14576cb6b463ed1ea6",
+      "reviewed_sha256": "2f58a7b5c839cb8e6d37165d1b37a419eb4c68007391b289d6626ba863fd9038",
+      "raw_excerpt": "finance-rebuild-raw.md",
+      "reviewed_excerpt": "finance-rebuild-reviewed.md"
+    }
+  },
+  "reviewed_draft_checks": {
+    "orvx-init": {
+      "reviewed_document_sha256": "52258fa35817c04f4536ec74bd4864c974f33ba6ae83284ca2c4c8fde01cb56c",
+      "jetbrains_entry": {
+        "rename": true,
+        "diagnostics": true,
+        "incremental_compile": true,
+        "dependency_symbols": true,
+        "formatting": true,
+        "debugging": true,
+        "reflection_guard": true,
+        "project_target": true,
+        "unambiguous_native_option": true,
+        "local_fallback": true,
+        "no_main_agent_inspections": true
+      },
+      "context7_entry": {
+        "selection_upgrade": true,
+        "version_sensitive_gap": true,
+        "identity_guard": true,
+        "declared_version_priority": true,
+        "compile_guard": true,
+        "official_fallback": true
+      },
+      "duplicate_field_labels": [],
+      "rebuild_outside_preserved": null,
+      "input_count": 32,
+      "missing_inputs": [],
+      "mutated_inputs": [],
+      "unexpected_files": [],
+      "real_source_document_changes": [],
+      "stage": "Parent-reviewed draft; raw generation and pre-ownership review retained separately. This is not an unassisted generation pass."
+    },
+    "orvx-rebuild": {
+      "reviewed_document_sha256": "df000f746ce1823d69c23cc05f8061a3f0aef5940ca1c250144221fd22020b62",
+      "jetbrains_entry": {
+        "rename": true,
+        "diagnostics": true,
+        "incremental_compile": true,
+        "dependency_symbols": true,
+        "formatting": true,
+        "debugging": true,
+        "reflection_guard": true,
+        "project_target": true,
+        "unambiguous_native_option": true,
+        "local_fallback": true,
+        "no_main_agent_inspections": true
+      },
+      "context7_entry": {
+        "selection_upgrade": true,
+        "version_sensitive_gap": true,
+        "identity_guard": true,
+        "declared_version_priority": true,
+        "compile_guard": true,
+        "official_fallback": true
+      },
+      "duplicate_field_labels": [],
+      "rebuild_outside_preserved": true,
+      "input_count": 32,
+      "missing_inputs": [],
+      "mutated_inputs": [],
+      "unexpected_files": [],
+      "real_source_document_changes": [],
+      "stage": "Parent-reviewed draft; raw generation and pre-ownership review retained separately. This is not an unassisted generation pass."
+    },
+    "finance-init": {
+      "reviewed_document_sha256": "9a0468df20fb78b02f5fba6a3fe463913b604d222ff4483062c6f0ff100f332d",
+      "jetbrains_entry": {
+        "rename": true,
+        "diagnostics": true,
+        "incremental_compile": true,
+        "dependency_symbols": true,
+        "formatting": true,
+        "debugging": true,
+        "reflection_guard": true,
+        "project_target": true,
+        "unambiguous_native_option": true,
+        "local_fallback": true,
+        "no_main_agent_inspections": true
+      },
+      "context7_entry": {
+        "selection_upgrade": true,
+        "version_sensitive_gap": true,
+        "identity_guard": true,
+        "declared_version_priority": true,
+        "compile_guard": true,
+        "official_fallback": true
+      },
+      "duplicate_field_labels": [],
+      "rebuild_outside_preserved": null,
+      "input_count": 83,
+      "missing_inputs": [],
+      "mutated_inputs": [],
+      "unexpected_files": [],
+      "real_source_document_changes": [],
+      "stage": "Parent-reviewed draft; raw generation and pre-ownership review retained separately. This is not an unassisted generation pass."
+    },
+    "finance-rebuild": {
+      "reviewed_document_sha256": "2f58a7b5c839cb8e6d37165d1b37a419eb4c68007391b289d6626ba863fd9038",
+      "jetbrains_entry": {
+        "rename": true,
+        "diagnostics": true,
+        "incremental_compile": true,
+        "dependency_symbols": true,
+        "formatting": true,
+        "debugging": true,
+        "reflection_guard": true,
+        "project_target": true,
+        "unambiguous_native_option": true,
+        "local_fallback": true,
+        "no_main_agent_inspections": true
+      },
+      "context7_entry": {
+        "selection_upgrade": true,
+        "version_sensitive_gap": true,
+        "identity_guard": true,
+        "declared_version_priority": true,
+        "compile_guard": true,
+        "official_fallback": true
+      },
+      "duplicate_field_labels": [],
+      "rebuild_outside_preserved": true,
+      "input_count": 83,
+      "missing_inputs": [],
+      "mutated_inputs": [],
+      "unexpected_files": [],
+      "real_source_document_changes": [],
+      "stage": "Parent-reviewed draft; raw generation and pre-ownership review retained separately. This is not an unassisted generation pass."
+    }
+  },
+  "static_checks": {
+    "formal_files": 54,
+    "inspection_scripts": 23,
+    "local_links": 215,
+    "formal_errors": [],
+    "examples": {
+      "capability-entries.md": {
+        "peer_entries": 5
+      },
+      "design-and-coding.md": {
+        "peer_entries": 27
+      },
+      "ide-and-library-docs.md": {
+        "peer_entries": 14
+      },
+      "planning-and-collaboration.md": {
+        "peer_entries": 16
+      },
+      "retrieval.md": {
+        "peer_entries": 25
+      }
+    },
+    "peer_entries_total": 87,
+    "installed_matches": 54,
+    "archives": [
+      {
+        "file": ".research/2026-10-24-jetbrains-context7-capability-pilot/DRAFT-agents-md-capability-section.md",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      },
+      {
+        "file": ".research/2026-10-24-jetbrains-context7-capability-pilot/DRAFT-capability-recommendations-entry.md",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      },
+      {
+        "file": ".research/2026-10-24-jetbrains-context7-capability-pilot/HANDOFF-INSPECTION.md",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      },
+      {
+        "file": ".research/2026-10-24-jetbrains-context7-capability-pilot/HANDOFF-PROMPT.md",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      },
+      {
+        "file": ".research/2026-10-24-jetbrains-context7-capability-pilot/PROTOCOL-ROUND2.md",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      },
+      {
+        "file": ".research/2026-10-24-jetbrains-context7-capability-pilot/PROTOCOL.md",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      },
+      {
+        "file": ".research/2026-10-24-jetbrains-context7-capability-pilot/REPORT.md",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      },
+      {
+        "file": ".research/2026-10-24-jetbrains-context7-capability-pilot/metrics.csv",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      },
+      {
+        "file": ".research/2026-10-24-inspection-kts-rule-library/REPORT.md",
+        "findings": [],
+        "unchanged_from_audit_start": true
+      }
+    ]
+  },
+  "runtime": {
+    "jetbrains": {
+      "server": "IntelliJ IDEA MCP Server",
+      "server_version": "2026.1.3",
+      "advertised_tools": 55,
+      "open_project": "ORVX",
+      "open_project_modules": 19,
+      "finance_project_open": false,
+      "file_diagnostics_errors": 0,
+      "J7_compilation_success": true,
+      "J7_candidate_count": 1,
+      "J7_candidate_line": 2,
+      "rename": {
+        "updated_usages": 2,
+        "old_symbol_occurrences": 0,
+        "new_symbol_occurrences": 3
+      },
+      "formatting_changed_layout": true,
+      "probe_cleaned": true,
+      "not_run": [
+        "incremental build",
+        "third-party symbol-info runtime probe",
+        "debugger session"
+      ]
+    },
+    "context7": {
+      "identity_mismatch_probe": "FastExcel query for cn.idev:fastexcel resolved to a different library; rejected before docs query.",
+      "positive_probe": "Resolved MyBatis-Plus and queried its official documentation for pagination dependency/version requirements.",
+      "fallback_probe": "Official FastExcel repository lookup confirmed its redirect; no private project source was sent."
+    }
+  },
+  "new_archive_check": {
+    "files": 10,
+    "identity_findings": 0,
+    "credential_candidates": 0,
+    "broken_local_links": 0
+  },
+  "final_skill_sha256": {
+    "SKILL.md": "3661b05e8ab602f24e782b8a485d07369ac65ad5dbb97c058d46a9e5534404df",
+    "references/android/android-kotlin-compose.md": "7085522ffa2e67135f0bc6bfec30ea7d157e0a5b8b4287aa5281189fc6bce29e",
+    "references/android/android-product-ui-design.md": "4b299eed573096b221b83b2a37cdd19e54e97b9b6c9da0db4a862a1cb4564717",
+    "references/android/android-ui-implementation-from-design.md": "5dc034773192647d4d1c1c0dcc730a33cfeb754978b850fa243c2dc6d55a4460",
+    "references/java/spring-boot-architecture.md": "fb1250da2c1a77c0bd37ba61255353d482b713d45ab10f92962d3c3a859e0bf2",
+    "references/java/spring-boot-backend.md": "16a1a74f091fb535996b95df8120757a3bd4ca9ce7a67aeae8a9ff13014c645f",
+    "references/java/spring-boot-data-access.md": "715eadaef2545ec3a34bed57f372f7b8122d9a3130596c82c3ddc835e7d8c0bf",
+    "references/java/spring-boot-http-and-domain.md": "914fb00b07297daeec19916b7231a73f00ea15f1232061d3c443f8381d5a17fa",
+    "references/java/spring-boot-messaging.md": "4bf3f2aca164f6c994e54e190094011e458c35483f20c4b58383aee4ec43b0ab",
+    "references/java/spring-boot-multi-module.md": "57576b5af714092906a0644eeee02888c239e06ebb1abe46311c73e3d8664807",
+    "references/project/agents-md-authoring.md": "ba3576c03ef7237d2a8d0783a4dacac19b13e0d1b20555ea51fcf082a1c65f20",
+    "references/project/capability-recommendations.md": "0c93e2b455d88e810ace45b4bb921071eba3940eb9c81427f4885ea577c8305d",
+    "references/project/examples/capability-entries.md": "02f4a45777807764b99a4b96d1b1c2fde62fdcaccf2151d6dcac0b919f499221",
+    "references/project/examples/design-and-coding.md": "3c6cd475dcab3c64148d3f203971242f4d0467150ba3f11a3986f57208ca75dc",
+    "references/project/examples/ide-and-library-docs.md": "d3695e345e45e7f6deef67ef87bb252eae613dba47663be0bd4a90e10cf56a82",
+    "references/project/examples/planning-and-collaboration.md": "4feba1e7f061baa3776b3324a557e1590610660380eb5d5b710e9bb3a0127fa3",
+    "references/project/examples/retrieval.md": "0fa4796cee3d4c7669a8b256464c5ab3c4e133f1bba0dc2e52c11a41b58983f2",
+    "references/python/python-code-organization.md": "e98b2374c1c3597599c67a7e3e29ee868252ab2686fecd5ae9a11f88b38294d1",
+    "references/python/python-package-layout.md": "ec10b9a410ec6feb573c1b274833140bd8db1f58b449a722ecfb84a7fccd5f08",
+    "references/shared/code-design-and-changes.md": "1c72c5c84fcbd1bb249aca23ce898191b7fca1385f8e87a7d0655f2952fdc022",
+    "references/shared/full-stack-docker-compose-ci-deployment.md": "7661b0a247970d925bb737ef7dd241e599d65fe00ea4d2b38df35316115854fe",
+    "references/shared/git-commits.md": "6ee9612f23fd751eb7c7bc02dcea8c3f12fc14b672c5bda2486c45f52224c032",
+    "references/shared/inspection-scripts.md": "469952047d11633e98f9bd6ba74f452c714f0457d9754597e4a0a88dcd733b6b",
+    "references/shared/standards-review.md": "a68af6396f8b407ac78e48a77c16ff538209584d8bc67d11644b7ad40540f36d",
+    "references/shared/validation-and-boundaries.md": "0963e4a154b53833decc4c1472e9ae8bd5d5faf7133553adee936da47d9aaecd",
+    "agents/scrapider-code-reviewer.md": "ca30b31aac9c4f6364405f10f00776bea2722c304bd0371262916ce4ce9b588d",
+    "agents/scrapider-developer.md": "ec22700c46b6d2a847418af94fa67f0665f36a296cdc5f6d8bab811240efab5d",
+    "agents/scrapider-explorer.md": "a5e481787606f817b571fa3f2ea15b9316099fa2186f40c8b23037ad37b573d1",
+    "agents/scrapider-generalist.md": "36252dcfc4a92b8a51631332ced7cb6ac89e1c4555e2b7eca891ccbe26aea6fd",
+    "agents/scrapider-standards-reviewer.md": "bf0d50be01d1fb786b7222968dcf765f4b4000c1d909e97bfae428eb6b17df30",
+    "agents/openai.yaml": "1944533fa63a8a5a9bf6c25b1744417974c884fbe2294dad112bd162eec9d6f7",
+    "scripts/inspections/BatchAllRules.inspection.kts": "417ecad903136e037c77bfae522ab70ba8cc5fe42a18f36022d9ca537116c27e",
+    "scripts/inspections/J10EnumIdentityComparison.inspection.kts": "6eab8ace56dbd636163e11af846d803d98585d38b3dba3931f93bdfabe2a8edb",
+    "scripts/inspections/J11NoUtilityStaticImport.inspection.kts": "fca924e5ddbabd927cd8a0e3ec1edb6a8b1ca9642a2a132a2ec76beddbcc2497",
+    "scripts/inspections/J12ExplicitThisQualifier.inspection.kts": "1956e84bd41e2f0e05ad1402258c0b24ed9b210afcecd5ae43aaf19303bd90d5",
+    "scripts/inspections/J13ControllerNoPOReturn.inspection.kts": "948cb961b5699454ab36d3a174ebd0f83323dec1a62211e4eba121468eb0c6ac",
+    "scripts/inspections/J14NoLocalExceptionHandler.inspection.kts": "3aaad350e980995875cbb736815ddc4938a5a778d9eaee6a798132f6c4e6403a",
+    "scripts/inspections/J15NoMapRequestBody.inspection.kts": "06fca49a6e21eb44f83256dd4274a66a3cb6df98b2ef90b4fbafb4bd077c2861",
+    "scripts/inspections/J16PackageSuffixAlignment.inspection.kts": "ecb72c9c937e6f467ac8dfc752d7e3e736d6f3ac0384f9152b35c79945ca8b0c",
+    "scripts/inspections/J17ModuleDependencyDirection.inspection.kts": "a3e4c3657a742b31c58be44410b760c3237687a372b4dbdb6f03de042480da31",
+    "scripts/inspections/J18MybatisPlusConfigOnly.inspection.kts": "8b03ea04b89c5a60fa972f57fd3fab29713b9538e795e5b6d6fd650c47c61f99",
+    "scripts/inspections/J19NoSilentCatch.inspection.kts": "c06790ef4bc4fab5e160ce92cd482040c825a8297530a1e86765749d76107fed",
+    "scripts/inspections/J1ControllerNoMapperOrManage.inspection.kts": "a51ca21b417a7bdede38d01825c304cb4749a554dcc72c8a87fbdfff7a2ca118",
+    "scripts/inspections/J2ServiceNoDirectMapper.inspection.kts": "866e91857f499c11cb42b5e09ec05937ed942f375b182766f05b936d25836b72",
+    "scripts/inspections/J3ServiceInterfaceJavadoc.inspection.kts": "59013a22751e55ff50b1d675ef05944c3da7805d84a31ef490262ae3f978ddab",
+    "scripts/inspections/J4FileHeaderJavadoc.inspection.kts": "f11a85376515c672b48862c13057b9fcbcd4e476cf4fc046cc2d3788733a0a0c",
+    "scripts/inspections/J5ParamFieldComment.inspection.kts": "9049597680517e49ef461ae80c2b56ee03165a51ba0b849572efe6428ab36ed6",
+    "scripts/inspections/J6NoAutowiredFieldInjection.inspection.kts": "a3e17ea5568da8c2c379a18c3c50617c0bfab18a52a4edf0ac087dbd178acdde",
+    "scripts/inspections/J7NoWildcardImport.inspection.kts": "0731ea433ea85843263fac1e2c27184c586dd4c5bf1c3502e9be7621d2838221",
+    "scripts/inspections/J8NoDebugOutput.inspection.kts": "f141b8907a6790bd61999886932ae59e7059b9f24164ab9f4fbfff8d551bbb47",
+    "scripts/inspections/J9ParameterizedLogging.inspection.kts": "2fffc5332247b25ca321ad8cd6411a483381777d3483284e28271cbc23c28e01",
+    "scripts/inspections/PY1SnakeCaseModuleName.inspection.kts": "599898cfd6f49cd68407549dfa0751c7138969b531855e31b6d84c03114316e6",
+    "scripts/inspections/PY2NoSysPathMutation.inspection.kts": "4b1075bf62a26cb13b88925bdda8c66068b9b09f5a75b06f7887c4d1aa29aedb",
+    "scripts/inspections/PY3NoVagueModuleName.inspection.kts": "1202a5f7373644e7fccc429bbba65a0f70fd170f3da75580c12a574d76f4eb34"
+  }
+}

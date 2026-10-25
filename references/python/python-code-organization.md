@@ -32,8 +32,8 @@ was not mentioned in the request.
 
 ## Classes, Inheritance, and Wrappers
 
-- Prefer plain functions and direct calls. Introduce a class only when it owns state, implements a protocol, or groups several methods sharing that state; do not create `XManager`, `XService`, `XHelper`, or `XWrapper` classes around logic that works as functions.
-- Do not write forwarding wrappers — a class or function whose body only calls another existing class or function. Call the target directly or pass it as a callable. A package may expose its current API through a re-export, but must not retain old names or import paths as compatibility aliases.
+- Prefer plain functions and direct calls. Use a class only when it owns state, implements a protocol, or groups methods around that state; avoid `XManager`, `XService`, `XHelper`, or `XWrapper` classes and forwarding functions that only delegate to existing logic.
+- Call the target directly or pass it as a callable. A package may re-export its current API, but must not retain old names or import paths as compatibility aliases.
 - When a new type genuinely specializes an existing class with a stable, project-controlled base, inherit explicitly instead of wrapping and forwarding.
 - Prefer composition over inheritance when the base is a third-party or fast-moving class, such as an SDK or model client; do not inherit from those unless the project already does.
 - Allow a wrapper only when it owns a real responsibility, following [Code Design and Changes](../shared/code-design-and-changes.md). External SDK or protocol conversion and internal transaction or authorization boundaries can qualify; merely forwarding internal calls does not.
@@ -52,10 +52,10 @@ was not mentioned in the request.
 - Prefer absolute imports from the project package when that is the existing style.
 - Keep package `__init__.py` minimal. Do not hide large side effects there.
 - Fix import problems at the package, installation, or entry-point configuration that owns them. Do not add `sys.path` mutations to keep obsolete module locations or broken package structure working.
-- Avoid circular imports; move shared contracts, constants, and small shared types into a lower-level shared module only when needed.
+- Avoid circular imports; move a shared contract, constant, or small type into a lower-level module when multiple packages need it.
 
 ## Tests
 
-- Mirror the source package structure in tests when practical.
+- Prefer test packages that mirror the source package structure.
 - Put shared test fixtures in the existing fixture or `conftest.py` pattern.
 - Do not place tests for unrelated modules in one large test file.

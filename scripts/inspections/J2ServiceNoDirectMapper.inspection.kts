@@ -1,10 +1,9 @@
 import com.intellij.psi.*
 
 /**
- * Rule J2: services must not inject *Mapper directly; applies only in repositories with a
- * manage layer. Source: references/java/spring-boot-backend.md, Core Layered Architecture.
- * Level: WARNING. Config: REQUIRE_MANAGE_LAYER=false for repositories without a manage
- * layer; EXCLUDED_TYPES holds *Mapper-named non-database types (ObjectMapper is preset).
+ * Rule J2: flag *Mapper fields in @Service classes, *ServiceImpl classes, and *Service
+ * interfaces only when REQUIRE_MANAGE_LAYER is true; disable it without a manage layer and
+ * exclude name collisions with EXCLUDED_TYPES (ObjectMapper is preset).
  */
 val REQUIRE_MANAGE_LAYER = true
 val EXCLUDED_TYPES = setOf("com.fasterxml.jackson.databind.ObjectMapper")

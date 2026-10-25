@@ -1,10 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J1: controllers must not inject *Mapper / *Manage types (fields and constructor
- * parameters). Source: references/java/spring-boot-backend.md, Core Layered Architecture.
- * Level: ERROR. Config: EXCLUDED_TYPES holds *Mapper-named types that are not database
- * access (Jackson ObjectMapper is preset).
+ * Rule J1: flag controller fields and constructor parameters typed as database *Mapper or *Manage.
+ * Add non-database name collisions to EXCLUDED_TYPES (ObjectMapper is preset).
  */
 val EXCLUDED_TYPES = setOf("com.fasterxml.jackson.databind.ObjectMapper")
 

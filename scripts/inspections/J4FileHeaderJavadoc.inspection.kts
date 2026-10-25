@@ -1,13 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J4: class header javadoc carries the repository's template tags. Source:
- * references/java/spring-boot-backend.md, File and API Documentation ("inspect equivalent
- * files and repository instructions for a required file-level JavaDoc template... follow an
- * established template exactly; do not impose one when the repository has no such rule").
- * Convention-driven: fill REQUIRED_TAGS with the repository's template tags; it stays empty
- * (= check disabled) for repositories without a header template.
- * Level: WARNING. Config: REQUIRED_TAGS (default empty = off).
+ * Rule J4: require configured tags in class-header javadoc only when the repository has a
+ * header template; an empty REQUIRED_TAGS disables the check.
  */
 val REQUIRED_TAGS = emptyList<String>()
 

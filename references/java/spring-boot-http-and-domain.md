@@ -8,12 +8,6 @@ bean/object conversion, including object-to-Map and Map-to-object conversion. Th
 return contracts across those boundaries. Apply the same routing during implementation, refactoring,
 debugging, and review, including examination of existing contracts without a proposed edit.
 
-Read the [Spring Boot Backend](spring-boot-backend.md) baseline first; reuse it if already read and
-unchanged for this task. It supplies repository precedence, core layering, configuration and contract
-rules, credentials guidance, and Java conventions. Load architecture,
-data-access, or messaging references only when the affected behavior or call path also meets their
-routing triggers.
-
 ## HTTP and Controller Boundary
 
 - Use typed `domain.param` Param objects for complex request bodies or query contracts when that

@@ -40,7 +40,8 @@ Choose only the files whose responsibilities actually exist. Related small state
 - `XxxViewModel.kt`: screen state, event handling, and lightweight orchestration.
 - `XxxUiState.kt`: immutable state exposed from ViewModel to UI.
 - `XxxUiEvent.kt`: user actions sent from UI to ViewModel when events are non-trivial.
-- `XxxUiEffect.kt`: one-shot navigation, toast, snackbar, permission, or dialog effects when needed.
+- `XxxUiEffect.kt`: one-shot navigation, toast, snackbar, permission, or dialog actions that should
+  not be replayed from persistent `UiState`.
 - `XxxRepository.kt`: feature or domain data aggregation.
 - `XxxDataSource.kt`, `XxxApi.kt`, or SDK wrapper files: concrete backend, local store, cache, map, location, weather, or persistence access.
 - `XxxMapper.kt`: DTO, entity, SDK object, domain model, or UI model conversion when conversion is not trivial.
@@ -82,7 +83,7 @@ ViewModel exposes UiState -> UI renders UiState -> UI emits Event -> ViewModel h
 - Do not directly display backend error messages, exception names, response bodies, stack traces, or raw error fields to users.
 - Convert backend error codes into user-facing messages through the project's existing error mapper, error state, or resource string system.
 - Unknown or unmapped backend errors must use a generic fallback message.
-- Preserve raw backend error details only in logs, telemetry, or debug tooling when appropriate; do not surface them in normal UI.
+- If raw backend error details are retained, keep them in logs, telemetry, or debug tooling; do not surface them in normal UI.
 - Keep retry, empty, loading, and error states explicit in UI state.
 
 Example shape:
@@ -116,9 +117,10 @@ fun BackendError.toUiError(): UiError =
 
 ## Compose Rules
 
-- Use state hoisting and immutable UI state where practical.
+- Prefer state hoisting and immutable UI state.
 - Prefer `StateFlow` or the project's existing state mechanism from ViewModel to UI.
-- Keep side effects in Compose explicit with APIs such as `LaunchedEffect` only when needed.
+- Use `LaunchedEffect` for suspend work tied to a Composable's entry, exit, or key changes; use
+  `rememberCoroutineScope` for coroutines launched by user event callbacks.
 - Avoid doing network calls, database operations, or business orchestration inside Composables.
 - Extract reusable Composables only when reuse or readability justifies it.
 - Keep preview/sample data separate from backend DTOs and production fixtures.
@@ -130,8 +132,7 @@ fun BackendError.toUiError(): UiError =
 - Keep shared infrastructure in explicit shared modules or packages, such as `core`, `common`, `designsystem`, `network`, or `data`, following the repository's existing naming.
 - Do not create new Gradle modules only for appearance. Add a module only when it has a clear feature boundary, dependency boundary, build boundary, or reuse reason.
 - Keep each Kotlin file cohesive around one primary responsibility. Small related types may remain in the same file when separating them would add navigation without clarifying ownership.
-- A small cohesive feature may keep its Screen, state, event, effect, and lightweight ViewModel
-  together when that matches the repository and is easier to navigate.
+- A small cohesive feature may keep its Screen, state, event, effect, and lightweight ViewModel together when that matches the repository and is easier to navigate.
 - Split a file when it mixes unrelated rendering, orchestration, DTO mapping, fake data, or reusable
   components, or when its size materially impairs review, navigation, or targeted changes.
 

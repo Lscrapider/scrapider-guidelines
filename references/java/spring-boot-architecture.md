@@ -2,16 +2,9 @@
 
 ## Scope and Shared Rules
 
-Load this reference when adding or moving Java files, choosing package responsibilities, or changing
-an existing component's role or responsibility. This includes changes to `handler` or `provider`
-behavior or responsibility and third-party API client behavior or responsibility. For Maven
-multi-module file placement, also load [Spring Boot Multi-Module](spring-boot-multi-module.md).
-
-Read the [Spring Boot Backend](spring-boot-backend.md) baseline first; reuse it if already read and
-unchanged for this task. It supplies precedence, core layering, configuration and contract rules,
-credentials guidance, and Java conventions. Load
-the HTTP/domain, data-access, or messaging references only when the task also meets their routing
-triggers in the backend reference.
+Use this reference when adding or moving Java files, choosing package responsibilities, or changing
+a component's role, including `handler`, `provider`, and third-party API client behavior. For Maven
+multi-module placement, see [Spring Boot Multi-Module](spring-boot-multi-module.md).
 
 ## Package Map
 

@@ -1,9 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J14: no local @ExceptionHandler methods in controllers; use module-level or global
- * @RestControllerAdvice (advice classes are exempt). Source: references/java/
- * spring-boot-http-and-domain.md. Level: ERROR.
+ * Rule J14: flag controller-local @ExceptionHandler methods; @ControllerAdvice and
+ * @RestControllerAdvice classes are exempt.
  */
 val j14NoLocalExceptionHandler = localInspection { psiFile, inspection ->
     val RC = "org.springframework.web.bind.annotation.RestController"

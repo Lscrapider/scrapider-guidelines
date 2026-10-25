@@ -1,9 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J13: controllers must not return PO types, including inside wrapper generics such as
- * IPage<PO> or ApiResponse<PO>; convert to VO at the boundary. Source: references/java/
- * spring-boot-http-and-domain.md. Level: ERROR.
+ * Rule J13: flag controller return signatures containing PO-suffixed types, including wrapper
+ * generics; runtime objects hidden inside Map values are not inspected.
  */
 val j13ControllerNoPOReturn = localInspection { psiFile, inspection ->
     val RC = "org.springframework.web.bind.annotation.RestController"

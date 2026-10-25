@@ -1,9 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J6: no @Autowired field or setter injection; use constructor injection with final
- * fields (Lombok @RequiredArgsConstructor is acceptable). Source: references/java/
- * spring-boot-backend.md, Dependency Injection, Configuration, and Lombok. Level: WARNING.
+ * Rule J6: flag @Autowired fields and methods; use constructor injection for required dependencies
+ * with final fields (Lombok @RequiredArgsConstructor is acceptable).
  */
 val j6NoAutowiredFieldInjection = localInspection { psiFile, inspection ->
     val AW = "org.springframework.beans.factory.annotation.Autowired"

@@ -1,12 +1,9 @@
 import com.intellij.psi.*
 
 /**
- * Rule J5: *Param fields carry a comment — @Schema(description=...), a javadoc, or a
- * leading comment. Convention-driven, defined by the inspection library itself: enable only
- * when the reviewed repository's instructions or established file style document request
- * fields. Implementation note: a comment directly above a field binds into that field's own
- * text range, so leading comments are detected by the field's text prefix.
- * Level: WARNING. Config: REQUIRE_PARAM_FIELD_COMMENTS (default false).
+ * Rule J5: require comments on non-static *Param fields only when repository instructions or
+ * established style require them; accept @Schema(description=...), javadoc, or a leading comment.
+ * The check is disabled by default.
  */
 val REQUIRE_PARAM_FIELD_COMMENTS = false
 

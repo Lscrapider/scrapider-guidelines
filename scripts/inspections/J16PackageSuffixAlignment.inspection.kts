@@ -1,11 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J16: class names in role packages carry the matching suffix (controller→Controller,
- * mapper→Mapper, manage→Manage, param→Param, dto→DTO, vo→VO, po→PO, converter→Converter,
- * impl→*Impl; the service package requires it on interfaces only). Source: references/java/
- * spring-boot-backend.md Style and Naming + spring-boot-architecture.md Package Map.
- * Level: WARNING. Config: the package-to-suffix map in checkJ16.
+ * Rule J16: require role suffixes for classes in mapped packages; service-package classes are
+ * checked only when they are interfaces. The package-to-suffix map is in the when block.
  */
 val j16PackageSuffixAlignment = localInspection { psiFile, inspection ->
     val javaFile = psiFile as? PsiJavaFile ?: return@localInspection

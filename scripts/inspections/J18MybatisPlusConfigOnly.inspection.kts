@@ -1,9 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J18: MyBatis-Plus interceptors/plugins are registered only in the unified config;
- * references from outside config packages or *Config classes are violations. Source:
- * references/java/spring-boot-architecture.md, config responsibility. Level: ERROR.
+ * Rule J18: flag MyBatis-Plus plugin imports outside .config packages or files whose first
+ * class name ends in Config.
  */
 fun importFqn(st: PsiElement): String {
     var t = st.text.trim()

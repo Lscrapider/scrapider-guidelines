@@ -6,11 +6,6 @@ Load this reference when a task or affected call path changes message production
 payloads, routing, or listener/publisher behavior, including indirect changes to those paths. Apply
 the same routing during implementation, refactoring, debugging, and review.
 
-Read the [Spring Boot Backend](spring-boot-backend.md) baseline first; reuse it if already read and
-unchanged for this task. It supplies repository precedence, core layering, configuration and contract
-rules, credentials guidance, and Java conventions. Load architecture,
-HTTP/domain, or data-access references only when their own routing triggers also apply.
-
 ## Message Queue Boundaries
 
 Use `listener` for inbound messages and `publisher` for outbound messages.

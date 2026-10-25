@@ -1,10 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule PY2: no sys.path mutation; fix import problems at the package, installation, or
- * entry-point configuration layer. Source: references/python/python-code-organization.md,
- * Import Rules. Level: ERROR. Text-level regex check; file-level anchor, so the message
- * carries the real line number and the matched line.
+ * Rule PY2: flag text matching sys.path.append/insert/extend/remove; verify the matched line
+ * is executable code and resolve imports at the package, installation, or entry-point layer.
  */
 val py2NoSysPathMutation = localInspection { psiFile, inspection ->
     if (!psiFile.name.endsWith(".py")) return@localInspection

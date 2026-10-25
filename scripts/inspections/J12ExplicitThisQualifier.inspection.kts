@@ -1,10 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J12 (opt-in): qualify instance-method calls on the current object with this.
- * Source: references/java/spring-boot-backend.md, Style and Naming. Level: WEAK_WARNING.
- * High hit volume on legacy code — run opt-in. Only calls resolving to methods declared
- * in the enclosing class are flagged; inherited and static methods are not.
+ * Rule J12 (opt-in): flag unqualified instance-method calls resolving to methods declared in
+ * the enclosing class; inherited and static methods are excluded.
  */
 val j12ExplicitThisQualifier = localInspection { psiFile, inspection ->
     psiFile.descendantsOfType<PsiMethodCallExpression>().forEach { call ->

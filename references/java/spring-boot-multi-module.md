@@ -16,22 +16,8 @@ hybrid structures. Follow those repositories' own architecture instead.
 Within its applicable architecture, use this reference only to decide which Maven module owns a new
 or changed Java file, resource, or configuration.
 
-This reference does not replace `spring-boot-backend.md` and does not redefine Java coding,
-layering, data-access, API, configuration, or security rules. For every applicable multi-module
-backend task:
-
-1. Load `spring-boot-backend.md` for the baseline rules and scenario routing.
-2. Load [Spring Boot Architecture](spring-boot-architecture.md) to determine package responsibility
-   when choosing the Maven module for a file.
-3. Load this reference to place that responsibility in the correct Maven module.
-4. Load other scenario references only when the actual affected behavior or call path meets their
-   triggers in `spring-boot-backend.md`.
-5. Apply the applicable references throughout implementation and review.
-
-A layered or hybrid multi-module project distributes responsibilities from the single-module
-backend reference across Maven modules. Module boundaries change physical placement, not the
-responsibility of Controller, Service, Manage, Mapper, PO, Param, DTO, VO, configuration, listener,
-or publisher code.
+This reference determines Maven module placement only; it does not change the responsibility of
+Controller, Service, Manage, Mapper, PO, Param, DTO, VO, configuration, listener, or publisher code.
 
 ## Contents
 
@@ -40,9 +26,7 @@ or publisher code.
 - [Common Module Responsibilities](#common-module-responsibilities)
 - [Dependency Direction](#dependency-direction)
 - [Placement Decision Table](#placement-decision-table)
-- [Example: Bootstrap, Foundation, and Business Modules](#example-bootstrap-foundation-and-business-modules)
 - [Adding a Module](#adding-a-module)
-- [Review Checklist](#review-checklist)
 
 ## Repository Structure Takes Precedence
 
@@ -70,16 +54,9 @@ package names, or topology into another repository as defaults.
 
 ## Map Single-Module Responsibilities to Modules
 
-Use the package map in [Spring Boot Architecture](spring-boot-architecture.md) as the responsibility
-baseline. For each file:
-
-1. Classify its responsibility, such as application assembly, business entry, business workflow,
-   data model, persistence, external integration, or messaging.
-2. Identify the module that already owns that responsibility or business domain.
-3. Confirm that placing the file there follows the established dependency direction.
-4. Check equivalent files in that module for package and naming conventions.
-5. Apply the core rules from `spring-boot-backend.md` and load any scenario references that apply to
-   the file's behavior and call paths.
+Use the package map in [Spring Boot Architecture](spring-boot-architecture.md) to place each file
+with the module that owns its existing backend responsibility, following its package conventions
+and the repository's dependency direction.
 
 Do not place a file in the executable module merely because that module packages the final JAR,
 scans the component, or can access every dependency.
@@ -105,9 +82,6 @@ It normally does not own:
 - Mapper, Manage, Repository, or persistence objects.
 - Business Param, DTO, or VO types.
 - Domain-specific listeners, publishers, or configuration.
-
-A component being discovered by the bootstrap module does not make the bootstrap module its owner.
-The executable module assembles the application; business modules own business capabilities.
 
 ### Business Modules
 
@@ -195,81 +169,18 @@ Use this table only after confirming the repository has corresponding module rol
 | Domain integration or configuration | Module that owns and uses the capability | Centralizing every configuration class in bootstrap |
 | Global exception handler or response adapter | Repository-defined application/adapter module | Confusing exception classes with exception handling runtime code |
 
-## Example: Bootstrap, Foundation, and Business Modules
-
-The following is one project-specific mapping, not a universal module template:
-
-```text
-bootstrap
-foundation-entity
-foundation-db
-business-auth
-business-governance
-```
-
-For a repository that explicitly defines those responsibilities:
-
-| Module | Owns | Does not own |
-| --- | --- | --- |
-| `bootstrap` | Application class, configuration loading, component scanning, and application assembly | Authentication or governance Controller and Service code; Mapper; Manage; model types |
-| `foundation-entity` | All PO, Param, DTO, VO, shared models, enums, and custom exception classes | Controller, Service implementation, Mapper, Manage, listener, publisher, business workflow |
-| `foundation-db` | Mapper, Manage, custom SQL, and database access dependencies | Controller, business workflow, authentication decisions, response assembly |
-| `business-auth` | Authentication Controller, Service, ServiceImpl, Spring Security, JWT, and authentication workflow | Application entry point; authentication Param, DTO, or VO when those belong to `foundation-entity` |
-| `business-governance` | Governance Controller, Service, ServiceImpl, domain configuration, listener, publisher, and governance workflow | Application entry point; governance Param, DTO, or VO when those belong to `foundation-entity` |
-
-Correct authentication placement in this example:
-
-```text
-foundation-entity/.../param/LoginParam.java
-foundation-entity/.../vo/LoginVO.java
-foundation-entity/.../exception/AuthenticationException.java
-business-auth/.../controller/AuthController.java
-business-auth/.../service/AuthService.java
-business-auth/.../service/impl/AuthServiceImpl.java
-business-auth/.../config/SecurityConfig.java
-```
-
-Incorrect placement:
-
-```text
-bootstrap/.../controller/AuthController.java
-business-auth/.../param/LoginParam.java
-```
-
-The first file confuses application assembly with domain ownership. The second ignores this
-example repository's rule that all entity and transfer types belong to `foundation-entity`.
-
 ## Adding a Module
 
 Prefer an existing module whose responsibility matches the change. Do not create a module for one
 class, a small utility, an empty package hierarchy, or cosmetic symmetry.
 
-Consider a new module only when the repository needs a stable boundary with independent build or
-release value, dependency or permission isolation, long-term ownership, or substantial reuse. Before
-adding it, explain:
+Consider a new module only for a stable current boundary with independent build or release value,
+dependency or permission isolation, long-term ownership, or substantial reuse. Ask only when the
+change introduces an unapproved architecture decision or materially different ownership choices
+remain unresolved by the request and repository evidence.
 
-- Its responsibility and public capability.
-- Its incoming and outgoing dependencies.
-- Why existing modules cannot own the code.
-- Build, scanning, packaging, configuration, and migration impact.
-
-Use existing user authorization when the module and ownership were already requested or agreed.
-Ask only when the change introduces an unapproved architecture decision or materially different
-ownership choices remain unresolved by the request and repository evidence.
-
-## Review Checklist
-
-Before creating, moving, or reviewing a file in a multi-module Spring Boot project, verify:
-
-- [ ] `spring-boot-backend.md` is loaded for baseline and routing rules, and
-      `spring-boot-architecture.md` for package responsibility and module placement.
-- [ ] Other scenario references are loaded when their behavior or call-path triggers apply.
-- [ ] Relevant parent, aggregator, and child POMs have been inspected.
-- [ ] The file's single-module package responsibility is clear.
-- [ ] The target module already owns that responsibility or business domain.
-- [ ] A business Controller or Service has not been placed in bootstrap.
-- [ ] Model types and custom exceptions follow the repository's actual model-module contract.
-- [ ] Mapper and Manage types follow the repository's persistence-module contract.
-- [ ] Existing dependency direction is preserved without a cycle or reverse dependency.
-- [ ] No example module name, version, parameter, or infrastructure policy was copied as a default.
-- [ ] The narrowest relevant Maven build, test, or compile check is defined or executed.
+Before adding one, establish its responsibility and incoming/outgoing dependencies, confirm existing
+modules cannot own it, and identify build, scanning, packaging, configuration, and migration impact.
+Use existing authorization when the module and ownership were already requested or agreed. For module
+changes, define or run the narrowest Maven build, test, or compile check that covers the changed
+module and its required dependencies.

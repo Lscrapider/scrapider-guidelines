@@ -1,22 +1,11 @@
 import com.intellij.psi.*
 
 /**
- * Batch driver: run the full rule library over a list of changed files in ONE call.
- * Rule bodies are identical to the per-rule scripts in this directory (same ids, same
- * messages); findings are aggregated into messages carrying `file:line` because the
- * tool result has no file field.
- *
- * Usage: replace FILES with the changed-file paths relative to the project root and run
- * once via run_inspection_kts (contextPath may be any project file). FILES ships empty and
- * then covers only the context file. Set OPT_IN=false to skip opt-in rules
- * (J9/J12/J15/PY3).
- *
- * Sizing (both sides are bounded): keep a batch to roughly 15 files; the script also
- * self-limits output — past PER_RULE_PER_FILE occurrences of one rule in one file the rest
- * aggregate into a summary line, and past MAX_FINDINGS the output truncates with an overflow
- * breakdown. On truncation, chunk FILES smaller or set OPT_IN=false.
- *
- * Repository adaptation constants sit at the top (same as the per-rule scripts).
+ * Batch driver: apply the rule library to configured changed-file paths; an empty FILES list
+ * checks only the context file. Use each result's file:line message and ignore structured
+ * location fields in batch mode. Output aggregates after PER_RULE_PER_FILE matches and truncates
+ * after MAX_FINDINGS; split the file list into smaller batches when truncated.
+ * Update moduleOf mappings and J17 banned-import prefixes to the target topology before use.
  */
 val FILES = emptyList<String>()
 val OPT_IN = true
@@ -26,8 +15,7 @@ val REQUIRE_MANAGE_LAYER = true
 val EXCLUDED_TYPES = setOf("com.fasterxml.jackson.databind.ObjectMapper")
 val EXPLICIT_UTILITY_CLASSES = setOf("java.util.Objects", "org.apache.commons.lang3.StringUtils", "org.apache.commons.lang3.ObjectUtils")
 val VAGUE_NAMES = setOf("common", "utils", "util", "helpers", "helper", "misc")
-// Convention-driven switches: the running agent sets these from the reviewed repository's
-// own instructions before dispatch (defaults keep the checks inert).
+// Defaults disable convention-only checks; J19's empty-catch check remains active.
 val REQUIRE_SERVICE_JAVADOC = false
 val REQUIRED_TAGS = emptyList<String>()
 val REQUIRE_PARAM_FIELD_COMMENTS = false
@@ -421,7 +409,6 @@ val batchAllRules = localInspection { psiFile, inspection ->
             checkPY(f, findings)
         }
     }
-    // Self-limit 1: one rule flooding one file aggregates past PER_RULE_PER_FILE occurrences.
     val ruleFilePrefix = Regex("^(\\[[^]]+\\] [^:]+):")
     val aggregated = mutableListOf<String>()
     findings.groupBy { s -> ruleFilePrefix.find(s)?.groupValues?.get(1) ?: s }
@@ -431,7 +418,6 @@ val batchAllRules = localInspection { psiFile, inspection ->
                     "$prefix:… (+${group.size - PER_RULE_PER_FILE} more occurrences of this rule in this file, aggregated)"
             else aggregated += group
         }
-    // Self-limit 2: hard cap on output with an overflow breakdown by rule.
     val batchNotes = aggregated.filter { it.startsWith("[BATCH]") }
     val real = aggregated.filterNot { it.startsWith("[BATCH]") }
     val output: List<String> =
@@ -441,7 +427,7 @@ val batchAllRules = localInspection { psiFile, inspection ->
                 .groupBy { s -> s.substring(1, s.indexOf(']')) }
                 .entries.joinToString(", ") { (rule, hits) -> "$rule ×${hits.size}" }
             batchNotes + real.take(MAX_FINDINGS) +
-                "[BATCH] output truncated at $MAX_FINDINGS; not shown: $overflow — chunk FILES smaller or set OPT_IN=false"
+                "[BATCH] output truncated at $MAX_FINDINGS; not shown: $overflow — split FILES into smaller batches"
         }
     if (output.isEmpty())
         inspection.registerProblem(psiFile, "[BATCH] 0 findings in ${targets.size} file(s)")

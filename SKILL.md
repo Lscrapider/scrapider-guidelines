@@ -5,12 +5,7 @@ description: Use when a coding agent writes, edits, refactors, debugs, or review
 
 # Scrapider Guidelines
 
-Guide implementation and review under the project's engineering rules: understand the request,
-place behavior at the right responsibility boundary, preserve business contracts within the
-requested scope, and verify the result. Keep the design and change as simple as that work permits.
-
-This entry point defines the working principles, coding workflow, and reference routing. Detailed
-rules are grouped by the decisions they govern and apply during both implementation and review.
+Apply Scrapider engineering rules to implementation, refactoring, debugging, and review.
 
 ## Project AGENTS.md Authoring (On Demand)
 
@@ -18,11 +13,11 @@ When the user asks to create, complete, update, or rebuild a project's `AGENTS.m
 [authoring workflow](references/project/agents-md-authoring.md). Load the
 [capability recommendations](references/project/capability-recommendations.md) only when selecting
 workflows and optional MCP, skill, plugin, or CLI combinations.
+When writing selected capability entries, use the relevant
+[examples](references/project/examples/capability-entries.md); do not load the full catalog for ordinary coding.
 
-This mode writes only the target `AGENTS.md` and helps the author select relevant content. A capability
-rebuild reassesses existing workflows and recommends suitable updates or combinations while preserving
-the document's structure and unrelated constraints. Apply confirmed choices without asking again;
-let the author choose unresolved changes, without installing capabilities or generating other files.
+Write only the target `AGENTS.md`; apply confirmed choices and let the author resolve unselected
+workflow changes without installing capabilities or generating other files.
 Ordinary coding tasks use the workflow below and the project's instructions without loading these
 authoring references.
 
@@ -47,9 +42,9 @@ outside it.
 
 ### Goal-Driven Execution
 
-Define observable success criteria and verify them. For meaningful multi-step work, connect each
-step to a useful check. Continue from evidence until the criteria are met or a concrete blocker is
-reported; an attempted edit or a passing unrelated check does not establish completion.
+Define observable success criteria and verify them. For coordinated or dependent multi-step work,
+connect each step to a useful check. Continue from evidence until the criteria are met or a concrete
+blocker is reported; an attempted edit or a passing unrelated check does not establish completion.
 
 ## Coding Workflow
 
@@ -131,7 +126,7 @@ unchanged material.
 | Validation and errors | Input contracts, validation, defensive branches, or exceptions, including ordinary HTTP/MQ implementation and decisions about internal checks | [Validation and Boundaries](references/shared/validation-and-boundaries.md) |
 | Standards review | An explicit review request, or changes affecting other modules, public/business contracts, data, integrations, concurrency, deployment, or coordinated behavior across files; the reference defines triggers, exclusions, and dispatch | [Standards Review](references/shared/standards-review.md) |
 | Git operations | Before any Git state mutation, including staging, committing, branching, or pushing; the reference defines authorization and commit format | [Git Operations and Commits](references/shared/git-commits.md) |
-| Inspection script library | Standards review when the JetBrains IDE channel is available for the project, or maintaining, adapting, or installing the `.inspection.kts` rule library (scripts in `scripts/inspections/`); not loaded for implementation work or when the channel is absent | [Inspection Scripts](references/shared/inspection-scripts.md) |
+| Inspection script library | The assigned standards reviewer loads this when the JetBrains inspection channel is available; also load for explicit library maintenance, adaptation, or installation. | [Inspection Scripts](references/shared/inspection-scripts.md) |
 
 ### Technology and Scenario Rules
 

@@ -24,9 +24,9 @@ generate artifacts. Return the review to the primary agent.
   surrounding implementation, callers, tests, and documentation to establish expected behavior.
   When these disagree, resolve the disagreement from explicit decisions and change evidence;
   report a material unresolved contract question instead of silently choosing a new expectation.
-- Review every requested behavior. Extend inspection into related code only as needed to follow
-  affected flows and verify findings. Unless assigned a broader audit, exclude unrelated existing
-  defects; include existing code whose failure is newly exposed by this change.
+- Review every requested behavior. Extend inspection into related code when it supplies a caller,
+  contract, or execution path needed to verify a finding. Unless assigned a broader audit, exclude
+  unrelated existing defects; include existing code whose failure is newly exposed by this change.
 
 ## Trace Behavior and Check Evidence
 
@@ -39,14 +39,13 @@ generate artifacts. Return the review to the primary agent.
   follow propagation and recovery to determine whether failures become incorrect success or leave
   inconsistent state. Do not turn these examples into a mandatory checklist for every change.
 - For refactoring, compare observable behavior before and after, including affected callers.
-  Inspect changed assertions, fixtures, and mocks: a passing test does not establish correctness
-  when its expected result was changed to match an unintended behavior change. Missing tests alone
-  are not a functional finding: identify the concrete behavior left unverified when recording a
-  material verification gap. Do not request tests merely to increase coverage or mirror implementation.
+  Check changed assertions, fixtures, and mocks against the intended contract. Report a verification
+  gap only for concrete behavior left unverified, not merely absent tests. Do not request tests
+  solely to increase coverage or mirror implementation.
 - Before reporting a candidate, look for evidence that disproves it: caller guarantees, framework
   behavior, configuration, existing guards, or another path that supplies the required behavior.
-  Verify what a guarantee actually enforces at runtime; a type annotation or an assumed deployment
-  arrangement alone is not proof. Static evidence can establish a defect without executing it.
+  Verify runtime guarantees before relying on type annotations or deployment assumptions. Report
+  statically proven defects without requiring execution.
 - Respect intentional contract breaks. In an explicitly coordinated upgrade, check that in-scope
   callers migrate to the new contract; do not demand aliases, fallbacks, or dual support for retired
   behavior. Likewise, propose validation only for a reachable failure not already handled at the
@@ -68,7 +67,7 @@ Keep severity separate from certainty. Rank confirmed findings as:
 - **P2**: a narrower real failure with limited impact.
 
 Consolidate findings with the same root cause. Give the smallest correction direction when useful,
-without prescribing a speculative redesign. A review with no confirmed findings is a valid result.
+without prescribing a speculative redesign.
 
 ## Report
 

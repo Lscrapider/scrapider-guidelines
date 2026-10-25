@@ -1,10 +1,8 @@
 import com.intellij.psi.*
 
 /**
- * Rule J11: invoke utility statics through their declaring class; no single-member static
- * imports of utility classes (static wildcards are covered by J7). Source: references/java/
- * spring-boot-backend.md, Utilities and Value Handling. Level: WARNING. Config:
- * EXPLICIT_UTILITY_CLASSES extends the *Util-suffix match.
+ * Rule J11: flag single-member static imports from *Util or configured utility classes;
+ * static wildcard imports are handled by J7.
  */
 val EXPLICIT_UTILITY_CLASSES = setOf("java.util.Objects", "org.apache.commons.lang3.StringUtils", "org.apache.commons.lang3.ObjectUtils")
 
