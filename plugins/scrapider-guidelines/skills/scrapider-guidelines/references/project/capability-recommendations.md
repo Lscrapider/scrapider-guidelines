@@ -32,8 +32,8 @@ Use these profiles as a starting point, not a fixed menu or a requirement to ado
 
 | Scenario | Candidate combination and workflow | Selection boundary |
 | --- | --- | --- |
-| Localized changes | **Lightweight:** native search and targeted reads + the project's coding guidance + native planning and verification. | Use when paths or identifiers locate the affected implementation; trace remaining callers with scoped searches. |
-| Cross-module changes | **Relationship-aware:** Codegraph + native retrieval + the chosen coding guidance. | Select under the [retrieval-profile conditions](#select-one-retrieval-profile). |
+| Localized changes | **Lightweight:** the project's selected coding guidance without additional retrieval or planning capabilities. | Use when paths or identifiers locate the affected implementation and no additional capability is needed. |
+| Cross-module changes | **Relationship-aware:** Codegraph + the chosen coding guidance. | Select under the [retrieval-profile conditions](#select-one-retrieval-profile). |
 | Unresolved symbol or dependency facts | Use the open IDE or local dependency artifacts alongside the selected retrieval tools and coding guidance. | Retain a Serena route only when explicitly selected under the [Serena conditions](#serena-with-language-servers). |
 
 Name the actual coding guidance in each proposal. Preserve existing project standards; offer Scrapider
@@ -46,6 +46,8 @@ retrieval profile does not require either layer. Do not turn the profiles into m
 ## Capability Types
 
 Classify a capability by its exposed operations; do not add workflow steps solely for its packaging.
+Subagent roles belong in collaboration, including reviewers supported by IDE tools; they are not
+tool capabilities. Omit routine host operations from proposals and generated capability entries.
 
 | Type | Responsibility | Examples |
 | --- | --- | --- |
@@ -75,9 +77,9 @@ project evidence; this does not require installing a tool or running a new bench
 
 | Profile | Select when | Use within this profile; skip when unnecessary |
 | --- | --- | --- |
-| **Direct or fallback path — no additional retrieval service** | Paths or identifiers are known, changes stay within one module, or no suitable indexed service is available. | Use local search and targeted reads. Describe this route within the selected capability's boundary or fallback, not as a separate tool entry. |
-| **Relationship-aware — Codegraph + native retrieval** | Cross-file flows, dependencies, and impact analysis recur, and a suitable graph index is available. | Use Codegraph for those relationship questions and reuse returned source. Use native retrieval for literals, configuration, documentation, current edits, and uncovered evidence. Where the tool contract permits, directly read a known local implementation; skip broad graph exploration when no relationship question remains. |
-| **Author-selected variant — Codegraph + Serena (LSP) + native retrieval** | The author explicitly selected Serena and its [support conditions](#serena-with-language-servers) are met. | Keep the Codegraph/native division above; use Serena only for unresolved symbol queries. Do not add this variant by default. |
+| **No additional retrieval service** | Paths or identifiers are known, changes stay within one module, or no suitable indexed service is available. | Add no retrieval declaration. |
+| **Relationship-aware — Codegraph** | Cross-file flows, dependencies, and impact analysis recur, and a suitable graph index is available. | Use Codegraph for those relationship questions and reuse returned source; skip broad graph exploration when no relationship question remains. |
+| **Author-selected variant — Codegraph + Serena (LSP)** | The author explicitly selected Serena and its [support conditions](#serena-with-language-servers) are met. | Keep Codegraph for relationship questions; use Serena only for unresolved symbol queries. Do not add this variant by default. |
 
 Do not select a profile solely from repository size or same-named methods. Skip optional tools once
 the question is answered without changing the project's selected profile.
@@ -88,23 +90,24 @@ not override it. Do not impose that host-specific requirement on implementations
 selection does not authorize indexing, installation, semantic edits, or configuration changes.
 
 Write the selected profile using the [capability entry format](agents-md-authoring.md#capability-entry-format).
-Keep necessary local fallback behavior explicit without creating an entry for native search itself.
+Include only capability-specific routing and failure policies beyond ordinary agent behavior.
 
 Read [Retrieval Operations](retrieval-operations.md) when defining or revising execution details
 for a selected retrieval profile, including query scope, source completeness, batching, or handoff.
-Selecting a profile alone does not require those operational details.
+Selecting a profile or writing its capability entry alone does not require those operational details;
+do not copy the internal procedure into an entry without a request for project-level execution rules.
 
 ### Serena with language servers
 
 Do not recommend Serena by default. Preserve it only when the author explicitly selects it for
 recurring definition, implementation, or reference queries that remain
-unresolved by the graph and native evidence. Verify the project root, required toolchains, query
+unresolved by existing project evidence. Verify the project root, required toolchains, query
 support, and host memory capacity before adoption. Prefer an already-open IDE or local dependency
 artifacts when they resolve that gap.
 
 Skip Serena for answered questions, ordinary text or configuration searches, unsupported languages,
-or insufficient host memory; use native retrieval for the remaining evidence. If a query returns no
-matches or excessive results, refine its path or symbol scope before retrying.
+or insufficient host memory. If a query returns no matches or excessive results, refine its path or
+symbol scope before retrying.
 
 ### External library docs service (context7)
 
@@ -126,14 +129,13 @@ A docs service such as context7 supplies external library version and API facts.
 
 A built-in IDE MCP surface (such as a JetBrains IDE server) applies only to the project the IDE has
 open, and every call must explicitly target that project. Within that scope it serves the edit loop,
-not general retrieval: **retrieval questions stay on the selected retrieval profile; ordinary file
-creation and text edits stay with native tools. Semantic rename and post-edit formatting use the IDE
-in the scenarios below.**
+not general retrieval: **retrieval questions stay on the selected retrieval profile. Semantic rename
+and post-edit formatting use the IDE in the scenarios below.**
 
 - **Semantic rename**: use IDE refactoring to rename variables, fields, methods, classes, or other
   code symbols, especially when bindings are ambiguous or reflection strings may refer to them.
-  For an unambiguous rename, native edits with a reference sweep are acceptable when the project's
-  tool-routing contract permits them. Review the full rename diff, including string literals and
+  For an unambiguous rename, a text edit with a reference sweep is acceptable when the project's
+  tool-routing contract permits it. Review the full rename diff, including string literals and
   comments that the IDE may also update; verify reflective uses separately.
 - **Per-file quick diagnostics**: check the edited file for diagnostics; retain model review for
   design and security findings.
@@ -142,9 +144,9 @@ in the scenarios below.**
   versions or signatures are ambiguous.
 - **Debugger sessions**: inspect a reproduced failure when static evidence leaves its runtime state
   or cause unresolved.
-- **Reformat after writing**: use the IDE formatter after native file edits as a best-effort finishing
+- **Reformat after writing**: use the IDE formatter after file edits as a best-effort finishing
   step. Follow project conventions, including existing files when no code-style configuration exists;
-  on formatter failure, finish natively.
+  formatter failure does not block delivery.
 
 Do not use this surface for large-file slicing.
 
@@ -155,12 +157,12 @@ do not turn that internal mechanism into a main-agent procedure in project `AGEN
 ### Alternatives for a Specific Unmet Need
 
 Preserve the author's existing or explicitly selected alternatives. A confirmed standalone Serena
-(LSP) + native profile can serve precise symbol work without a graph
-service. Codebase Memory + native reads is another possible primary profile for outlines, graph
+(LSP) profile can serve precise symbol work without a graph service. Codebase Memory is another
+possible primary profile for outlines, graph
 queries, and symbol source. Evaluate either as a replacement profile, not an extra default layer.
 
 Use `DeusData/codebase-memory-mcp` only as a selected retrieval profile. Complete truncated source
-before interpreting it, and resolve uncovered content or empty results with native evidence.
+before interpreting it; empty results do not prove a path or symbol is absent.
 Do not add it to duplicate an existing graph service.
 
 Use a selected repomap when module or symbol paths are unknown and existing outlines do not locate
@@ -172,25 +174,24 @@ Add a layer only when its selection condition below is met; do not adopt the tab
 
 | Optional combination | Select when | Boundaries and fallback |
 | --- | --- | --- |
-| Chosen retrieval profile + RTK CLI command filters | Supported Git, build, test, or log output is truncated or repeatedly exceeds the host's output limit. | Use a verified host integration or supported CLI operation; otherwise use bounded native commands. Keep raw output available when filtering obscures evidence. Do not use it to filter MCP schemas. |
+| Chosen retrieval profile + RTK CLI command filters | Supported Git, build, test, or log output is truncated or repeatedly exceeds the host's output limit. | Use a verified host integration or supported CLI operation. Keep raw output available when filtering obscures evidence. Do not use it to filter MCP schemas. |
 | Structural retrieval + one semantic search service | The task is described conceptually and identifiers or structural queries do not locate the implementation. A service such as `@teknologika/mcp-codebase-search` can supply candidate code chunks. | Confirm package identity, language coverage, index freshness, and host support. Verify candidates against current code; trace relationships only for unresolved flow questions. Reuse existing semantic search rather than adding duplicate indexes. |
-| Chosen retrieval recipe + an AST symbol extractor | A symbol body remains unlocated by existing tools in a supported language; evaluate `syphon1c/code-scale-mcp`. | Verify package identity and extraction support. Prefer existing symbol tools or bounded native reads when they suffice. |
-| Selected MCP services behind a schema gateway | The host eagerly loads selected services' tool definitions and lacks deferred discovery; evaluate MCP Slim (`dopatools/mcp-slim`). | Verify discovery and proxy support, including which downstream connections the gateway owns. Retain native MCP connections when proxying is unsupported. |
+| Chosen retrieval recipe + an AST symbol extractor | A symbol body remains unlocated by existing tools in a supported language; evaluate `syphon1c/code-scale-mcp`. | Verify package identity and extraction support. Skip the extractor when existing evidence already supplies the required body. |
+| Selected MCP services behind a schema gateway | The host eagerly loads selected services' tool definitions and lacks deferred discovery; evaluate MCP Slim (`dopatools/mcp-slim`). | Verify discovery and proxy support, including which downstream connections the gateway owns. Retain direct MCP connections when proxying is unsupported. |
 | Chosen retrieval profile + an external library docs service (such as context7) | Apply the [external library docs conditions](#external-library-docs-service-context7). | Keep version selection, local signature checks, identity verification, and conflict handling within that section's boundaries. |
-| Chosen retrieval profile + an IDE tool surface (such as a JetBrains IDE built-in MCP) | Apply the [IDE operation conditions](#ide-tool-surface-on-an-open-project). | Preserve that section's project scope, native-edit boundary, and manual fallback. |
+| Chosen retrieval profile + an IDE tool surface (such as a JetBrains IDE built-in MCP) | Apply the [IDE operation conditions](#ide-tool-surface-on-an-open-project). | Preserve that section's project scope, semantic-operation routing, and formatter policy. |
 
 Before replacing or stacking services, verify package identity, required operations, and overlapping
 responsibilities; leave unverified candidates out of the active workflow.
 
 ## Planning and Execution
 
-Handle localized changes directly. For multi-step work that needs coordination or depends on earlier
-results, use a proportionate plan with observable completion checks, then execute and update it from
-evidence. Select one planning approach rather than loading several frameworks for the same task.
+Recommend an additional planning capability only for a concrete need such as cross-session records
+or formal specifications. If none is selected, add no planning capability or default-operation rule
+to `AGENTS.md`. Keep one owner for the same specification and task plan.
 
 | Approach | Type and selection condition | Boundary and fallback |
 | --- | --- | --- |
-| Native planning + execution checklist | Host capability or concise instructions for coordinated steps completed in one session. | Use without a planning plugin when the host supports the required steps and checks. |
 | Planning with Files | Skill for tasks that must resume plans, findings, and progress across sessions. | Verify host support before relying on plugin or hook integrations. |
 | OpenSpec | CLI plus skills or commands when the project requires reviewable specifications, implementation tasks, and decision archives. | Skip for a short execution plan without a specification or traceability requirement. |
 | Superpowers writing-plans + executing-plans | Two skills used on demand when the user selects them and host and project policy permit them. | Other Superpowers features remain off unless the user explicitly requests them. This limit does not require Superpowers for every plan or prohibit other capabilities. Replace older blanket assignments of design, review, or verification to Superpowers throughout the document. Preserve applicable model and project restrictions. |

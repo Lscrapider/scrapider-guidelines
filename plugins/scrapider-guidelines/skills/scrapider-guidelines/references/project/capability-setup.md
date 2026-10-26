@@ -123,6 +123,12 @@ the host actually offers a role before a workflow depends on delegation; when it
 responsibilities with the primary agent per the authoring rules and leave the registration step
 with the author.
 
+Use the target host's supported agent-definition format. A role name, the host's registration or
+agent-type field, and a model ID are separate concepts; do not derive one from another or assume
+plugin registration from an `AGENTS.md` declaration. The bundled roles leave model and reasoning
+settings unset. Preserve host inheritance unless the author or project explicitly chooses an
+override; do not insert a sample model ID or a literal `inherit` unless the host's schema supports it.
+
 Role definitions may narrow their tool surface with a `tools` list; without one, the tools available
 to a delegated role come from the host session. Set up the capabilities the project adopted with the
 sections above, then confirm the delegated run can call them.

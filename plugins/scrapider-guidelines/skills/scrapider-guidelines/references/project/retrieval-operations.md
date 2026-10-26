@@ -35,5 +35,4 @@ Confirm the Codegraph package and exposed operations before use. Scope queries t
 symbols and paths, verify returned targets, and query only missing evidence.
 Resolve ambiguous same-name relationships against receiver declarations and call-site source; use a
 precise-symbol tool when that evidence still leaves the binding unresolved.
-Use native retrieval for an unavailable index, uncovered content, or stale results, within the exposed
-contract. Respond to actual coverage gaps rather than rebuilding or rechecking the index on every task.
+Respond to actual coverage gaps rather than rebuilding or rechecking the index on every task.

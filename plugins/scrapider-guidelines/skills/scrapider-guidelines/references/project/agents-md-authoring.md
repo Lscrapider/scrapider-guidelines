@@ -33,7 +33,7 @@ For creation, identify the project responsibilities and decisions that future ag
 update, address the named changes in their existing sections. For a rebuild, establish what the author
 wants to refresh: capability choices, workflows, collaboration, project conventions, or overall brevity.
 
-When defining or revising execution details for an already selected retrieval profile, read
+When the author requests execution details for an already selected retrieval profile, read
 [Retrieval Operations](retrieval-operations.md) for query scope, source completeness, batching, and
 handoff. Reuse the confirmed profile choice rather than reopening selection for these changes.
 
@@ -100,33 +100,45 @@ Unselected candidates and setup advice belong in the conversation.
 
 ### Capability Entry Format
 
-Describe each selected capability in its own peer entry. Use fields in this order when applicable:
+Describe selected capabilities in peer entries. When `frontend-design` and `impeccable` are both
+selected, use one combined entry that distinguishes each skill's triggers and their handoff; retain
+individual entries when only one is selected. Other capabilities keep their distinct responsibilities.
+Use fields in this order when applicable:
 **scenario** (the tasks this capability serves), **boundary** (which tool owns overlapping work),
-**skip** (an additional excluded scenario), and **fallback** (unavailability or conflicts).
+**skip** (an additional excluded scenario), and **fallback** (a capability-specific alternative or
+conflict policy beyond ordinary agent behavior).
 Use each label at most once; omit empty or redundant fields. Preserve all adopted scenarios,
-decision conditions, and fallback paths; do not trim necessary information to meet a sentence or
-length target. List distinct tasks under the single scenario field when an umbrella description
+decision conditions, and capability-specific fallback paths; do not trim necessary information to meet
+a sentence or length target. List distinct tasks under the single scenario field when an umbrella description
 would hide when to use the capability.
 Write labels in the target document's language and keep one label set throughout. Exclude need-only
 scenarios, tool parameters and invocation tutorials, installation snapshots, benchmarks, and savings
-claims.
-Native search, file reads, and ordinary edits are default operations, not separate tools to adopt.
-Mention them within another capability's applicable scenario, boundary, or fallback; a combination
-may be named "Codegraph + native retrieval" without giving native retrieval its own field set.
+claims. Keep capability-internal query, batching, and source-expansion procedures in references unless
+the author specifically requests project-level execution rules for them.
+Omit routine planning, search, file reads, file creation, and edits from generated declarations,
+combination names, and generic fallback fields, including boilerplate about using available tools or
+following existing project standards. Do not move these defaults into another section or copy this
+omission rule into the target. Retain explicit project overrides and capability-specific routing or
+failure policies only when they change a decision.
 
-A combined scenario contains separate entries for its tools and skills, with their cooperation expressed through
-boundaries; do not collapse the scenario into one large capability entry. For overlapping alternatives,
-select one unless the author chose distinct responsibilities for both. Translate and adapt the example
-without importing unselected capabilities or the full example catalog.
+A combined entry must preserve each selected skill's use conditions and cooperation without repeating
+shared fields. For other cooperating capabilities, express their distinct responsibilities through
+boundaries. For overlapping alternatives, select one unless the author chose distinct responsibilities
+for both. Translate and adapt the example without importing unselected capabilities or the full catalog.
 
-When rebuilding, convert capability prose to these fields without changing its meaning. Keep cooperating
-tools as peer entries in the existing capability list or table. In a list, keep the parent item to the
-capability's name and purpose;
+Use one canonical name per capability or role. For a specified host, use its verified callable name,
+including a namespace when required; otherwise retain the stable name. Do not add another column or
+alias that merely repeats the same identifier in short form. Other columns must convey distinct
+information such as responsibility or trigger.
+
+When rebuilding, convert capability prose to these fields without changing its meaning. Keep
+cooperating capabilities in the existing list or table, combining the selected design pair as above.
+In a list, keep the parent item to the capability's name and purpose;
 put each field in its own subitem. In a table, retain one row with line breaks between fields.
 Keep invocation mechanics in the capability's reference; do not remove use scenarios to shorten an entry.
-In a new document, organize selected skills, plugins, and MCP/native-tool combinations together in
-one capability area under a heading suited to its content. Make each capability a peer
-entry there. Do not put a coding skill only under engineering conventions while giving its companion
+In a new document, organize selected skills, plugins, MCP services, and CLI capabilities together in
+one capability area under a heading suited to its content. Keep these entries together there.
+Do not put a coding skill only under engineering conventions while giving its companion
 retrieval tools a separate top-level section. Detailed conventions and scoped workflows may refer back
 to these responsibilities without duplicating them.
 
@@ -142,7 +154,7 @@ missing decision changes workflow, dependencies, or business behavior.
 | Dimension | Useful lasting content |
 | --- | --- |
 | Project structure | Brief labels for the top-level modules and their responsibilities, plus one general requirement to read the relevant module README and applicable instructions before working there. |
-| Capabilities and workflows | Selected Skill, MCP, plugin, or native-tool combinations and the tasks they serve. |
+| Capabilities and workflows | Selected Skill, MCP, plugin, or CLI capabilities and the tasks they serve. |
 | Collaboration | When delegation helps, role responsibilities, dependency handling, handoffs, and primary-agent acceptance. |
 | Business and development conventions | Existing contracts and project-specific code constraints that materially affect decisions; reference established guidance instead of copying it. |
 | Execution and delivery | Actual authorization limits, proportionate verification, and the evidence expected in delivery. |
@@ -151,13 +163,14 @@ missing decision changes workflow, dependencies, or business behavior.
 For creation, assess collaboration even when no custom roles were named. If independent tasks can be
 delegated and the choice is open, offer existing or bundled roles and a direct-work option. Record the
 chosen responsibilities and acceptance boundary.
-If direct work is the confirmed choice, record that choice without adding conditional delegation.
+Record an explicit no-delegation restriction when the author requires it; ordinary direct work needs
+no declaration.
 When selected roles are not exposed by the host, retain the responsibilities and have the primary agent
 perform them or map them to available agents; do not leave work blocked on a role name.
 
 Keep a statement only if it changes how future work should be done. Use clear, action-oriented rules
-and brief module labels. Put capability roles in their section, business rules with business
-rules, and multi-agent collaboration in its own established section. Keep development conventions,
+and brief module labels. Put selected capabilities in their section, business rules with business
+rules, and all selected subagent roles in the collaboration section. Keep development conventions,
 execution requirements, and language rules distinct when the source already separates them.
 Route document reading by the task's affected areas; do not require every task to read all project
 overviews or product documents unless that is an existing project rule or an explicit author choice.
@@ -182,7 +195,7 @@ document-maintenance rules, and deeper reading entry points stay in the module R
 states them as requirements. Reference them through the module-reading rule without repeating paths
 or navigation in the root file. Do not edit other documents to relocate content during authoring.
 
-For an adopted skill, normally use one short peer entry in the
+For an adopted skill or the confirmed design pair, normally use one short entry in the
 [capability-entry format](#capability-entry-format). State when it applies, what it contributes, and
 any explicit project requirement such as mandatory use. In a new document, keep its mandate and priority
 in that entry rather than repeating them in an engineering section. Do not copy the skill's general
@@ -190,7 +203,9 @@ conventions, loading procedures, setup, or reference-file paths into the project
 project-specific requirements, explicit overrides, or cross-module coordination rules. For an
 adopted role, keep only its responsibility and handoff; leave its internal tool selection, reference
 loading, and execution procedure in the role definition. In a new document, put each chosen role in
-its own item or row under collaboration, not in one long capability entry.
+its own item or row under collaboration. This includes both functional and standards reviewers;
+do not put a reviewer in the tool-capability list or omit it from collaboration because an IDE
+inspection tool supports its work. Role entries do not use the capability field template.
 These creation defaults do not authorize shortening valid existing rules during an unrelated rebuild.
 
 Give independently useful rules their own list items or paragraphs. Use headings where the subject
@@ -222,12 +237,14 @@ before deciding; editing one file does not authorize changing the meaning of ano
 
 Read the complete result against the scope, selection, entry-format, and content rules above. For
 every adopted capability or new mandate, identify its project source or explicit author choice.
-Check that the entry preserves its adopted scenarios, decision conditions, overlaps, and fallback;
-remove duplicate explanations and invocation mechanics, not scenario coverage. Verify role availability
+Check that the entry preserves its adopted scenarios, decision conditions, overlaps, and meaningful
+fallback; remove duplicate explanations and invocation mechanics, not scenario coverage. Verify role availability
 before claiming registration and preserve the selected plugin feature scope. For a capability rebuild,
 account for every category in the requested area and every confirmed choice.
-For combined scenarios, check that each selected capability retains its own entry, a distinct
-responsibility, and a usable fallback; keep unselected alternatives in the recommendation conversation.
+For combined scenarios, check that each selected capability retains its use conditions and distinct
+responsibility; the selected design pair shares one entry. Remove routine defaults and duplicate
+identifiers, and confirm every selected role appears under collaboration rather than tools. Keep
+unselected alternatives in the recommendation conversation.
 
 Compare meaning, headings, and rule separation against the agreed baseline. Check that useful detail
 and distinct responsibilities survived. Account for every changed or deleted heading and rule against
@@ -252,6 +269,9 @@ project needs from the following definitions; read definitions on demand. In hos
 plugin-provided agents, plugin installation registers these roles under the plugin's namespace.
 Loading the skill alone does not install or register agents. Selecting roles does not mean running
 all roles on every task.
+The bundled definitions do not pin a model. Preserve the host's model and reasoning inheritance
+unless the author or project explicitly selects an override; do not infer a model or host agent type
+from a role name or add model declarations to the target without that choice.
 Apply a no-delegation rule only to roles whose definitions or project instructions impose it; primary-agent
 acceptance does not make every other role a leaf agent.
 

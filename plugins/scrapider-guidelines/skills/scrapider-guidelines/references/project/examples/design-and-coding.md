@@ -2,8 +2,9 @@
 
 Use these complete entries as examples for a project's `AGENTS.md`; select only routes that match
 the author's chosen standards and the work the project actually performs. Combine capabilities when
-each has a distinct responsibility. Use one design capability when the task needs only direction or
-only refinement; add a coding standard only when it has been selected for implementation work.
+each has a distinct responsibility. Keep the standalone entry when only one of `frontend-design` or
+`impeccable` is selected; when both are selected, use the grouped entry and apply each skill only
+under its own trigger. Add a coding standard only when it has been selected for implementation work.
 
 ## Coding Standards
 
@@ -13,7 +14,6 @@ only refinement; add a coding standard only when it has been selected for implem
 - **Scrapider Guidelines**
   - **Scenario:** Implementing, refactoring, debugging, or reviewing backend, data, or general application code in a project that selected Scrapider as its coding standard.
   - **Boundary:** Scrapider governs engineering decisions and review; it does not establish a visual direction. Existing project contracts and explicit task requirements remain authoritative.
-  - **Fallback:** When a Scrapider reference does not apply or does not answer the question, follow the project's existing instructions and relevant language or framework guidance.
 ```
 
 ### Existing Project Standards, Without Scrapider
@@ -22,14 +22,14 @@ only refinement; add a coding standard only when it has been selected for implem
 - **Existing project coding guidance**
   - **Scenario:** The project already has maintained `AGENTS.md` instructions, coding standards, or architecture guidance, and its author has not selected Scrapider.
   - **Boundary:** Use the project's guidance as the coding standard; do not add Scrapider rules by default or infer its adoption from the presence of this example.
-  - **Fallback:** When project guidance leaves a local choice open, follow established module patterns and relevant framework contracts. Raise only a material unresolved choice that changes a contract or responsibility.
 ```
 
 ## Web UI Design and Implementation
 
 Selection note: Choose `frontend-design` alone for direction-only work, `impeccable` alone for
-polish within an existing direction, and their combined route with Scrapider when the task needs a
-new direction, refinement, and code changes. These alternatives are not implied by one another.
+polish within an existing direction, and their combined route when the author selects both. In the
+combined route, use each skill only for its task-specific trigger; add Scrapider separately when it
+has been selected for code changes. These selections do not imply one another.
 
 ### `frontend-design` Alone
 
@@ -54,18 +54,12 @@ new direction, refinement, and code changes. These alternatives are not implied 
 ### `frontend-design` → `impeccable` + Scrapider Guidelines
 
 ```md
-- **frontend-design** — Establish a new web visual direction.
-  - **Scenario:** Building a new web UI or implementing an explicitly requested redesign that needs a new direction.
-  - **Boundary:** Owns direction; `impeccable` owns refinement and Scrapider owns code standards. The project's design system, contracts, and explicit user requirements constrain the direction.
-  - **Fallback:** If the direction is unresolved, preserve the established design system and surface the remaining decision.
-- **impeccable** — Refine the accepted visual direction.
-  - **Scenario:** The same new or redesigned web UI needs hierarchy, interaction-state, accessibility, or visual refinement.
-  - **Boundary:** Refines within the `frontend-design` direction; it does not replace the design system or set implementation standards.
-  - **Fallback:** If no approved direction is available, refine only established project patterns and avoid speculative visual changes.
+- **frontend-design + impeccable** — Web visual direction and refinement.
+  - **Scenario:** Use `frontend-design` for a new web UI or an explicitly requested new visual direction; use `impeccable` for hierarchy, interaction states, accessibility, consistency, and polish within an existing or accepted direction.
+  - **Boundary:** When both are needed, `frontend-design` establishes the direction and `impeccable` refines it. Existing UI refinement uses only `impeccable`. Preserve project tokens, behavior, contracts, and explicit requirements; code standards stay with the selected coding guidance.
 - **Scrapider Guidelines** — Apply the selected engineering standards to implementation.
   - **Scenario:** Implementing the approved direction and refinements in application code.
   - **Boundary:** Owns engineering decisions and review; it does not choose the visual direction, and existing contracts and explicit task requirements remain authoritative.
-  - **Fallback:** When a Scrapider reference does not apply, follow the project's existing instructions and relevant framework guidance.
 ```
 
 ### `impeccable` + Scrapider Guidelines for an Existing UI
@@ -78,7 +72,6 @@ new direction, refinement, and code changes. These alternatives are not implied 
 - **Scrapider Guidelines** — Apply the selected engineering standards to UI code changes.
   - **Scenario:** Implementing the approved local refinements in the existing interface.
   - **Boundary:** Owns engineering standards for code changes; nonvisual logic and API work remain governed by their applicable project rules.
-  - **Fallback:** When a Scrapider reference does not apply, follow the project's existing instructions and relevant framework guidance.
 ```
 
 ## Android and Compose
@@ -94,7 +87,6 @@ work; use that guidance alone when no separate Compose specialist is selected or
   - **Scenario:** A focused Compose API question, Compose-specific UI implementation, or Compose review where no separate Scrapider coding layer has been selected for the task.
   - **Boundary:** `compose-expert` owns Compose-specific reasoning; the project's existing Android architecture, design system, and coding instructions still govern the application.
   - **Skip:** The task concerns general Android or non-Compose code with no Compose-specific question.
-  - **Fallback:** If the specialist is unavailable, use the project's Android and Compose references and established local patterns; leave unresolved version-sensitive details explicit.
 ```
 
 ### `compose-expert` + Scrapider Android Guidance
@@ -103,11 +95,9 @@ work; use that guidance alone when no separate Compose specialist is selected or
 - **compose-expert** — Resolve Compose-specific implementation and review concerns.
   - **Scenario:** Implementing, refactoring, debugging, or reviewing Compose code in an Android project that selected Scrapider as its coding standard.
   - **Boundary:** Owns Compose APIs and UI-specific concerns; the project's design system and explicit product requirements remain authoritative. Scrapider Android guidance owns broader engineering standards.
-  - **Fallback:** If `compose-expert` is unavailable, use the project's Compose references and established local patterns.
 - **Scrapider Android guidance** — Apply the selected Android engineering standards.
   - **Scenario:** The same Compose code change requires the project's selected Android coding and review rules.
   - **Boundary:** Owns broader Android architecture, contracts, and validation; `compose-expert` owns specialized Compose questions, so neither entry replaces the other's responsibility.
-  - **Fallback:** If a Scrapider reference does not cover the case, follow the project's established Android architecture and relevant platform guidance.
 ```
 
 ### Scrapider Android Guidance Only
@@ -117,7 +107,6 @@ work; use that guidance alone when no separate Compose specialist is selected or
   - **Scenario:** Android Kotlin implementation or review in a project that selected Scrapider, when the task can be handled by the project's Android guidance without a separate Compose specialist.
   - **Boundary:** Scrapider guidance is the Android coding standard, including the applicable Compose reference; it does not select Apple Design, `impeccable`, Product Design, or another UI direction.
   - **Skip:** A material Compose-specific API or interaction issue requires specialist reasoning beyond the project's selected Android reference.
-  - **Fallback:** Follow the project's established Android architecture and the applicable Compose reference when a specific case is not covered; do not add a design capability solely because the code uses Compose.
 ```
 
 ## Author-Selected Android Design Extensions
@@ -128,7 +117,7 @@ visual conventions.
 
 Selection note: Use Apple Design alone only for an author-selected interaction or motion approach.
 Product Design can assess real screens and flows on its own, or join the full Compose combination
-when those findings must inform native UI refinement. ImageGen is a separate asset-only choice; the
+when those findings must inform Compose UI refinement. ImageGen is a separate asset-only choice; the
 complete design-generation-coding example below applies only when that full route has been selected.
 
 ### Apple Design Alone
@@ -164,7 +153,6 @@ complete design-generation-coding example below applies only when that full rout
 - **compose-expert** — Implement the approved interaction and visual decisions in Compose.
   - **Scenario:** The approved interaction and visual refinement must be implemented in Compose.
   - **Boundary:** Owns Compose-specific implementation; the product design system, platform conventions, accessibility requirements, and explicit project rules remain authoritative.
-  - **Fallback:** If the specialist is unavailable, use the project's established Compose patterns and leave unresolved implementation details explicit.
 ```
 
 ### Author-Selected: Apple Design + `impeccable` + `compose-expert` + Product Design
@@ -185,7 +173,6 @@ complete design-generation-coding example below applies only when that full rout
 - **compose-expert** — Implement the approved flow in Compose.
   - **Scenario:** The approved flow and visual refinements must be implemented in Compose.
   - **Boundary:** Owns Compose-specific implementation; the product's design system, Android platform conventions, and separately selected coding guidance remain authoritative. This entry does not add Scrapider.
-  - **Fallback:** If a Compose detail is unresolved, follow existing project patterns and surface the gap rather than inventing a new interaction.
 ```
 
 ### ImageGen Alone for a Missing Asset
@@ -200,14 +187,9 @@ complete design-generation-coding example below applies only when that full rout
 ### Author-Selected: `frontend-design` → `impeccable` + ImageGen + Scrapider Guidelines
 
 ```md
-- **frontend-design** — Establish a new web direction.
-  - **Scenario:** Use only when the author has selected this full route for a new or redesigned web UI that needs a new visual direction.
-  - **Boundary:** Owns the visual direction; `impeccable` refines it, ImageGen supplies only a missing asset, and Scrapider governs code changes. The project's design system, contracts, and explicit user requirements constrain the result.
-  - **Fallback:** If the direction cannot be resolved, preserve the established system and surface the remaining decision.
-- **impeccable** — Refine the approved direction.
-  - **Scenario:** The same new or redesigned web UI needs UX, hierarchy, state, accessibility, or visual refinement.
-  - **Boundary:** Refines within the direction established by `frontend-design`; it does not establish product identity or implementation standards.
-  - **Fallback:** If the direction is not approved, refine only established project patterns.
+- **frontend-design + impeccable** — Web visual direction and refinement.
+  - **Scenario:** Use `frontend-design` for a new web UI or an explicitly requested new visual direction; use `impeccable` for UX, hierarchy, interaction states, accessibility, consistency, and polish within an existing or accepted direction.
+  - **Boundary:** When both are needed, `frontend-design` establishes the direction and `impeccable` refines it. Existing UI refinement uses only `impeccable`. The project's design system, contracts, and explicit requirements constrain the result; ImageGen supplies the selected missing asset and Scrapider governs code changes.
 - **ImageGen** — Create only the missing raster asset.
   - **Scenario:** The selected route requires an asset that is missing, and the author has authorized its generation.
   - **Boundary:** Supplies the asset only; the approved direction and product identity govern its use, while Scrapider governs code integration.
@@ -215,5 +197,4 @@ complete design-generation-coding example below applies only when that full rout
 - **Scrapider Guidelines** — Govern implementation and review.
   - **Scenario:** Implementing the approved design, refinements, and authorized asset in code under the project's selected coding standard.
   - **Boundary:** Owns engineering standards; it does not select the visual direction or authorize generation of brand assets.
-  - **Fallback:** When a Scrapider reference does not apply, follow the project's existing instructions and relevant framework guidance.
 ```
