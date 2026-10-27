@@ -12,7 +12,7 @@ under its own trigger. Add a coding standard only when it has been selected for 
 
 ```md
 - **Scrapider Guidelines**
-  - **Scenario:** Implementing, refactoring, debugging, or reviewing backend, data, or general application code in a project that selected Scrapider as its coding standard.
+  - **Scenario:** Use Scrapider when implementing, refactoring, debugging, or reviewing code in a project that adopted it as its coding standard; follow the skill's built-in standards-review applicability and dispatch rules.
   - **Boundary:** Scrapider governs engineering decisions and review; it does not establish a visual direction. Existing project contracts and explicit task requirements remain authoritative.
 ```
 
@@ -58,7 +58,7 @@ has been selected for code changes. These selections do not imply one another.
   - **Scenario:** Use `frontend-design` for a new web UI or an explicitly requested new visual direction; use `impeccable` for hierarchy, interaction states, accessibility, consistency, and polish within an existing or accepted direction.
   - **Boundary:** When both are needed, `frontend-design` establishes the direction and `impeccable` refines it. Existing UI refinement uses only `impeccable`. Preserve project tokens, behavior, contracts, and explicit requirements; code standards stay with the selected coding guidance.
 - **Scrapider Guidelines** — Apply the selected engineering standards to implementation.
-  - **Scenario:** Implementing the approved direction and refinements in application code.
+  - **Scenario:** Use Scrapider when implementing the approved direction and refinements in application code; follow its built-in standards-review rules.
   - **Boundary:** Owns engineering decisions and review; it does not choose the visual direction, and existing contracts and explicit task requirements remain authoritative.
 ```
 
@@ -70,7 +70,7 @@ has been selected for code changes. These selections do not imply one another.
   - **Boundary:** Owns UI refinement and preserves existing tokens, layout conventions, and behavior; it does not establish a new direction or coding rules.
   - **Fallback:** If a visual issue cannot be verified, limit changes to the evidence-backed request and state what remains unverified.
 - **Scrapider Guidelines** — Apply the selected engineering standards to UI code changes.
-  - **Scenario:** Implementing the approved local refinements in the existing interface.
+  - **Scenario:** Use Scrapider when implementing the approved local refinements in the existing interface; follow its built-in standards-review rules.
   - **Boundary:** Owns engineering standards for code changes; nonvisual logic and API work remain governed by their applicable project rules.
 ```
 
@@ -96,7 +96,7 @@ work; use that guidance alone when no separate Compose specialist is selected or
   - **Scenario:** Implementing, refactoring, debugging, or reviewing Compose code in an Android project that selected Scrapider as its coding standard.
   - **Boundary:** Owns Compose APIs and UI-specific concerns; the project's design system and explicit product requirements remain authoritative. Scrapider Android guidance owns broader engineering standards.
 - **Scrapider Android guidance** — Apply the selected Android engineering standards.
-  - **Scenario:** The same Compose code change requires the project's selected Android coding and review rules.
+  - **Scenario:** Use the selected Scrapider Android guidance for the same Compose code change; follow its built-in standards-review rules.
   - **Boundary:** Owns broader Android architecture, contracts, and validation; `compose-expert` owns specialized Compose questions, so neither entry replaces the other's responsibility.
 ```
 
@@ -104,7 +104,7 @@ work; use that guidance alone when no separate Compose specialist is selected or
 
 ```md
 - **Scrapider Guidelines — Android Kotlin and Compose guidance**
-  - **Scenario:** Android Kotlin implementation or review in a project that selected Scrapider, when the task can be handled by the project's Android guidance without a separate Compose specialist.
+  - **Scenario:** Use the selected Scrapider guidance for Android Kotlin implementation or review when no separate Compose specialist is needed; follow its built-in standards-review rules.
   - **Boundary:** Scrapider guidance is the Android coding standard, including the applicable Compose reference; it does not select Apple Design, `impeccable`, Product Design, or another UI direction.
   - **Skip:** A material Compose-specific API or interaction issue requires specialist reasoning beyond the project's selected Android reference.
 ```
@@ -195,6 +195,6 @@ complete design-generation-coding example below applies only when that full rout
   - **Boundary:** Supplies the asset only; the approved direction and product identity govern its use, while Scrapider governs code integration.
   - **Fallback:** If an approved asset exists or generation is not authorized, reuse it or leave the image unresolved.
 - **Scrapider Guidelines** — Govern implementation and review.
-  - **Scenario:** Implementing the approved design, refinements, and authorized asset in code under the project's selected coding standard.
+  - **Scenario:** Use the selected Scrapider standard when implementing the approved design, refinements, and authorized asset in code; follow its built-in standards-review rules.
   - **Boundary:** Owns engineering standards; it does not select the visual direction or authorize generation of brand assets.
 ```

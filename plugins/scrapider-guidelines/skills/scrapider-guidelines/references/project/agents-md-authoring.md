@@ -27,6 +27,11 @@ When creating or restructuring entries for confirmed capabilities, read the matc
 [scenario examples](examples/capability-entries.md) and apply
 [Capability Entry Format](#capability-entry-format). Reuse confirmed choices without reopening recommendation.
 
+Every result needs a Skill / Tool responsibilities section, using the target language and an
+equivalent existing heading when present. This is the required section, not the start of a fixed
+document skeleton. Include collaboration only after the author has selected it; derive other sections
+from actual project content and author choices.
+
 ## Establish the Purpose
 
 For creation, identify the project responsibilities and decisions that future agents need. For an
@@ -115,11 +120,18 @@ Write labels in the target document's language and keep one label set throughout
 scenarios, tool parameters and invocation tutorials, installation snapshots, benchmarks, and savings
 claims. Keep capability-internal query, batching, and source-expansion procedures in references unless
 the author specifically requests project-level execution rules for them.
-Omit routine planning, search, file reads, file creation, and edits from generated declarations,
-combination names, and generic fallback fields, including boilerplate about using available tools or
-following existing project standards. Do not move these defaults into another section or copy this
-omission rule into the target. Retain explicit project overrides and capability-specific routing or
-failure policies only when they change a decision.
+Name actual selected skills, plugins, MCP services, and CLI capabilities. Routine search, reading,
+and editing are implicit host operations, not named capabilities or partners in a tool combination.
+Omit them from entry names, responsibility descriptions, boundaries, and generic fallback text.
+Do not move these defaults into another section or copy this omission rule into the target.
+Retain capability-specific routing and failure policies only when they change a decision.
+
+For an adopted coding standard, make its use an instruction within the scenario rather than merely
+describing what it can do. Preserve whether its use is required, conditional, or optional. When
+Scrapider is the selected standard, refer to the skill's built-in standards-review applicability and
+dispatch rules once in its entry. Do not reproduce those rules in a priority or coding-workflow
+section, promise automatic skill loading, or add a functional reviewer to its built-in dispatch.
+Record an additional review policy only when the project or author actually selected it.
 
 A combined entry must preserve each selected skill's use conditions and cooperation without repeating
 shared fields. For other cooperating capabilities, express their distinct responsibilities through
@@ -130,6 +142,12 @@ Use one canonical name per capability or role. For a specified host, use its ver
 including a namespace when required; otherwise retain the stable name. Do not add another column or
 alias that merely repeats the same identifier in short form. Other columns must convey distinct
 information such as responsibility or trigger.
+An optional backend, adapter, or integration of a selected tool is not a separately selected
+capability. Preserve that option and the tool's adopted operations in its own entry; do not promote
+the backend name to another tool or add preconditions from an unselected combination example.
+Current author choices in the conversation take precedence over an older file's capability list.
+Carry every confirmed choice into delegated authoring and verification inputs; an older backend
+mention must not hide or demote a separately selected JetBrains IDE MCP capability.
 
 When rebuilding, convert capability prose to these fields without changing its meaning. Keep
 cooperating capabilities in the existing list or table, combining the selected design pair as above.
@@ -144,12 +162,11 @@ to these responsibilities without duplicating them.
 
 ## Select Content and Integrate It
 
-Check applicable dimensions below by meaning; preserve equivalent existing descriptions, references,
-and headings. Do not impose the table's labels or order on the document.
-
-Fill uncovered applicable rules in their existing sections; add a heading only for a subject with no
-existing section. Do not invent policies or capabilities to fill a dimension. Ask the author when a
-missing decision changes workflow, dependencies, or business behavior.
+Use the dimensions below to find relevant project evidence, not as required sections or a checklist
+to fill. Preserve equivalent existing descriptions, references, and headings. Beyond the required
+Skill / Tool responsibilities section, add a section only when actual project content or an author
+choice calls for it. Ask the author when a missing decision changes workflow, dependencies, or
+business behavior.
 
 | Dimension | Useful lasting content |
 | --- | --- |
@@ -160,11 +177,12 @@ missing decision changes workflow, dependencies, or business behavior.
 | Execution and delivery | Actual authorization limits, proportionate verification, and the evidence expected in delivery. |
 | Language | The author's chosen language for documents, comments, commits, or responses, where specified. |
 
-For creation, assess collaboration even when no custom roles were named. If independent tasks can be
-delegated and the choice is open, offer existing or bundled roles and a direct-work option. Record the
-chosen responsibilities and acceptance boundary.
-Record an explicit no-delegation restriction when the author requires it; ordinary direct work needs
-no declaration.
+For creation, offer collaboration as an opt-in when useful and the choice is open. Write its section
+only after the author explicitly enables it, or when rebuilding an existing collaboration policy.
+Available subagent tools, bundled roles, multiple project modules, and selecting a coding skill do
+not establish that choice. An unanswered offer creates no section or placeholder. Record only the
+chosen responsibilities and acceptance boundary; do not add a no-delegation rule merely because the
+author did not opt in.
 When selected roles are not exposed by the host, retain the responsibilities and have the primary agent
 perform them or map them to available agents; do not leave work blocked on a role name.
 
@@ -176,7 +194,8 @@ Route document reading by the task's affected areas; do not require every task t
 overviews or product documents unless that is an existing project rule or an explicit author choice.
 Read the root README when module ownership or entry points remain unclear; do not require it on every task.
 
-When initializing a root document, briefly identify the top-level modules and their responsibilities.
+When project orientation is useful, briefly identify the top-level modules and their responsibilities
+in the appropriate existing section or introduction; this does not require a project-structure heading.
 State the module-reading requirement once, in one short sentence: before working in a module, read its
 README and applicable `AGENTS.md` instructions. Make it apply to any affected module rather than
 enumerating selected module names again. Let each module README provide further reading guidance;
@@ -201,12 +220,22 @@ any explicit project requirement such as mandatory use. In a new document, keep 
 in that entry rather than repeating them in an engineering section. Do not copy the skill's general
 conventions, loading procedures, setup, or reference-file paths into the project file. Add only verified
 project-specific requirements, explicit overrides, or cross-module coordination rules. For an
-adopted role, keep only its responsibility and handoff; leave its internal tool selection, reference
-loading, and execution procedure in the role definition. In a new document, put each chosen role in
-its own item or row under collaboration. This includes both functional and standards reviewers;
-do not put a reviewer in the tool-capability list or omit it from collaboration because an IDE
-inspection tool supports its work. Role entries do not use the capability field template.
+adopted collaboration, prefer a compact table with responsibility, callable role type, and expected
+delivery. Give each chosen role one row with a specific responsibility and concise result, such as
+evidence and open questions, implemented changes and verification, standards findings, or functional
+findings. Use the [collaboration example](examples/planning-and-collaboration.md#collaboration).
+Leave internal tool selection, reference loading, and execution procedures in role definitions.
+Include a reviewer row only when that role is part of the selected collaboration policy; merely
+referring to Scrapider's built-in review does not require a collaboration section or reviewer table.
+Role entries do not use the capability field template. Reuse existing project-wide delegation and
+review rules rather than restating them in role descriptions or handoff paragraphs.
 These creation defaults do not authorize shortening valid existing rules during an unrelated rebuild.
+
+Do not create generic priority, writing/editing-code, Java business-rule, defaults/parameters,
+execution-requirement, or language sections from a template. Keep general engineering procedures
+inside the selected skill. Project-specific content in these areas may justify a section, and valid
+existing rules survive a rebuild unless their removal is authorized. Do not invent a precedence
+hierarchy to accompany skill adoption; retain only priority relationships established for the target.
 
 Give independently useful rules their own list items or paragraphs. Use headings where the subject
 changes; do not pack unrelated requirements into semicolon chains or oversized bullets. Remove duplicate
@@ -243,8 +272,16 @@ before claiming registration and preserve the selected plugin feature scope. For
 account for every category in the requested area and every confirmed choice.
 For combined scenarios, check that each selected capability retains its use conditions and distinct
 responsibility; the selected design pair shares one entry. Remove routine defaults and duplicate
-identifiers, and confirm every selected role appears under collaboration rather than tools. Keep
-unselected alternatives in the recommendation conversation.
+identifiers, including ordinary host operations attached to a tool's name or boundary. Confirm the
+Skill / Tool responsibilities section is present. Check every other section against project evidence
+or an author choice, and require a confirmed collaboration choice before emitting its section.
+Use the compact role table for selected collaboration; do not move roles into tool entries.
+Keep built-in standards-review rules with the skill, without adding duplicate triggers or an
+unselected dual-review policy. Keep unselected alternatives in the recommendation conversation.
+Check the result against the complete confirmed capability selection, not just the old file. For a
+selected JetBrains IDE MCP surface, preserve the adopted semantic-refactoring, diagnostics,
+compilation, formatting, and dependency-declaration scenarios within the selected setup allowlist;
+a backend mention or a generic "IDE checks" summary does not cover that entry.
 
 Compare meaning, headings, and rule separation against the agreed baseline. Check that useful detail
 and distinct responsibilities survived. Account for every changed or deleted heading and rule against
@@ -264,7 +301,7 @@ instructions without rerunning this authoring workflow.
 
 ## Bundled Collaboration Roles
 
-Prefer existing user roles. When collaboration choices are open, offer only the responsibilities the
+Prefer existing user roles. After collaboration is selected, offer only the responsibilities the
 project needs from the following definitions; read definitions on demand. In hosts that support
 plugin-provided agents, plugin installation registers these roles under the plugin's namespace.
 Loading the skill alone does not install or register agents. Selecting roles does not mean running

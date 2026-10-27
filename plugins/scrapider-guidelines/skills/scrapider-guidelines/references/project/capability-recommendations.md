@@ -38,7 +38,9 @@ Use these profiles as a starting point, not a fixed menu or a requirement to ado
 
 Name the actual coding guidance in each proposal. Preserve existing project standards; offer Scrapider
 Guidelines as an optional coding layer for code changes or standards review, without inferring adoption
-from this authoring task. Keep retrieval and coding responsibilities separate.
+from this authoring task. Once adopted as the project's standard, make its use conditions explicit in
+its entry and refer to its built-in standards-review rules without copying their procedure.
+Keep retrieval and coding responsibilities separate.
 
 Add planning and UI capabilities only under their conditions in the sections below; selecting a
 retrieval profile does not require either layer. Do not turn the profiles into mandatory tiers.
@@ -46,8 +48,11 @@ retrieval profile does not require either layer. Do not turn the profiles into m
 ## Capability Types
 
 Classify a capability by its exposed operations; do not add workflow steps solely for its packaging.
-Subagent roles belong in collaboration, including reviewers supported by IDE tools; they are not
-tool capabilities. Omit routine host operations from proposals and generated capability entries.
+Offer collaboration separately and record it only after an author choice, including a choice already
+established by the source project instructions. Selected subagent roles belong in that section,
+including reviewers supported by IDE tools; they are not tool capabilities. A skill's built-in
+standards review does not by itself select a collaboration module or a second reviewer.
+Omit routine host operations from proposals, capability names, and generated descriptions.
 
 | Type | Responsibility | Examples |
 | --- | --- | --- |
@@ -152,7 +157,8 @@ Do not use this surface for large-file slicing.
 
 Scripted standards checks belong to [scrapider-standards-reviewer](../../../../agents/scrapider-standards-reviewer.md).
 Its role definition loads the inspection library and handles coverage and candidate confirmation;
-do not turn that internal mechanism into a main-agent procedure in project `AGENTS.md`.
+do not turn that internal mechanism into a main-agent procedure in project `AGENTS.md`, or infer
+adoption of a collaboration section from the availability of IDE checks.
 
 ### Alternatives for a Specific Unmet Need
 

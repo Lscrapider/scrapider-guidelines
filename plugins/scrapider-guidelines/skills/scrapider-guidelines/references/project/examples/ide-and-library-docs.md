@@ -4,6 +4,10 @@ Use the scenario matching the selected capabilities. Each sample keeps distinct 
 peer entries and preserves their separate responsibilities. Apply the
 [description rules](../agents-md-authoring.md#capability-entry-format) and project constraints.
 
+When the author selects JetBrains IDE MCP, give it its own entry and retain each adopted operation
+below. Selecting an IDE edit-and-check workflow does not require another retrieval service; do not
+substitute an optional backend of another tool for this capability.
+
 ## JetBrains MCP
 
 ```md
@@ -13,6 +17,8 @@ peer entries and preserves their separate responsibilities. Apply the
     - For changed files, run supported IDE diagnostics and single-file incremental compilation, followed by best-effort formatting according to project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
     - Debug a reproduced runtime failure when static evidence is insufficient.
+  - **Boundary**: IDE diagnostics do not replace functional or standards review. Run and debug operations retain the project's authorization limits.
+  - **Fallback**: If the project is not open or an operation is unsupported, report the specific IDE verification gap; formatter failure does not block delivery.
 ```
 
 ## Context7
@@ -133,7 +139,10 @@ peer entries and preserves their separate responsibilities. Apply the
 
 ## Standards Review Collaboration
 
-Declare the standards-reviewer role under project collaboration; see [Planning and Collaboration](planning-and-collaboration.md#collaboration).
+When collaboration and a standards-reviewer role are selected, include that role in the project's
+compact collaboration table; see [Planning and Collaboration](planning-and-collaboration.md#collaboration).
+Otherwise, leave standards-review applicability and dispatch with the selected coding skill rather
+than adding a collaboration section or inspection procedure.
 
 ## Selection Boundaries
 
@@ -142,4 +151,4 @@ Declare the standards-reviewer role under project collaboration; see [Planning a
 | Graph retrieval and IDE source operations | [Codegraph and JetBrains](#codegraph-and-jetbrains) keep relationship evidence and semantic operations with different owners. | Select either the retrieval profile or the [IDE entry](#jetbrains-mcp) when only that responsibility applies. |
 | IDE declarations and external docs | [JetBrains and Context7](#jetbrains-and-context7) separates installed project facts from upstream version evidence. | Use [Context7](#context7) for unresolved external facts; rely on local artifacts directly when they already answer the question. |
 | IDE and LSP symbol support | [JetBrains and Serena](#jetbrains-and-serena) requires a verified symbol-query gap. | Select the IDE alone or the standalone Serena profile in the [retrieval scenarios](retrieval.md). |
-| Scripted candidates and standards findings | [Standards review collaboration](#standards-review-collaboration) is declared under collaboration, not as a tool capability. | See the [collaboration scenarios](planning-and-collaboration.md#collaboration). |
+| Scripted candidates and standards findings | A selected [standards-review role](#standards-review-collaboration) belongs in collaboration, not the tool list. | A coding skill's built-in review does not require a collaboration section. |

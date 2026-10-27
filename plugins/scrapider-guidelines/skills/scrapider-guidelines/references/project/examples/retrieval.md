@@ -44,8 +44,8 @@ Codegraph and IDE workflow. Use available IDE and local dependency evidence for 
 ### R2. Codegraph
 
 ```markdown
-- **Codegraph** — Code relationships and impact evidence.
-  - **Scenario:** Use for recurring cross-file flows, dependencies, or impact analysis when the Codegraph package, exposed operations, and suitable index are verified.
+- **Codegraph** — Trace call paths, dependencies, and change impact.
+  - **Scenario:** Use Codegraph to investigate cross-file code flows, callers, dependencies, and affected consumers when its exposed operations and project index cover the question.
   - **Boundary:** Codegraph owns relationship questions. Preserve any project routing contract that requires Codegraph before code questions or edits; a known path does not override that order.
   - **Skip:** Skip broad graph exploration when no relationship question remains.
 ```
@@ -111,7 +111,7 @@ with task-specific calls conditional; they do not all have to run on every task.
   - **Boundary**: Codegraph supplies relationship evidence. Coding policy remains with project instructions and the selected engineering guidance.
 
 - **Scrapider Guidelines** — Engineering rules for implementation and review.
-  - **Scenario**: Implementing, refactoring, debugging, or reviewing code under the selected Scrapider rules.
+  - **Scenario**: Use the selected Scrapider standard when implementing, refactoring, debugging, or reviewing project code; follow its built-in standards-review applicability and dispatch rules.
   - **Boundary**: Retrieval establishes current code facts; Scrapider guides changes and review without overriding explicit project contracts or user instructions.
 ```
 
@@ -129,7 +129,7 @@ Use this scenario only for an explicit Serena selection; it is not a default rec
   - **Boundary**: Serena fills only the unresolved binding or reference gap; it does not repeat answered graph queries or replace the selected coding rules.
 
 - **Scrapider Guidelines** — Engineering rules for the resulting changes.
-  - **Scenario**: Implementing or reviewing code under the project's selected Scrapider rules.
+  - **Scenario**: Use the selected Scrapider standard when implementing or reviewing project code; follow its built-in standards-review applicability and dispatch rules.
   - **Boundary**: Retrieval services supply evidence; project contracts and Scrapider guidance govern implementation and review.
 ```
 

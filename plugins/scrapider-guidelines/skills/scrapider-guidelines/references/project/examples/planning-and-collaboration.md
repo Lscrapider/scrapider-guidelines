@@ -72,30 +72,28 @@ follows one authoritative task record.
 
 ## Collaboration
 
+Use this example only after the author enables collaboration, or when rebuilding an existing
+collaboration policy. Include only selected roles and resolve their callable names for the target
+host; use a plugin namespace when the host requires it. Bundled roles are not an instruction to
+enable collaboration or run every role.
+
 Delegate responsibilities that can be separated and handed off clearly. The primary agent owns task
 scope, decisions, integration, and final acceptance. Each role returns findings or results to the
 primary agent within the delegation boundaries of its definition.
 
 ### Role responsibilities
 
-- **`scrapider-explorer`** — Read-only investigation of code paths, callers, existing behavior, or
-  other assigned evidence. Return supporting evidence and distinguish observed facts from inferences.
-- **`scrapider-developer`** — Implement the clearly assigned scope and return the change with
-  verification evidence and unresolved questions.
-- **`scrapider-code-reviewer`** — Read-only review of functional correctness, requirements,
-  behavior, and regressions. Return concrete findings and evidence; do not edit or accept the change.
-- **`scrapider-standards-reviewer`** — Read-only review of applicable engineering standards when
-  explicitly requested or required by project policy. Report concrete rule violations; do not perform
-  the functional review, edit, or accept the change.
-- **`scrapider-generalist`** — Handle assigned work outside investigation, implementation, and review
-  responsibilities without duplicating a specialist's scope.
+| Responsibility | Role type | Expected delivery |
+| --- | --- | --- |
+| Code investigation | `scrapider-explorer` | Read-only evidence, key locations, and unresolved questions. |
+| Code implementation | `scrapider-developer` | Bounded changes, verification results, and material remaining risks. |
+| Work outside specialist roles | `scrapider-generalist` | The assigned result without duplicating a specialist's scope. |
+| Engineering standards review | `scrapider-standards-reviewer` | Read-only, evidence-backed violations of applicable engineering rules. |
+| Functional and logic review | `scrapider-code-reviewer` | Read-only findings about requirements, incorrect behavior, and regressions. |
 
 ### Handoffs
 
-For investigation followed by implementation, the explorer returns evidence, affected paths, and
-open questions to the primary agent. The primary agent decides scope and assigns bounded implementation
-work; the developer returns the change and verification evidence for integration.
-
-When both functional and standards reviews are required, assign the code reviewer to behavior and
-regressions and the standards reviewer to applicable rule conformance. The primary agent integrates
-their findings and owns fixes and acceptance; the two reviews keep their scopes distinct.
+The primary agent assigns bounded work, passes relevant evidence between roles, and verifies the
+returned results before acceptance. Standards-review triggers and dispatch stay with the selected
+skill's built-in rules. Add functional review or a combined review policy only when the project or
+author selected it; keep the two reviewers' responsibilities distinct.

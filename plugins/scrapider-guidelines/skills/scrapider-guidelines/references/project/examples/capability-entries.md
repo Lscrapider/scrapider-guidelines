@@ -42,10 +42,11 @@ For local changes without an additional retrieval service, record only the selec
 
 ## Collaboration
 
-Write selected roles from the [five-role catalog](planning-and-collaboration.md#collaboration), including
-both reviewers when chosen, in the project's collaboration section. IDE support does not turn the
-standards reviewer into a tool entry. Keep each role's responsibility and handoff there once.
-When both reviews are selected, distinguish functional correctness from standards conformance.
+Only after collaboration is selected, write its chosen roles using the compact responsibility,
+role-type, and delivery table in the [collaboration example](planning-and-collaboration.md#collaboration).
+Preserve existing user roles. IDE support does not turn a reviewer into a tool entry, and a skill's
+built-in standards review does not require this section. When both reviewers are chosen, distinguish
+functional correctness from standards conformance without copying the skill's review procedure.
 
 ## Overlapping Responsibilities
 
