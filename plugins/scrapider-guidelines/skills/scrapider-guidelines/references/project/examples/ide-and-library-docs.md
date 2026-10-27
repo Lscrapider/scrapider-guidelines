@@ -5,8 +5,10 @@ peer entries and preserves their separate responsibilities. Apply the
 [description rules](../agents-md-authoring.md#capability-entry-format) and project constraints.
 
 When the author selects JetBrains IDE MCP, give it its own entry and retain each adopted operation
-below. Selecting an IDE edit-and-check workflow does not require another retrieval service; do not
-substitute an optional backend of another tool for this capability.
+below. These examples use the [ten-tool setup allowlist](../capability-setup.md#jetbrains-ide-tool-surface),
+which excludes debugger and run-configuration tools. Selecting an IDE edit-and-check workflow does
+not require another retrieval service; do not substitute an optional backend of another tool for
+this capability.
 
 ## JetBrains MCP
 
@@ -16,8 +18,7 @@ substitute an optional backend of another tool for this capability.
     - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - For changed files, run supported IDE diagnostics and single-file incremental compilation, followed by best-effort formatting according to project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
-    - Debug a reproduced runtime failure when static evidence is insufficient.
-  - **Boundary**: IDE diagnostics do not replace functional or standards review. Run and debug operations retain the project's authorization limits.
+  - **Boundary**: IDE diagnostics do not replace functional or standards review. Build and inspection operations retain the project's authorization limits.
   - **Fallback**: If the project is not open or an operation is unsupported, report the specific IDE verification gap; formatter failure does not block delivery.
 ```
 
@@ -48,7 +49,6 @@ substitute an optional backend of another tool for this capability.
     - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - For changed files, run supported IDE diagnostics and single-file incremental compilation, followed by best-effort formatting according to project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
-    - Debug a reproduced runtime failure when static evidence is insufficient.
   - **Boundary**: Codegraph owns relationship investigation; JetBrains owns IDE semantic operations and checks.
 ```
 
@@ -79,7 +79,6 @@ substitute an optional backend of another tool for this capability.
     - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - For changed files, run supported IDE diagnostics and single-file incremental compilation, followed by best-effort formatting according to project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
-    - Debug a reproduced runtime failure when static evidence is insufficient.
   - **Boundary**: IDE declarations establish installed dependency facts; Context7 handles unresolved upstream version and compatibility facts.
 
 - **Context7** — External library versions, compatibility, and API facts.
@@ -106,7 +105,6 @@ substitute an optional backend of another tool for this capability.
     - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - For changed files, run supported IDE diagnostics and single-file incremental compilation, followed by best-effort formatting according to project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
-    - Debug a reproduced runtime failure when static evidence is insufficient.
   - **Boundary**: Codegraph owns relationship investigation; IDE declarations establish installed dependency facts; Context7 handles unresolved upstream version and compatibility facts.
 
 - **Context7** — External library versions, compatibility, and API facts.
@@ -129,7 +127,6 @@ substitute an optional backend of another tool for this capability.
     - Rename variables, fields, methods, classes, or other code symbols with reference-aware refactoring; review string and comment changes in the diff, and verify reflective uses separately.
     - For changed files, run supported IDE diagnostics and single-file incremental compilation, followed by best-effort formatting according to project style.
     - When dependency signatures or versions are unclear, inspect third-party declarations and the resolved version on the current classpath.
-    - Debug a reproduced runtime failure when static evidence is insufficient.
   - **Boundary**: The IDE owns semantic edits and checks; Serena supplies only symbol evidence the IDE cannot resolve.
 
 - **Serena (LSP)** — Supplementary symbol evidence.

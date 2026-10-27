@@ -1,0 +1,15 @@
+# Approved: enable only these ten tools; all debugger tools are excluded.
+# Merge into the existing server table and preserve its connection parameters.
+[mcp_servers.jetbrains-mcp]
+enabled_tools = [
+  "get_project_modules",
+  "rename_refactoring",
+  "get_file_problems",
+  "build_project",
+  "reformat_file",
+  "get_project_dependencies",
+  "search_symbol",
+  "get_symbol_info",
+  "read_file",
+  "run_inspection_kts",
+]

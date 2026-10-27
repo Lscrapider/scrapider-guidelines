@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-27",
+  "server": "jetbrains-mcp",
+  "enabled": true,
+  "enabled_tools": [
+    "get_project_modules",
+    "rename_refactoring",
+    "get_file_problems",
+    "build_project",
+    "reformat_file",
+    "get_project_dependencies",
+    "search_symbol",
+    "get_symbol_info",
+    "read_file",
+    "run_inspection_kts"
+  ],
+  "disabled_tools": null,
+  "matches_approved": true,
+  "connection_parameters": "preserved during allowlist insertion; omitted from archive"
+}

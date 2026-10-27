@@ -70,15 +70,48 @@ agent cannot perform, and it belongs to the author.
   IDEA; re-enable it under the Plugins settings if disabled.
 - Initialize: open the target project in the IDE; under Settings | Tools | MCP Server, select
   "Enable MCP Server", confirm the access dialog, and apply the settings. Copy the SSE, Stdio, or
-  HTTP connection config into the host's MCP configuration and restart the client. The server is
-  available only while that project is open, and every call must target it with `projectPath`.
+  HTTP connection config into the host's MCP configuration, then configure the explicit tool
+  allowlist below before restarting the client. The server is available only while that project
+  is open, and every call must target it with `projectPath`.
 - Exposed tools: the server exposes its tools individually, and the surface is heavyweight. Under
-  Settings | Tools | MCP Server | Exposed Tools, enable only the tool groups the project's selected
-  capabilities use; leave the rest off, especially the database tools. When a group the project
-  does not use is enabled, prompt the author to disable it rather than leaving it on.
-- Verify: call a read-only tool such as `get_project_modules` with that `projectPath`. An IDE
-  without the project open, or a call against a different path, is an explicit blocker to surface,
-  not a silent fallback.
+  Settings | Tools | MCP Server | Exposed Tools, enable only the individual tools used by this
+  workflow. Leave debugger, run-configuration, terminal, database, notebook, ordinary search, and
+  generic file-writing tools off. Ask the author to adjust IDE-side switches when needed.
+- Client tool allowlist (required): explicitly declare the ten tools below in the host's MCP
+  configuration; a copied connection URL and IDE-side switches alone do not complete setup.
+  For Codex, merge this field into the existing server table, using its actual server ID in place
+  of `jetbrains-mcp`. Preserve the connection, authentication, timeout, and unrelated settings.
+
+  ```toml
+  [mcp_servers.jetbrains-mcp]
+  enabled_tools = [
+    "get_project_modules",
+    "rename_refactoring",
+    "get_file_problems",
+    "build_project",
+    "reformat_file",
+    "get_project_dependencies",
+    "search_symbol",
+    "get_symbol_info",
+    "read_file",
+    "run_inspection_kts",
+  ]
+  ```
+
+  Use the exported tool names without the host's `mcp__...__` invocation prefix. Check existing
+  `disabled_tools`, which Codex applies after `enabled_tools`; do not silently remove exclusions.
+  Other hosts must use their own verified allowlist mechanism. JetBrains's `IJ_MCP_ALLOWED_TOOLS`
+  uses internal names that can differ from exported names, so do not copy a client list into that
+  parameter without verifying the resulting directory. Keep all debugging tools and
+  `get_run_configurations` outside this workflow's allowlist. The retained tools cover project
+  verification, semantic rename, diagnostics, incremental compilation, formatting, dependency
+  declarations, and existing standards-inspection scripts; their execution follows project rules.
+  See the [Codex MCP configuration documentation](https://learn.chatgpt.com/docs/extend/mcp?surface=cli).
+- Verify: restart or reconnect the client and check its effective tool catalog includes the ten
+  allowed tools and excludes the remaining tools. An old session's catalog does not verify the
+  new configuration. Then call a read-only tool such as `get_project_modules` with the target
+  `projectPath`. Missing required tools, unexpected exposure, an IDE without the project open, or
+  a call against a different path are explicit setup gaps to surface, not silent fallbacks.
 - Operation boundaries follow the
   [IDE tool surface conditions](capability-recommendations.md#ide-tool-surface-on-an-open-project).
 

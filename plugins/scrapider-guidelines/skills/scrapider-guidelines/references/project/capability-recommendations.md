@@ -147,12 +147,12 @@ and post-edit formatting use the IDE in the scenarios below.**
 - **Incremental single-file build**: check compilation after a file edit when the IDE supports it.
 - **Third-party symbol facts**: inspect the resolved artifact and declaration when dependency
   versions or signatures are ambiguous.
-- **Debugger sessions**: inspect a reproduced failure when static evidence leaves its runtime state
-  or cause unresolved.
 - **Reformat after writing**: use the IDE formatter after file edits as a best-effort finishing
   step. Follow project conventions, including existing files when no code-style configuration exists;
   formatter failure does not block delivery.
 
+This workflow excludes debugger and run-configuration tools; enable only its ten tools through
+the [explicit setup allowlist](capability-setup.md#jetbrains-ide-tool-surface).
 Do not use this surface for large-file slicing.
 
 Scripted standards checks belong to [scrapider-standards-reviewer](../../../../agents/scrapider-standards-reviewer.md).

@@ -1,0 +1,670 @@
+CLASS com.intellij.mcpserver.stdio.McpStdioRunnerKt exit 0
+Compiled from "McpStdioRunner.kt"
+public final class com.intellij.mcpserver.stdio.McpStdioRunnerKt {
+  private static final java.lang.String IJ_MCP_PREFIX;
+
+  public static final java.lang.String IJ_MCP_HEADER_PREFIX;
+
+  private static final java.lang.String IJ_MCP_SERVER_PORT;
+
+  private static final java.lang.String IJ_MCP_ALLOWED_TOOLS;
+
+  private static final java.lang.String IJ_MCP_SERVER_PROJECT_PATH;
+
+  private static final java.lang.String IJ_MCP_DEBUG;
+
+  private static final boolean isDebugEnabled;
+
+  public static final java.lang.String getIJ_MCP_SERVER_PORT();
+    Code:
+       0: getstatic     #11                 // Field IJ_MCP_SERVER_PORT:Ljava/lang/String;
+       3: areturn
+
+  public static final java.lang.String getIJ_MCP_ALLOWED_TOOLS();
+    Code:
+       0: getstatic     #15                 // Field IJ_MCP_ALLOWED_TOOLS:Ljava/lang/String;
+       3: areturn
+
+  public static final java.lang.String getIJ_MCP_SERVER_PROJECT_PATH();
+    Code:
+       0: getstatic     #19                 // Field IJ_MCP_SERVER_PROJECT_PATH:Ljava/lang/String;
+       3: areturn
+
+  public static final java.lang.Object main(kotlin.coroutines.Continuation<? super kotlin.Unit>);
+    Code:
+       0: aload_0
+       1: instanceof    #25                 // class com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1
+       4: ifeq          39
+       7: aload_0
+       8: checkcast     #25                 // class com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1
+      11: astore        18
+      13: aload         18
+      15: getfield      #29                 // Field com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1.label:I
+      18: ldc           #30                 // int -2147483648
+      20: iand
+      21: ifeq          39
+      24: aload         18
+      26: dup
+      27: getfield      #29                 // Field com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1.label:I
+      30: ldc           #30                 // int -2147483648
+      32: isub
+      33: putfield      #29                 // Field com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1.label:I
+      36: goto          49
+      39: new           #25                 // class com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1
+      42: dup
+      43: aload_0
+      44: invokespecial #34                 // Method com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1."<init>":(Lkotlin/coroutines/Continuation;)V
+      47: astore        18
+      49: aload         18
+      51: getfield      #38                 // Field com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1.result:Ljava/lang/Object;
+      54: astore        17
+      56: invokestatic  #44                 // Method kotlin/coroutines/intrinsics/IntrinsicsKt.getCOROUTINE_SUSPENDED:()Ljava/lang/Object;
+      59: astore        19
+      61: aload         18
+      63: getfield      #29                 // Field com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1.label:I
+       4: return
+
+  public static final void access$info(java.lang.String);
+    Code:
+       0: aload_0
+       1: invokestatic  #111                // Method info:(Ljava/lang/String;)V
+       4: return
+
+  static {};
+    Code:
+       0: ldc_w         #542                // String IJ_MCP_SERVER_PORT
+       3: putstatic     #11                 // Field IJ_MCP_SERVER_PORT:Ljava/lang/String;
+       6: ldc_w         #543                // String IJ_MCP_ALLOWED_TOOLS
+       9: putstatic     #15                 // Field IJ_MCP_ALLOWED_TOOLS:Ljava/lang/String;
+      12: ldc_w         #544                // String IJ_MCP_SERVER_PROJECT_PATH
+      15: putstatic     #19                 // Field IJ_MCP_SERVER_PROJECT_PATH:Ljava/lang/String;
+      18: ldc_w         #545                // String IJ_MCP_DEBUG
+      21: putstatic     #114                // Field IJ_MCP_DEBUG:Ljava/lang/String;
+      24: getstatic     #114                // Field IJ_MCP_DEBUG:Ljava/lang/String;
+      27: invokestatic  #64                 // Method java/lang/System.getenv:(Ljava/lang/String;)Ljava/lang/String;
+      30: dup
+      31: ifnull        49
+      34: invokestatic  #551                // Method java/lang/Boolean.parseBoolean:(Ljava/lang/String;)Z
+      37: iconst_1
+      38: if_icmpne     45
+      41: iconst_1
+      42: goto          51
+      45: iconst_0
+      46: goto          51
+      49: pop
+      50: iconst_0
+      51: putstatic     #106                // Field isDebugEnabled:Z
+      54: return
+}
+CLASS com.intellij.mcpserver.impl.McpServerService$startServer$1$3 exit 0
+Compiled from "McpServerService.kt"
+final class com.intellij.mcpserver.impl.McpServerService$startServer$1$3 extends kotlin.coroutines.jvm.internal.SuspendLambda implements kotlin.jvm.functions.Function3<io.ktor.server.application.ApplicationCall, io.modelcontextprotocol.kotlin.sdk.shared.Transport, kotlin.coroutines.Continuation<? super io.modelcontextprotocol.kotlin.sdk.server.ServerSession>, java.lang.Object> {
+  java.lang.Object L$2;
+
+  java.lang.Object L$3;
+
+  java.lang.Object L$4;
+     109: ifeq          134
+     112: aload_2
+     113: invokeinterface #117,  1          // InterfaceMethod io/ktor/server/application/ApplicationCall.getRequest:()Lio/ktor/server/request/ApplicationRequest;
+     118: invokeinterface #123,  1          // InterfaceMethod io/ktor/server/request/ApplicationRequest.getHeaders:()Lio/ktor/http/Headers;
+     123: invokestatic  #138                // Method com/intellij/mcpserver/impl/McpServerServiceKt.getIJ_MCP_AUTH_TOKEN:()Ljava/lang/String;
+     126: invokeinterface #135,  2          // InterfaceMethod io/ktor/http/Headers.get:(Ljava/lang/String;)Ljava/lang/String;
+     131: goto          135
+     134: aconst_null
+     135: astore        5
+     137: aload_2
+     138: invokeinterface #117,  1          // InterfaceMethod io/ktor/server/application/ApplicationCall.getRequest:()Lio/ktor/server/request/ApplicationRequest;
+     143: invokeinterface #123,  1          // InterfaceMethod io/ktor/server/request/ApplicationRequest.getHeaders:()Lio/ktor/http/Headers;
+     148: invokestatic  #141                // Method com/intellij/mcpserver/stdio/McpStdioRunnerKt.getIJ_MCP_ALLOWED_TOOLS:()Ljava/lang/String;
+     151: invokeinterface #135,  2          // InterfaceMethod io/ktor/http/Headers.get:(Ljava/lang/String;)Ljava/lang/String;
+     156: astore        6
+     158: aload         6
+     160: dup
+     161: ifnull        462
+     164: astore        9
+     166: iconst_0
+     167: istore        10
+     169: aload         9
+     171: checkcast     #143                // class java/lang/CharSequence
+     174: iconst_1
+     175: anewarray     #145                // class java/lang/String
+     178: astore        11
+     180: aload         11
+     182: iconst_0
+     183: ldc           #147                // String ,
+     185: aastore
+     186: aload         11
+     188: iconst_0
+     189: iconst_0
+     190: bipush        6
+     192: aconst_null
+     193: invokestatic  #153                // Method kotlin/text/StringsKt.split$default:(Ljava/lang/CharSequence;[Ljava/lang/String;ZIILjava/lang/Object;)Ljava/util/List;
+     196: checkcast     #155                // class java/lang/Iterable
+     199: astore        11
+     201: iconst_0
+     202: istore        12
+     204: aload         11
+     206: astore        13
+     208: new           #157                // class java/util/ArrayList
+     211: dup
+     212: aload         11
+     214: bipush        10
+     216: invokestatic  #163                // Method kotlin/collections/CollectionsKt.collectionSizeOrDefault:(Ljava/lang/Iterable;I)I
+     219: invokespecial #166                // Method java/util/ArrayList."<init>":(I)V
+     222: checkcast     #168                // class java/util/Collection
+     225: astore        14
+     227: iconst_0
+     228: istore        15
+     230: aload         13
+     232: invokeinterface #172,  1          // InterfaceMethod java/lang/Iterable.iterator:()Ljava/util/Iterator;
+     237: astore        16
+     239: aload         16
+     241: invokeinterface #177,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     246: ifeq          296
+     249: aload         16
+     251: invokeinterface #180,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     256: astore        17
+     258: aload         14
+     260: aload         17
+     262: checkcast     #145                // class java/lang/String
+     265: astore        18
+     267: astore        19
+     269: iconst_0
+     270: istore        20
+     272: aload         18
+     274: checkcast     #143                // class java/lang/CharSequence
+     277: invokestatic  #184                // Method kotlin/text/StringsKt.trim:(Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+     280: invokevirtual #189                // Method java/lang/Object.toString:()Ljava/lang/String;
+     283: nop
+     284: aload         19
+     286: swap
+CLASS com.intellij.mcpserver.impl.McpServerService$McpSessionOptions exit 0
+Compiled from "McpServerService.kt"
+public final class com.intellij.mcpserver.impl.McpServerService$McpSessionOptions {
+  private final com.intellij.mcpserver.impl.McpServerService$AskCommandExecutionMode commandExecutionMode;
+
+  private final com.intellij.mcpserver.McpToolFilter toolFilter;
+
+  private final java.lang.String localAgentId;
+CLASS com.intellij.mcpserver.McpToolFilter$AllowList exit 0
+Compiled from "McpToolFilter.kt"
+public final class com.intellij.mcpserver.McpToolFilter$AllowList implements com.intellij.mcpserver.McpToolFilter {
+  private final java.util.Set<java.lang.String> allowedTools;
+
+  public com.intellij.mcpserver.McpToolFilter$AllowList(java.util.Set<java.lang.String>);
+    Code:
+       0: aload_1
+       1: ldc           #12                 // String allowedTools
+       3: invokestatic  #18                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_0
+       7: invokespecial #21                 // Method java/lang/Object."<init>":()V
+      10: aload_0
+      11: aload_1
+      12: putfield      #24                 // Field allowedTools:Ljava/util/Set;
+      15: return
+
+  public final java.util.Set<java.lang.String> getAllowedTools();
+    Code:
+       0: aload_0
+       1: getfield      #24                 // Field allowedTools:Ljava/util/Set;
+       4: areturn
+
+  public boolean shouldInclude(java.lang.String);
+    Code:
+       0: aload_1
+       1: ldc           #33                 // String toolName
+       3: invokestatic  #18                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: aload_0
+       7: getfield      #24                 // Field allowedTools:Ljava/util/Set;
+      10: aload_1
+      11: checkcast     #35                 // class java/lang/CharSequence
+      14: iconst_1
+      15: newarray       char
+      17: astore_2
+      18: aload_2
+      19: iconst_0
+      20: bipush        46
+      22: castore
+      23: aload_2
+      24: iconst_0
+      25: iconst_0
+      26: bipush        6
+      28: aconst_null
+      29: invokestatic  #41                 // Method kotlin/text/StringsKt.split$default:(Ljava/lang/CharSequence;[CZIILjava/lang/Object;)Ljava/util/List;
+      32: invokestatic  #47                 // Method kotlin/collections/CollectionsKt.last:(Ljava/util/List;)Ljava/lang/Object;
+      35: invokeinterface #53,  2           // InterfaceMethod java/util/Set.contains:(Ljava/lang/Object;)Z
+      40: ireturn
+
+  public final java.util.Set<java.lang.String> component1();
+    Code:
+       0: aload_0
+       1: getfield      #24                 // Field allowedTools:Ljava/util/Set;
+       4: areturn
+
+  public final com.intellij.mcpserver.McpToolFilter$AllowList copy(java.util.Set<java.lang.String>);
+    Code:
+       0: aload_1
+       1: ldc           #12                 // String allowedTools
+       3: invokestatic  #18                 // Method kotlin/jvm/internal/Intrinsics.checkNotNullParameter:(Ljava/lang/Object;Ljava/lang/String;)V
+       6: new           #2                  // class com/intellij/mcpserver/McpToolFilter$AllowList
+       9: dup
+      10: aload_1
+      11: invokespecial #60                 // Method "<init>":(Ljava/util/Set;)V
+      14: areturn
+
+  public static com.intellij.mcpserver.McpToolFilter$AllowList copy$default(com.intellij.mcpserver.McpToolFilter$AllowList, java.util.Set, int, java.lang.Object);
+    Code:
+       0: iload_2
+       1: iconst_1
+       2: iand
+       3: ifeq          11
+       6: aload_0
+       7: getfield      #24                 // Field allowedTools:Ljava/util/Set;
+      10: astore_1
+      11: aload_0
+      12: aload_1
+      13: invokevirtual #64                 // Method copy:(Ljava/util/Set;)Lcom/intellij/mcpserver/McpToolFilter$AllowList;
+      16: areturn
+
+  public java.lang.String toString();
+    Code:
+       0: aload_0
+       1: getfield      #24                 // Field allowedTools:Ljava/util/Set;
+       4: invokedynamic #78,  0             // InvokeDynamic #0:makeConcatWithConstants:(Ljava/util/Set;)Ljava/lang/String;
+       9: areturn
+
+  public int hashCode();
+    Code:
+       0: aload_0
+       1: getfield      #24                 // Field allowedTools:Ljava/util/Set;
+       4: invokevirtual #82                 // Method java/lang/Object.hashCode:()I
+       7: ireturn
+
+  public boolean equals(java.lang.Object);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: if_acmpne     7
+       5: iconst_1
+       6: ireturn
+       7: aload_1
+       8: instanceof    #2                  // class com/intellij/mcpserver/McpToolFilter$AllowList
+      11: ifne          16
+      14: iconst_0
+      15: ireturn
+      16: aload_1
+      17: checkcast     #2                  // class com/intellij/mcpserver/McpToolFilter$AllowList
+      20: astore_2
+      21: aload_0
+      22: getfield      #24                 // Field allowedTools:Ljava/util/Set;
+      25: aload_2
+      26: getfield      #24                 // Field allowedTools:Ljava/util/Set;
+      29: invokestatic  #88                 // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+      32: ifne          37
+      35: iconst_0
+      36: ireturn
+      37: iconst_1
+      38: ireturn
+}
+
+
+CLASS com.intellij.mcpserver.impl.McpServerService$startServer$1$3
+     137: aload_2
+     138: invokeinterface #117,  1          // InterfaceMethod io/ktor/server/application/ApplicationCall.getRequest:()Lio/ktor/server/request/ApplicationRequest;
+     143: invokeinterface #123,  1          // InterfaceMethod io/ktor/server/request/ApplicationRequest.getHeaders:()Lio/ktor/http/Headers;
+     148: invokestatic  #141                // Method com/intellij/mcpserver/stdio/McpStdioRunnerKt.getIJ_MCP_ALLOWED_TOOLS:()Ljava/lang/String;
+     151: invokeinterface #135,  2          // InterfaceMethod io/ktor/http/Headers.get:(Ljava/lang/String;)Ljava/lang/String;
+     156: astore        6
+     158: aload         6
+     160: dup
+     161: ifnull        462
+     164: astore        9
+     166: iconst_0
+     167: istore        10
+     169: aload         9
+     171: checkcast     #143                // class java/lang/CharSequence
+     174: iconst_1
+     175: anewarray     #145                // class java/lang/String
+     178: astore        11
+     180: aload         11
+     182: iconst_0
+     183: ldc           #147                // String ,
+     185: aastore
+     186: aload         11
+     188: iconst_0
+     189: iconst_0
+     190: bipush        6
+     192: aconst_null
+     193: invokestatic  #153                // Method kotlin/text/StringsKt.split$default:(Ljava/lang/CharSequence;[Ljava/lang/String;ZIILjava/lang/Object;)Ljava/util/List;
+     196: checkcast     #155                // class java/lang/Iterable
+     199: astore        11
+     201: iconst_0
+     202: istore        12
+     204: aload         11
+     206: astore        13
+     208: new           #157                // class java/util/ArrayList
+     211: dup
+     212: aload         11
+     214: bipush        10
+     216: invokestatic  #163                // Method kotlin/collections/CollectionsKt.collectionSizeOrDefault:(Ljava/lang/Iterable;I)I
+     219: invokespecial #166                // Method java/util/ArrayList."<init>":(I)V
+     222: checkcast     #168                // class java/util/Collection
+     225: astore        14
+     227: iconst_0
+     228: istore        15
+     230: aload         13
+     232: invokeinterface #172,  1          // InterfaceMethod java/lang/Iterable.iterator:()Ljava/util/Iterator;
+     237: astore        16
+     239: aload         16
+     241: invokeinterface #177,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     246: ifeq          296
+     249: aload         16
+     251: invokeinterface #180,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     256: astore        17
+     258: aload         14
+     260: aload         17
+     262: checkcast     #145                // class java/lang/String
+     265: astore        18
+     267: astore        19
+     269: iconst_0
+     270: istore        20
+     272: aload         18
+     274: checkcast     #143                // class java/lang/CharSequence
+     277: invokestatic  #184                // Method kotlin/text/StringsKt.trim:(Ljava/lang/CharSequence;)Ljava/lang/CharSequence;
+     280: invokevirtual #189                // Method java/lang/Object.toString:()Ljava/lang/String;
+     283: nop
+     284: aload         19
+     286: swap
+     287: invokeinterface #193,  2          // InterfaceMethod java/util/Collection.add:(Ljava/lang/Object;)Z
+     292: pop
+     293: goto          239
+     296: aload         14
+     298: checkcast     #195                // class java/util/List
+     301: nop
+     302: checkcast     #155                // class java/lang/Iterable
+     305: astore        11
+     307: nop
+     308: iconst_0
+     309: istore        12
+     311: aload         11
+     313: astore        13
+     315: new           #157                // class java/util/ArrayList
+     318: dup
+     319: invokespecial #198                // Method java/util/ArrayList."<init>":()V
+     322: checkcast     #168                // class java/util/Collection
+     325: astore        14
+     327: iconst_0
+     328: istore        15
+     330: aload         13
+     332: invokeinterface #172,  1          // InterfaceMethod java/lang/Iterable.iterator:()Ljava/util/Iterator;
+     337: astore        16
+     339: aload         16
+     341: invokeinterface #177,  1          // InterfaceMethod java/util/Iterator.hasNext:()Z
+     346: ifeq          403
+     349: aload         16
+     351: invokeinterface #180,  1          // InterfaceMethod java/util/Iterator.next:()Ljava/lang/Object;
+     356: astore        17
+     358: aload         17
+     360: checkcast     #145                // class java/lang/String
+     363: astore        18
+     365: iconst_0
+     366: istore        20
+     368: aload         18
+     370: checkcast     #143                // class java/lang/CharSequence
+     373: invokeinterface #202,  1          // InterfaceMethod java/lang/CharSequence.length:()I
+     378: ifle          385
+     381: iconst_1
+     382: goto          386
+     385: iconst_0
+     386: nop
+     387: ifeq          339
+     390: aload         14
+     392: aload         17
+     394: invokeinterface #193,  2          // InterfaceMethod java/util/Collection.add:(Ljava/lang/Object;)Z
+     399: pop
+     400: goto          339
+     403: aload         14
+     405: checkcast     #195                // class java/util/List
+     408: nop
+     409: checkcast     #155                // class java/lang/Iterable
+     412: invokestatic  #206                // Method kotlin/collections/CollectionsKt.toSet:(Ljava/lang/Iterable;)Ljava/util/Set;
+     415: astore        21
+     417: aload         21
+     419: checkcast     #168                // class java/util/Collection
+     422: invokeinterface #209,  1          // InterfaceMethod java/util/Collection.isEmpty:()Z
+     427: ifne          434
+     430: iconst_1
+     431: goto          435
+     434: iconst_0
+     435: ifeq          453
+     438: new           #211                // class com/intellij/mcpserver/McpToolFilter$AllowList
+     441: dup
+     442: aload         21
+     444: invokespecial #214                // Method com/intellij/mcpserver/McpToolFilter$AllowList."<init>":(Ljava/util/Set;)V
+     447: checkcast     #216                // class com/intellij/mcpserver/McpToolFilter
+     450: goto          459
+     453: getstatic     #222                // Field com/intellij/mcpserver/McpToolFilter$AllowAll.INSTANCE:Lcom/intellij/mcpserver/McpToolFilter$AllowAll;
+     456: checkcast     #216                // class com/intellij/mcpserver/McpToolFilter
+     459: goto          464
+     462: pop
+     463: aconst_null
+     464: astore        7
+     466: aload_0
+     467: getfield      #18                 // Field this$0:Lcom/intellij/mcpserver/impl/McpServerService;
+     470: aload         5
+     472: invokestatic  #228                // Method com/intellij/mcpserver/impl/McpServerService.access$getSessionOptions:(Lcom/intellij/mcpserver/impl/McpServerService;Ljava/lang/String;)Lcom/intellij/mcpserver/impl/McpServerService$McpSessionOptions;
+     475: astore        8
+     477: aload         6
+     479: checkcast     #143                // class java/lang/CharSequence
+     482: astore        10
+     484: aload         10
+     486: ifnull        499
+     489: aload         10
+     491: invokeinterface #202,  1          // InterfaceMethod java/lang/CharSequence.length:()I
+     496: ifne          503
+     499: iconst_1
+     500: goto          504
+     503: iconst_0
+     504: istore        9
+     506: aload         7
+CLASS com.intellij.mcpserver.stdio.McpStdioRunnerKt
+Compiled from "McpStdioRunner.kt"
+public final class com.intellij.mcpserver.stdio.McpStdioRunnerKt {
+  private static final java.lang.String IJ_MCP_PREFIX;
+
+  public static final java.lang.String IJ_MCP_HEADER_PREFIX;
+
+  private static final java.lang.String IJ_MCP_SERVER_PORT;
+
+  private static final java.lang.String IJ_MCP_ALLOWED_TOOLS;
+
+  private static final java.lang.String IJ_MCP_SERVER_PROJECT_PATH;
+
+  private static final java.lang.String IJ_MCP_DEBUG;
+
+  private static final boolean isDebugEnabled;
+
+  public static final java.lang.String getIJ_MCP_SERVER_PORT();
+    Code:
+       0: getstatic     #11                 // Field IJ_MCP_SERVER_PORT:Ljava/lang/String;
+       3: areturn
+
+  public static final java.lang.String getIJ_MCP_ALLOWED_TOOLS();
+    Code:
+       0: getstatic     #15                 // Field IJ_MCP_ALLOWED_TOOLS:Ljava/lang/String;
+       3: areturn
+
+  public static final java.lang.String getIJ_MCP_SERVER_PROJECT_PATH();
+    Code:
+       0: getstatic     #19                 // Field IJ_MCP_SERVER_PROJECT_PATH:Ljava/lang/String;
+       3: areturn
+
+  public static final java.lang.Object main(kotlin.coroutines.Continuation<? super kotlin.Unit>);
+    Code:
+       0: aload_0
+       1: instanceof    #25                 // class com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1
+       4: ifeq          39
+       7: aload_0
+       8: checkcast     #25                 // class com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1
+      11: astore        18
+      13: aload         18
+      15: getfield      #29                 // Field com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1.label:I
+      18: ldc           #30                 // int -2147483648
+      20: iand
+      21: ifeq          39
+      24: aload         18
+      26: dup
+      27: getfield      #29                 // Field com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$1.label:I
+      30: ldc           #30                 // int -2147483648
+     104: astore_1
+     105: getstatic     #60                 // Field java/lang/System.out:Ljava/io/PrintStream;
+     108: astore_2
+     109: getstatic     #11                 // Field IJ_MCP_SERVER_PORT:Ljava/lang/String;
+     112: invokestatic  #64                 // Method java/lang/System.getenv:(Ljava/lang/String;)Ljava/lang/String;
+     115: dup
+     116: ifnull        132
+     119: invokestatic  #70                 // Method kotlin/text/StringsKt.toIntOrNull:(Ljava/lang/String;)Ljava/lang/Integer;
+     122: dup
+     123: ifnull        132
+     126: invokevirtual #76                 // Method java/lang/Integer.intValue:()I
+     129: goto          154
+     132: pop
+     133: iconst_0
+     134: istore        6
+     136: getstatic     #79                 // Field java/lang/System.err:Ljava/io/PrintStream;
+     139: getstatic     #11                 // Field IJ_MCP_SERVER_PORT:Ljava/lang/String;
+     142: invokedynamic #90,  0             // InvokeDynamic #0:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+     147: invokevirtual #96                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+     150: getstatic     #102                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+     153: areturn
+     154: istore_3
+     155: getstatic     #106                // Field isDebugEnabled:Z
+     158: ifeq          169
+     161: ldc           #108                // String Debug mode enabled
+     163: invokestatic  #111                // Method info:(Ljava/lang/String;)V
+     166: goto          180
+     169: getstatic     #114                // Field IJ_MCP_DEBUG:Ljava/lang/String;
+     172: invokedynamic #117,  0            // InvokeDynamic #1:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+     177: invokestatic  #111                // Method info:(Ljava/lang/String;)V
+     180: new           #119                // class io/modelcontextprotocol/kotlin/sdk/server/StdioServerTransport
+     183: dup
+     184: aload_1
+     185: invokestatic  #124                // Method kotlin/jvm/internal/Intrinsics.checkNotNull:(Ljava/lang/Object;)V
+     188: aload_1
+     189: invokestatic  #130                // Method kotlinx/io/JvmCoreKt.asSource:(Ljava/io/InputStream;)Lkotlinx/io/RawSource;
+     192: invokestatic  #136                // Method kotlinx/io/CoreKt.buffered:(Lkotlinx/io/RawSource;)Lkotlinx/io/Source;
+     195: aload_2
+     196: invokestatic  #124                // Method kotlin/jvm/internal/Intrinsics.checkNotNull:(Ljava/lang/Object;)V
+     199: aload_2
+     200: checkcast     #138                // class java/io/OutputStream
+     203: invokestatic  #142                // Method kotlinx/io/JvmCoreKt.asSink:(Ljava/io/OutputStream;)Lkotlinx/io/RawSink;
+     206: invokestatic  #145                // Method kotlinx/io/CoreKt.buffered:(Lkotlinx/io/RawSink;)Lkotlinx/io/Sink;
+     209: invokespecial #148                // Method io/modelcontextprotocol/kotlin/sdk/server/StdioServerTransport."<init>":(Lkotlinx/io/Source;Lkotlinx/io/Sink;)V
+     212: astore        4
+     214: invokedynamic #167,  0            // InvokeDynamic #2:invoke:()Lkotlin/jvm/functions/Function1;
+     219: invokestatic  #173                // Method io/ktor/client/HttpClientJvmKt.HttpClient:(Lkotlin/jvm/functions/Function1;)Lio/ktor/client/HttpClient;
+     222: astore        5
+     224: invokestatic  #176                // Method java/lang/System.getenv:()Ljava/util/Map;
+     227: dup
+     228: ldc           #178                // String getenv(...)
+     230: invokestatic  #182                // Method kotlin/jvm/internal/Intrinsics.checkNotNullExpressionValue:(Ljava/lang/Object;Ljava/lang/String;)V
+     233: astore        7
+     235: iconst_0
+     236: istore        8
+     238: aload         7
+     240: astore        9
+     242: new           #184                // class java/util/LinkedHashMap
+     245: dup
+     246: invokespecial #187                // Method java/util/LinkedHashMap."<init>":()V
+     249: checkcast     #189                // class java/util/Map
+     252: astore        10
+     254: iconst_0
+     255: istore        11
+     257: aload         9
+     259: invokeinterface #193,  1          // InterfaceMethod java/util/Map.entrySet:()Ljava/util/Set;
+     264: invokeinterface #199,  1          // InterfaceMethod java/util/Set.iterator:()Ljava/util/Iterator;
+     269: astore        12
+     307: checkcast     #215                // class java/lang/String
+     310: astore        16
+     312: aload         16
+     314: getstatic     #114                // Field IJ_MCP_DEBUG:Ljava/lang/String;
+     317: invokestatic  #219                // Method kotlin/jvm/internal/Intrinsics.areEqual:(Ljava/lang/Object;Ljava/lang/Object;)Z
+     320: ifne          345
+     323: aload         16
+     325: invokestatic  #124                // Method kotlin/jvm/internal/Intrinsics.checkNotNull:(Ljava/lang/Object;)V
+     328: aload         16
+     330: ldc           #221                // String IJ_MCP_
+     332: iconst_0
+     333: iconst_2
+     334: aconst_null
+     335: invokestatic  #225                // Method kotlin/text/StringsKt.startsWith$default:(Ljava/lang/String;Ljava/lang/String;ZILjava/lang/Object;)Z
+     338: ifeq          345
+     341: iconst_1
+     342: goto          346
+     345: iconst_0
+     346: ifeq          271
+     349: aload         10
+     351: aload         13
+     353: invokeinterface #213,  1          // InterfaceMethod java/util/Map$Entry.getKey:()Ljava/lang/Object;
+     358: aload         13
+     360: invokeinterface #228,  1          // InterfaceMethod java/util/Map$Entry.getValue:()Ljava/lang/Object;
+     365: invokeinterface #232,  3          // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+     370: pop
+     371: goto          271
+     374: aload         10
+     376: nop
+      81: aload         8
+      83: invokestatic  #124                // Method kotlin/jvm/internal/Intrinsics.checkNotNull:(Ljava/lang/Object;)V
+      86: aload         8
+      88: ldc_w         #490                // String IJ_MCP_HEADER_
+      91: checkcast     #483                // class java/lang/CharSequence
+      94: invokestatic  #494                // Method kotlin/text/StringsKt.removePrefix:(Ljava/lang/String;Ljava/lang/CharSequence;)Ljava/lang/String;
+      97: aload         9
+      99: invokestatic  #500                // Method io/ktor/client/request/UtilsKt.header:(Lio/ktor/http/HttpMessageBuilder;Ljava/lang/String;Ljava/lang/Object;)V
+     102: nop
+     103: goto          24
+     106: nop
+     107: getstatic     #102                // Field kotlin/Unit.INSTANCE:Lkotlin/Unit;
+     110: areturn
+
+  private static final kotlin.Unit main$lambda$5(io.modelcontextprotocol.kotlin.sdk.client.SseClientTransport);
+    Code:
+       0: aconst_null
+       1: new           #508                // class com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$5$1
+       4: dup
+       5: aload_0
+       6: aconst_null
+       7: invokespecial #509                // Method com/intellij/mcpserver/stdio/McpStdioRunnerKt$main$5$1."<init>":(Lio/modelcontextprotocol/kotlin/sdk/client/SseClientTransport;Lkotlin/coroutines/Continuation;)V
+      10: checkcast     #280                // class kotlin/jvm/functions/Function2
+      13: iconst_1
+      14: aconst_null
+      15: invokestatic  #515                // Method kotlinx/coroutines/BuildersKt.runBlocking$default:(Lkotlin/coroutines/CoroutineContext;Lkotlin/jvm/functions/Function2;ILjava/lang/Object;)Ljava/lang/Object;
+      18: pop
+
+  static {};
+    Code:
+       0: ldc_w         #542                // String IJ_MCP_SERVER_PORT
+       3: putstatic     #11                 // Field IJ_MCP_SERVER_PORT:Ljava/lang/String;
+       6: ldc_w         #543                // String IJ_MCP_ALLOWED_TOOLS
+       9: putstatic     #15                 // Field IJ_MCP_ALLOWED_TOOLS:Ljava/lang/String;
+      12: ldc_w         #544                // String IJ_MCP_SERVER_PROJECT_PATH
+      15: putstatic     #19                 // Field IJ_MCP_SERVER_PROJECT_PATH:Ljava/lang/String;
+      18: ldc_w         #545                // String IJ_MCP_DEBUG
+      21: putstatic     #114                // Field IJ_MCP_DEBUG:Ljava/lang/String;
+      24: getstatic     #114                // Field IJ_MCP_DEBUG:Ljava/lang/String;
+      27: invokestatic  #64                 // Method java/lang/System.getenv:(Ljava/lang/String;)Ljava/lang/String;
+      30: dup
+      31: ifnull        49
+      34: invokestatic  #551                // Method java/lang/Boolean.parseBoolean:(Ljava/lang/String;)Z
+      37: iconst_1
+      38: if_icmpne     45
+      41: iconst_1
+      42: goto          51
+      45: iconst_0
+      46: goto          51
+      49: pop
+      50: iconst_0
+      51: putstatic     #106                // Field isDebugEnabled:Z
+      54: return
+}

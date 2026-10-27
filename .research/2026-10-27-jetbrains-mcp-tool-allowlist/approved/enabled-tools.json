@@ -1,0 +1,12 @@
+[
+  "get_project_modules",
+  "rename_refactoring",
+  "get_file_problems",
+  "build_project",
+  "reformat_file",
+  "get_project_dependencies",
+  "search_symbol",
+  "get_symbol_info",
+  "read_file",
+  "run_inspection_kts"
+]

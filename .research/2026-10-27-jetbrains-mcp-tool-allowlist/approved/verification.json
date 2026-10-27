@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-27",
+  "timezone": "Asia/Shanghai",
+  "approval": "用户要求调试全部关闭，仅开启基础 IDE 九项和已有检查脚本入口一项。",
+  "approved_tools": [
+    "get_project_modules",
+    "rename_refactoring",
+    "get_file_problems",
+    "build_project",
+    "reformat_file",
+    "get_project_dependencies",
+    "search_symbol",
+    "get_symbol_info",
+    "read_file",
+    "run_inspection_kts"
+  ],
+  "session_visible_tools": [
+    "build_project",
+    "get_file_problems",
+    "get_project_dependencies",
+    "get_project_modules",
+    "get_symbol_info",
+    "read_file",
+    "reformat_file",
+    "rename_refactoring",
+    "run_inspection_kts",
+    "search_symbol"
+  ],
+  "session_matches_approved": true,
+  "debugger_tools_visible": false,
+  "run_configuration_tools_visible": false,
+  "ide_global_settings_modified": false,
+  "git_mutations_performed": false
+}
