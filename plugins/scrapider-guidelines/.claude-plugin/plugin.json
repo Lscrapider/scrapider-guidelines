@@ -1,7 +1,7 @@
 {
   "name": "scrapider-guidelines",
   "description": "Scrapider engineering guidelines: layered reference routing for Spring Boot, Python, and Android Kotlin, five collaboration role agents, and a JetBrains inspection.kts rule library.",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "author": {
     "name": "Lscrapider"
   },

@@ -109,7 +109,7 @@ unchanged material.
 | Validation and errors | Input contracts, validation, defensive branches, or exceptions, including ordinary HTTP/MQ implementation and decisions about internal checks | [Validation and Boundaries](references/shared/validation-and-boundaries.md) |
 | Standards review | An explicit review request, or changes affecting other modules, public/business contracts, data, integrations, concurrency, deployment, or coordinated behavior across files; the reference defines triggers, exclusions, and dispatch | [Standards Review](references/shared/standards-review.md) |
 | Git operations | Before any Git state mutation, including staging, committing, branching, or pushing; the reference defines authorization and commit format | [Git Operations and Commits](references/shared/git-commits.md) |
-| Inspection script library | The assigned standards reviewer loads this when the JetBrains inspection channel is available; also load for explicit library maintenance, adaptation, or installation. | [Inspection Scripts](references/shared/inspection-scripts.md) |
+| Inspection script library | Assigned standards review of Java changes: load before deciding IDE/MCP availability; also load for explicit library maintenance, adaptation, or installation. | [Inspection Scripts](references/shared/inspection-scripts.md) |
 | Project AGENTS.md | Creating, completing, updating, or rebuilding a project's `AGENTS.md`. | [AGENTS.md Authoring](references/project/agents-md-authoring.md) |
 
 ### Technology Entry Points

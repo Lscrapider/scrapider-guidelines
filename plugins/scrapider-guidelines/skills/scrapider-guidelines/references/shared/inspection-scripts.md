@@ -2,7 +2,7 @@
 
 Mechanically decidable Scrapider rules are implemented as JetBrains `.inspection.kts` checks:
 one script per rule plus `BatchAllRules.inspection.kts` in `scripts/inspections/`. Load this
-reference as the assigned standards reviewer when the JetBrains inspection channel is available,
+reference before scripted Java standards checks, including when IDE/MCP availability is unknown,
 or when explicitly maintaining, adapting, or installing the library.
 
 Semantic rules — minimal-change fit, responsibility boundaries, exception semantics, business
@@ -21,27 +21,37 @@ contracts, and converter ownership — remain part of the standards review.
 
 ## Running the Scripts
 
-- Run applicable rules within the assigned review scope. Single-file findings anchor on the offending
-  element; use the structured `lineNumber` and `elementText` for its location and code.
-- Use `BatchAllRules.inspection.kts` for multi-file reviews; use a per-rule script to isolate one
-  rule on one file. In batch results, use `file:line` from each message and ignore structured
-  location fields.
-- The inspection channel takes script source as its payload and has no run-by-reference, so the
-  full script text travels with every call and again with every additional batch. You do not need
-  to study the rule implementations to run them: this document's rule table plus the script's top
-  configuration block are everything a reviewer adjusts or interprets; treat the remaining script
-  body as an opaque payload. For a one- or two-file scope with a few suspect rules, prefer the
-  small per-rule scripts over transporting the batch script.
-- Single-file messages contain `[rule]`, plus `missing @x` for absence-type rules or a verdict
-  token for file-level Python rules. Batch messages contain `[rule] file:line <code excerpt or
-  missing-x>`.
-- Keep a batch to roughly 15 files. The script aggregates occurrences after 5 of the same rule
-  in one file and truncates after 60 findings with an overflow breakdown; when truncated, split
-  the files into smaller batches and continue until all applicable checks have results. If one
-  file still truncates when run alone, use per-rule checks for it and manually verify any remaining
-  omitted results.
-- These scripts run against the currently open IDE project. `get_file_problems` runs built-in
-  inspections only and does not include these scripts.
+- Run applicable rules within the assigned review scope. Use `BatchAllRules` for multiple files and
+  a per-rule script to isolate one rule on one file. Single-file results use `lineNumber` and
+  `elementText`; batch results use `file:line` in the message, not structured anchor fields.
+- First load this reference from the assigned skill root, then run the local
+  [inspection runner](../../scripts/run_inspection.mjs) with Node.js 18 or newer. It loads source,
+  batches about 15 files, handles MCP HTTP, and emits JSON only. Do not read or attach `.inspection.kts`
+  source; attempt the runner even if no native inspection tool appears in the host catalog.
+
+  ```sh
+  node /path/to/skill/scripts/run_inspection.mjs /path/to/project
+  node /path/to/skill/scripts/run_inspection.mjs /path/to/project '["src/main/java/A.java"]'
+  node /path/to/skill/scripts/run_inspection.mjs /path/to/project '["src/main/java/A.java"]' '["J7","J13"]'
+  ```
+
+- Call: `node /path/to/skill/scripts/run_inspection.mjs <projectPath> [filesJson] [inspectionsJson]`.
+  The project path must be open in the IDE. Omitted or `null` `filesJson` selects existing staged,
+  unstaged, and untracked `.java` files with read-only Git commands; deleted files and ignored
+  untracked files are excluded. A JSON array selects paths; `[]` is empty. Omitted `inspectionsJson` runs the batch;
+  pass IDs such as `J7` or `J13` for a named subset. Set `SCRAPIDER_INSPECTION_SETTINGS` to a JSON
+  object only when a repository convention requires a script setting.
+- By default, the runner reads the connection with `codex mcp get jetbrains-mcp --json`. Other hosts
+  can set `JETBRAINS_MCP_URL` and JSON `JETBRAINS_MCP_HEADERS`; `JETBRAINS_MCP_SERVER` selects an
+  alias. No Python or third-party package is required.
+- `status: "ok"` means execution completed; findings still require review. Missing PSI files, missing
+  targets, and truncation produce `incomplete`; compilation or call failures produce `error`. Both exit nonzero.
+  Report the attempted command, concrete error, and uncovered scope, then manually review it; never
+  report the scripted inspection as passed. No Java changes or `[]` returns `skipped` with a reason and needs no IDE connection.
+- Single-file messages contain `[rule]`, plus `missing @x` for absence checks or a verdict token for
+  file-level Python checks. Batch messages contain `[rule] file:line <excerpt or missing-x>`; use this
+  embedded location. The batch aggregates after 5 occurrences per rule per file and truncates at 60;
+  narrow and rerun if truncated. `get_file_problems` reports built-in inspections only.
 
 ## Rule Library
 

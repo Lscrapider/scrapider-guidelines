@@ -128,6 +128,7 @@ The [coding workflow](plugins/scrapider-guidelines/skills/scrapider-guidelines/S
     │           │   ├── python/
     │           │   └── shared/
     │           └── scripts/
+    │               ├── run_inspection.mjs # Git scope, local scripts, JetBrains MCP
     │               └── inspections/
     └── scrapider-capabilities/   # optional MCP bundle: context7 + codegraph
         ├── .claude-plugin/

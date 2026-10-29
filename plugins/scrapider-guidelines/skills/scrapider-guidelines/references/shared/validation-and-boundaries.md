@@ -13,6 +13,36 @@ existing guarantees, and a reason to handle that gap here. “Just in case”, �
 Use the smallest existing mechanism that provides the required behavior. This applies equally to
 `if`, assertions, annotations, schemas, utility calls, validators, and wrapper functions.
 
+## Trace Data Origin and Validate at Entry or Modification
+
+Before adding a check, trace where the value is generated or accepted and which writes can change
+it. Establish necessary guarantees at that entry or modification point, then trust them throughout
+unchanged internal flow.
+
+- Internal generation, exhaustive branches, enforced types, and deserialization can establish
+  guarantees without an explicit preceding `if`. Use those values directly; do not invent ways the
+  current code cannot call itself. If internal construction or mapping breaks its own contract,
+  fix that producer rather than adding defensive checks at every consumer.
+- Once an entry point or caller establishes a condition, downstream functions consume it directly
+  while the guarantee remains intact. In particular, a helper with only that caller must not
+  repeat the same null, empty, type, or range checks for independent robustness.
+- For a field generated or validated before persistence, inspect its actual write paths. If those
+  paths preserve the guarantee, later reads, internal transfers, and updates to unrelated fields
+  use the stored value directly. Passing through more layers does not make that field missing,
+  blank, or malformed; do not revalidate it at every use.
+- On creation or modification, validate only properties the new input or transformation can
+  violate, including affected cross-field rules. Do not revalidate the whole persisted object for
+  an unrelated update. An internally generated replacement that already satisfies the required
+  contract needs no additional check.
+- A frontend convention alone does not enforce a server boundary. For an actual external entry,
+  establish only the conditions the operation needs and existing mechanisms do not already enforce.
+- A function, layer, process, or storage boundary does not automatically invalidate a guarantee.
+  Repeat a check only for a concrete new gap, such as an actual independent untrusted caller,
+  mutation that invalidates the earlier result, or a state change relevant to authorization or
+  concurrency. Address that gap rather than rechecking the entire payload.
+- Preserve atomic conditional updates, uniqueness constraints, and state-transition guards that
+  protect concurrent operations. An earlier read is not a substitute for protection at the write.
+
 ## Field Contracts Do Not Imply Exact Payloads
 
 - A consumer defines the fields it uses, not an exclusive inventory of everything a producer may
@@ -38,23 +68,6 @@ Use the smallest existing mechanism that provides the required behavior. This ap
   forwarding arbitrary input into persistence, authorization fields, or downstream operations.
   If the actual path permits an unintended write, address that mapping or permission boundary;
   do not use a hypothetical risk to justify an exact-field gate on every payload.
-
-## Trust Guarantees on the Actual Call Path
-
-- Once an entry point or caller establishes a condition, downstream functions consume it directly
-  while the guarantee remains intact. In particular, a helper with only that caller must not
-  repeat the same null, empty, type, or range checks for independent robustness.
-- Locally constructed arguments, exhaustive branches, enforced types, deserialization, and
-  immutable validated values can establish guarantees without an explicit preceding `if`.
-  Inspect the actual construction and use; do not invent ways the current code cannot call itself.
-- A frontend convention alone does not enforce a server boundary. For an actual external entry,
-  establish only the conditions the operation needs and existing mechanisms do not already enforce.
-- A function, layer, process, or storage boundary does not automatically invalidate a guarantee.
-  Repeat a check only for a concrete new gap, such as an actual independent untrusted caller,
-  mutation that invalidates the earlier result, or a state change relevant to authorization or
-  concurrency. Address that gap rather than rechecking the entire payload.
-- Preserve atomic conditional updates, uniqueness constraints, and state-transition guards that
-  protect concurrent operations. An earlier read is not a substitute for protection at the write.
 
 ## Use Existing Type, Framework, and Storage Guarantees
 

@@ -18,6 +18,17 @@ debugging, and review, including examination of existing contracts without a pro
   Typed Param/DTO fields describe consumed data; they do not require rejecting unrelated extra
   JSON fields. Reuse deserialization and necessary Bean Validation without manual field-set gates
   or duplicate checks.
+- Put necessary field constraints on the existing Param: use `@NotNull` for required references,
+  `@NotBlank` for strings that must contain non-whitespace text, and `@NotEmpty` for required
+  nonempty collections or containers. Add only constraints required by the request contract; do
+  not stack equivalent annotations or add every available constraint.
+- Ensure the controller entry actually triggers validation through the project's `@Valid` or
+  `@Validated` setup, including nested validation where needed. Do not repeat accepted Param
+  constraints with service/helper `if` branches or manual validator calls downstream.
+- For updates, validate newly supplied or changed fields and affected business rules. In a partial
+  update, omitted fields retain their stored values; do not apply create-only requiredness to them
+  or revalidate unrelated stored fields. Keep checks that need persisted state or business decisions
+  at the responsible business boundary rather than replacing them with field annotations.
 - Use `VO` objects for frontend responses. Never return `PO` objects directly to the frontend.
 - Reuse the repository's established pagination parameter names and response shape; do not rename
   an existing API contract only to prefer `pageSize` or `pageNum`.
