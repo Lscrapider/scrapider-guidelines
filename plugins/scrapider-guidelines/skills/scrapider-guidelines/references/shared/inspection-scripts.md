@@ -41,9 +41,11 @@ contracts, and converter ownership — remain part of the standards review.
   untracked files are excluded. A JSON array selects paths; `[]` is empty. Omitted `inspectionsJson` runs the batch;
   pass IDs such as `J7` or `J13` for a named subset. Set `SCRAPIDER_INSPECTION_SETTINGS` to a JSON
   object only when a repository convention requires a script setting.
-- By default, the runner reads the connection with `codex mcp get jetbrains-mcp --json`. Other hosts
-  can set `JETBRAINS_MCP_URL` and JSON `JETBRAINS_MCP_HEADERS`; `JETBRAINS_MCP_SERVER` selects an
-  alias. No Python or third-party package is required.
+- The runner reads local user/project ZCode or Claude Code MCP configuration, or the active Codex
+  configuration, over HTTP or SSE. Managed and session-injected overrides are outside discovery.
+  Other hosts do not need Codex or manual URL copying. `JETBRAINS_MCP_URL` can explicitly
+  override the discovered endpoint, and `JETBRAINS_MCP_SERVER` can select an alias.
+- Connection metadata is reported as `{host, server, transport}`; URL and header values are omitted.
 - `status: "ok"` means execution completed; findings still require review. Missing PSI files, missing
   targets, and truncation produce `incomplete`; compilation or call failures produce `error`. Both exit nonzero.
   Report the attempted command, concrete error, and uncovered scope, then manually review it; never

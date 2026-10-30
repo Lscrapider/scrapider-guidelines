@@ -4,11 +4,11 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { promisify } from 'node:util';
+import { createInspectionClient } from './inspection_mcp.mjs';
 
 const execute = promisify(execFile);
 const inspectionsDirectory = resolve(dirname(fileURLToPath(import.meta.url)), 'inspections');
 const batchSize = 15;
-const protocolVersion = '2025-03-26';
 const usage = 'node run_inspection.mjs <projectPath> [filesJson] [inspectionsJson]';
 
 async function gitJavaFiles(project) {
@@ -62,124 +62,6 @@ function inspectionJobs(files, inspections) {
     if (!library.has(inspection)) throw new Error(`Unknown inspection: ${inspection}`);
     return files.map((file) => ({ inspection, script: library.get(inspection), files: [file] }));
   });
-}
-
-function environmentValue(name) {
-  const value = process.env[name];
-  if (!value) throw new Error(`Required environment variable is missing: ${name}`);
-  return value;
-}
-
-async function connectionOptions() {
-  if (process.env.JETBRAINS_MCP_URL) {
-    return {
-      url: process.env.JETBRAINS_MCP_URL,
-      headers: JSON.parse(process.env.JETBRAINS_MCP_HEADERS || '{}'),
-      timeout: 120_000,
-    };
-  }
-  const serverName = process.env.JETBRAINS_MCP_SERVER || 'jetbrains-mcp';
-  let config;
-  try {
-    const { stdout } = await execute('codex', ['mcp', 'get', serverName, '--json'], { timeout: 10_000 });
-    config = JSON.parse(stdout);
-  } catch (error) {
-    throw new Error(`Cannot read MCP connection through codex (${error.code || error.message}); set JETBRAINS_MCP_URL for this host.`);
-  }
-  if (config.enabled === false) throw new Error(`MCP server ${serverName} is disabled.`);
-  const tool = 'run_inspection_kts';
-  if (config.disabled_tools?.includes(tool) || (config.enabled_tools && !config.enabled_tools.includes(tool))) {
-    throw new Error(`${tool} is excluded by the configured client tool allowlist.`);
-  }
-  const transport = config.transport;
-  if (transport.type !== 'streamable_http') throw new Error('The runner requires a Streamable HTTP MCP connection.');
-  const headers = { ...transport.http_headers };
-  for (const [name, variable] of Object.entries(transport.env_http_headers || {})) {
-    headers[name] = environmentValue(variable);
-  }
-  if (transport.bearer_token_env_var) {
-    headers.Authorization = `Bearer ${environmentValue(transport.bearer_token_env_var)}`;
-  }
-  return { url: transport.url, headers, timeout: (config.tool_timeout_sec || 120) * 1000 };
-}
-
-async function readRpcResponse(response, id) {
-  if (!response.headers.get('content-type')?.startsWith('text/event-stream')) {
-    const message = await response.json();
-    if (message.id !== id) throw new Error('MCP returned a response for another request.');
-    return message;
-  }
-  const decoder = new TextDecoder();
-  let buffer = '';
-  for await (const chunk of response.body) {
-    buffer += decoder.decode(chunk, { stream: true });
-    let boundary;
-    while ((boundary = /\r?\n\r?\n/.exec(buffer))) {
-      const event = buffer.slice(0, boundary.index);
-      buffer = buffer.slice(boundary.index + boundary[0].length);
-      const data = event.split(/\r?\n/).filter((line) => line.startsWith('data:'))
-        .map((line) => line.slice(5).replace(/^ /, '')).join('\n');
-      if (data) {
-        const message = JSON.parse(data);
-        if (message.id === id) return message;
-      }
-    }
-  }
-  throw new Error('MCP stream ended without the matching response.');
-}
-
-class McpHttpClient {
-  constructor({ url, headers, timeout }) {
-    this.url = url;
-    this.headers = { ...headers, 'Content-Type': 'application/json', Accept: 'application/json, text/event-stream' };
-    this.timeout = timeout;
-    this.requestId = 0;
-  }
-
-  async request(method, params, notification = false) {
-    const message = { jsonrpc: '2.0', method };
-    if (params !== undefined) message.params = params;
-    if (!notification) message.id = ++this.requestId;
-    const response = await fetch(this.url, {
-      method: 'POST', headers: this.headers, body: JSON.stringify(message),
-      redirect: 'error', signal: AbortSignal.timeout(this.timeout),
-    });
-    if (!response.ok) throw new Error(`MCP ${method} returned HTTP ${response.status}.`);
-    const sessionId = response.headers.get('mcp-session-id');
-    if (sessionId) this.headers['Mcp-Session-Id'] = sessionId;
-    if (notification) {
-      await response.body?.cancel();
-      return;
-    }
-    const reply = await readRpcResponse(response, message.id);
-    if (reply.error) throw new Error(`MCP ${method}: ${reply.error.code} ${reply.error.message}`);
-    return reply.result;
-  }
-
-  async initialize() {
-    const result = await this.request('initialize', {
-      protocolVersion, capabilities: {},
-      clientInfo: { name: 'scrapider-inspection-runner', version: '1.0.0' },
-    });
-    if (result.protocolVersion !== protocolVersion) throw new Error(`Unsupported MCP protocol: ${result.protocolVersion}`);
-    this.headers['MCP-Protocol-Version'] = protocolVersion;
-    await this.request('notifications/initialized', undefined, true);
-  }
-
-  async close() {
-    if (!this.headers['Mcp-Session-Id']) return;
-    try {
-      const response = await fetch(this.url, {
-        method: 'DELETE', headers: this.headers, redirect: 'error', signal: AbortSignal.timeout(5000),
-      });
-      await response.body?.cancel();
-      if (!response.ok && ![404, 405].includes(response.status)) {
-        console.error(`MCP session cleanup returned HTTP ${response.status}.`);
-      }
-    } catch (error) {
-      console.error(`MCP session cleanup failed: ${error.message}`);
-    }
-  }
 }
 
 function kotlinSetting(value, original) {
@@ -257,7 +139,8 @@ async function runInspection(projectPath, files = null, inspections = null) {
       throw new Error('SCRAPIDER_INSPECTION_SETTINGS must be an object; select files through the second argument.');
     }
     const scripts = loadScripts(jobs, settings);
-    client = new McpHttpClient(await connectionOptions());
+    client = await createInspectionClient(project);
+    report.connection = client.connection;
     await client.initialize();
     for (const job of jobs) {
       const batch = job.inspection === 'BatchAllRules';

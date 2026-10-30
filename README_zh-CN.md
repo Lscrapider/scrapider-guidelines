@@ -124,6 +124,7 @@ AGENTS.md 编写流程只修改指定的说明文件，保留项目惯例，不�
     │           │   ├── python/
     │           │   └── shared/
     │           └── scripts/
+    │               ├── inspection_mcp.mjs # 宿主 MCP 配置与连接
     │               ├── run_inspection.mjs # Git 范围、本地脚本与 JetBrains MCP
     │               └── inspections/
     └── scrapider-capabilities/   # 可选 MCP 组合：context7 + codegraph
