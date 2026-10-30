@@ -1,138 +1,6 @@
-import { execFile } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
-import { homedir } from 'node:os';
-import { resolve } from 'node:path';
-import { promisify } from 'node:util';
+import { resolveInspectionConnection } from './inspection_hosts.mjs';
 
-const execute = promisify(execFile);
 const protocolVersion = '2025-03-26';
-
-function jsonFile(path) {
-  if (!existsSync(path)) return {};
-  try {
-    return JSON.parse(readFileSync(path, 'utf8'));
-  } catch (error) {
-    throw new Error(`Cannot read MCP configuration ${path}: ${error.message}`);
-  }
-}
-
-function zcodeServers(project) {
-  const scope = (native, shared) => {
-    const servers = jsonFile(native).mcp?.servers || {};
-    return Object.keys(servers).length ? servers : jsonFile(shared).mcpServers || {};
-  };
-  return {
-    ...scope(resolve(project, '.zcode/config.json'), resolve(project, '.agents/mcp.json')),
-    ...scope(resolve(homedir(), '.zcode/cli/config.json'), resolve(homedir(), '.agents/mcp.json')),
-  };
-}
-
-function claudeServers(project) {
-  const user = jsonFile(resolve(homedir(), '.claude.json'));
-  const local = user.projects?.[project] || {};
-  const disabled = new Set(local.disabledMcpServers || []);
-  const userSettings = jsonFile(resolve(homedir(), '.claude/settings.json'));
-  const projectSettings = jsonFile(resolve(project, '.claude/settings.json'));
-  const localSettings = jsonFile(resolve(project, '.claude/settings.local.json'));
-  const settings = [userSettings, projectSettings, localSettings, local];
-  const rejected = new Set(settings.flatMap((item) => item.disabledMcpjsonServers || []));
-  const approvals = [userSettings, ...(local.hasTrustDialogAccepted ? [projectSettings, localSettings, local] : [])];
-  const approved = new Set(approvals.flatMap((item) => item.enabledMcpjsonServers || []));
-  const approveAll = Object.assign({}, ...approvals).enableAllProjectMcpServers === true;
-  const projectServers = jsonFile(resolve(project, '.mcp.json')).mcpServers || {};
-  return Object.fromEntries(Object.entries({
-    ...user.mcpServers,
-    ...projectServers,
-    ...local.mcpServers,
-  }).map(([name, config]) => {
-    if (disabled.has(name)) return [name, { ...config, enabled: false }];
-    if (Object.hasOwn(projectServers, name) && !Object.hasOwn(local.mcpServers || {}, name)) {
-      const error = rejected.has(name) ? `Claude Code rejected project MCP ${name} through disabledMcpjsonServers.`
-        : !approveAll && !approved.has(name) ? `Claude Code project MCP ${name} is pending approval; approve it in Claude Code first.` : null;
-      if (error) return [name, { ...config, inspectionConnectionError: error }];
-    }
-    return [name, config];
-  }));
-}
-
-function selectedServer(servers, host) {
-  const name = process.env.JETBRAINS_MCP_SERVER;
-  const configured = Object.entries(servers).filter(([key]) => name ? key === name : /jetbrains?/i.test(key));
-  const matches = configured.filter(([, config]) => config.enable !== false && config.enabled !== false);
-  if (configured.length && !matches.length) throw new Error(`JetBrains MCP is disabled in ${host}: ${configured.map(([key]) => key).join(', ')}.`);
-  if (!matches.length) return null;
-  if (matches.length !== 1) {
-    throw new Error(`Multiple JetBrains MCP servers in ${host}: ${matches.map(([key]) => key).join(', ')}. Select JETBRAINS_MCP_SERVER.`);
-  }
-  const [server, config] = matches[0];
-  if (config.inspectionConnectionError) throw new Error(config.inspectionConnectionError);
-  return { server, config };
-}
-
-function environmentValue(name) {
-  const value = process.env[name];
-  if (!value) throw new Error(`Required environment variable is missing: ${name}`);
-  return value;
-}
-
-function configuredString(value) {
-  return value.replace(/\$\{([^}:]+)(?::-([^}]*))?\}/g, (_, name, fallback) =>
-    process.env[name] ?? fallback ?? environmentValue(name));
-}
-
-function connection(selected, host) {
-  const { server, config } = selected;
-  const tool = 'run_inspection_kts';
-  if (config.disabled_tools?.includes(tool) || (config.enabled_tools && !config.enabled_tools.includes(tool))) {
-    throw new Error(`${tool} is excluded by ${host}'s configured tool allowlist.`);
-  }
-  const transport = config.transport || config;
-  const type = transport.type || (transport.url ? 'http' : 'stdio');
-  if (!['http', 'streamable_http', 'streamable-http', 'sse'].includes(type)) {
-    throw new Error(`JetBrains MCP ${server} uses ${type} in ${host}; an HTTP or SSE connection is required.`);
-  }
-  if (!transport.url) throw new Error(`JetBrains MCP ${server} has no URL in ${host}.`);
-  const headers = Object.fromEntries(Object.entries({ ...transport.headers, ...transport.http_headers })
-    .map(([name, value]) => [name, configuredString(value)]));
-  for (const [name, variable] of Object.entries(transport.env_http_headers || {})) headers[name] = environmentValue(variable);
-  if (transport.bearer_token_env_var) headers.Authorization = `Bearer ${environmentValue(transport.bearer_token_env_var)}`;
-  return { url: configuredString(transport.url), headers, type: type === 'sse' ? 'sse' : 'http',
-    timeout: config.timeoutMs || (config.tool_timeout_sec || 120) * 1000, host, server };
-}
-
-async function codexConnection() {
-  const { stdout } = await execute('codex', ['mcp', 'list', '--json'], { timeout: 10_000 });
-  const selected = selectedServer(Object.fromEntries(JSON.parse(stdout).map((config) => [config.name, config])), 'Codex');
-  if (!selected) throw new Error('No JetBrains MCP server is registered in Codex.');
-  const detail = await execute('codex', ['mcp', 'get', selected.server, '--json'], { timeout: 10_000 });
-  return connection({ server: selected.server, config: JSON.parse(detail.stdout) }, 'Codex');
-}
-
-async function connectionOptions(project) {
-  if (process.env.JETBRAINS_MCP_URL) {
-    const url = process.env.JETBRAINS_MCP_URL;
-    return { url, headers: JSON.parse(process.env.JETBRAINS_MCP_HEADERS || '{}'),
-      type: new URL(url).pathname.replace(/\/$/, '').endsWith('/sse') ? 'sse' : 'http',
-      timeout: 120_000, host: 'environment', server: process.env.JETBRAINS_MCP_SERVER || 'JetBrains' };
-  }
-  const zcode = process.env.ZCODE_PROJECT_DIR || process.env.ZCODE_WORKSPACE_ROOT || process.env.ZCODE_PLUGIN_ROOT
-    || /[\\/]\.zcode[\\/]/.test(import.meta.url);
-  const claude = process.env.CLAUDECODE || /[\\/]\.claude[\\/]/.test(import.meta.url);
-  if (!zcode && !claude && process.env.CODEX_THREAD_ID) return codexConnection();
-  if (!zcode && claude) {
-    const selected = selectedServer(claudeServers(project), 'Claude Code');
-    if (selected) return connection(selected, 'Claude Code');
-    throw new Error('No JetBrains MCP server found in Claude Code .mcp.json / .claude.json configuration.');
-  }
-  const native = selectedServer(zcodeServers(project), 'ZCode');
-  if (native) return connection(native, 'ZCode');
-  if (zcode || existsSync(resolve(project, '.zcode/config.json')) || existsSync(resolve(homedir(), '.zcode/cli/config.json'))) {
-    throw new Error('No JetBrains MCP server found in project .zcode/config.json or ~/.zcode/cli/config.json (or their .agents/mcp.json fallback).');
-  }
-  const shared = selectedServer(claudeServers(project), 'JSON MCP configuration');
-  if (shared) return connection(shared, 'JSON MCP configuration');
-  throw new Error('No JetBrains MCP connection found in ZCode, .agents, or Claude JSON configuration. Set JETBRAINS_MCP_URL for another host.');
-}
 
 async function* sseEvents(response) {
   const decoder = new TextDecoder();
@@ -233,7 +101,10 @@ class McpClient {
     } else {
       const response = await fetch(this.url, { method: 'POST', headers: this.headers,
         body: JSON.stringify(message), redirect: 'error', signal: AbortSignal.timeout(this.timeout) });
-      if (!response.ok) throw new Error(`MCP ${method} returned HTTP ${response.status}.`);
+      if (!response.ok) {
+        await response.body?.cancel();
+        throw Object.assign(new Error(`MCP ${method} returned HTTP ${response.status}.`), { httpStatus: response.status });
+      }
       const sessionId = response.headers.get('mcp-session-id');
       if (sessionId) this.headers['Mcp-Session-Id'] = sessionId;
       if (notification) { await response.body?.cancel(); return; }
@@ -244,13 +115,30 @@ class McpClient {
     return reply.result;
   }
 
-  async initialize() {
-    if (this.type === 'sse') await this.openSse();
+  async initializeProtocol() {
     const result = await this.request('initialize', { protocolVersion, capabilities: {},
       clientInfo: { name: 'scrapider-inspection-runner', version: '1.0.0' } });
     if (result.protocolVersion !== protocolVersion) throw new Error(`Unsupported MCP protocol: ${result.protocolVersion}`);
     this.headers['MCP-Protocol-Version'] = protocolVersion;
     await this.request('notifications/initialized', undefined, true);
+  }
+
+  async initialize() {
+    if (this.type === 'auto') {
+      this.type = 'http';
+      this.connection.transport = this.type;
+      try { await this.initializeProtocol(); }
+      catch (error) {
+        if (![404, 405].includes(error.httpStatus)) throw error;
+        this.type = 'sse';
+        this.connection.transport = this.type;
+        await this.openSse();
+        await this.initializeProtocol();
+      }
+    } else {
+      if (this.type === 'sse') await this.openSse();
+      await this.initializeProtocol();
+    }
   }
 
   async close() {
@@ -272,6 +160,6 @@ class McpClient {
   }
 }
 
-export async function createInspectionClient(project) {
-  return new McpClient(await connectionOptions(project));
+export async function createInspectionClient(project, explicit) {
+  return new McpClient(await resolveInspectionConnection(project, explicit));
 }

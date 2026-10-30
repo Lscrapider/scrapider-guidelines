@@ -33,13 +33,16 @@ separate review points. After fixes, re-check the fixed points without repeating
   or disallowed, review directly and state that it was performed by the primary agent.
 - Supply the repository path, exact scope or diff range, relevant request, known project instruction
   paths, and the exact skill root used for the task. Do not supply conclusions or expected findings.
-- For a Java scope, supply the reviewer with the IDE-open project root and exact review scope, and
-  require an attempt with the local [inspection runner](../../scripts/run_inspection.mjs) after
-  loading the procedure from the same skill root. Do not make the attempt conditional on a native
-  MCP tool appearing in the host catalog. A verified no-Java or empty scope may be reported as
-  `skipped` with its reason. For `error` or `incomplete`, require the attempted command, concrete
-  error, and uncovered scope, followed by manual review of uncovered rules; do not report the scripted
-  inspection as passed.
+- For Java scope, supply the IDE-open project root and exact review scope, and require an attempt with
+  the local [inspection runner](../../scripts/run_inspection.mjs) after loading the procedure from the
+  same skill root. Do not gate the attempt on the host catalog. If discovery fails, is ambiguous, or
+  is unsupported, allow a retry with `--mcp-url` only from the current host's effective, permitted
+  configuration; do not read another client's config, guess ports, or bypass disabled, denied,
+  unapproved, or authentication-failed connections. For WorkBuddy cross-scope conflicts, request an
+  explicit connection choice. If no permitted endpoint is available, report the command, error, and
+  missing information instead of skipping. A verified no-Java or empty scope may be reported as
+  `skipped` with its reason. For `error` or `incomplete`, require the exact command, concrete error,
+  uncovered scope, and manual review; do not report the scripted inspection as passed.
 - Use this document as the sole standards-review procedure and output contract. The reviewer returns
   the report to the primary agent, who evaluates it alongside other evidence.
 

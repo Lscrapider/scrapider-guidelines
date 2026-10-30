@@ -128,7 +128,8 @@ The [coding workflow](plugins/scrapider-guidelines/skills/scrapider-guidelines/S
     │           │   ├── python/
     │           │   └── shared/
     │           └── scripts/
-    │               ├── inspection_mcp.mjs # host MCP config and connection
+    │               ├── inspection_hosts.mjs # host MCP configuration discovery
+    │               ├── inspection_mcp.mjs # MCP HTTP/SSE connection
     │               ├── run_inspection.mjs # Git scope, local scripts, JetBrains MCP
     │               └── inspections/
     └── scrapider-capabilities/   # optional MCP bundle: context7 + codegraph

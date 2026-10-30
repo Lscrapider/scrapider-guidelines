@@ -26,7 +26,7 @@ contracts, and converter ownership — remain part of the standards review.
   `elementText`; batch results use `file:line` in the message, not structured anchor fields.
 - First load this reference from the assigned skill root, then run the local
   [inspection runner](../../scripts/run_inspection.mjs) with Node.js 18 or newer. It loads source,
-  batches about 15 files, handles MCP HTTP, and emits JSON only. Do not read or attach `.inspection.kts`
+  batches about 15 files, handles MCP HTTP/SSE, and emits JSON only. Do not read or attach `.inspection.kts`
   source; attempt the runner even if no native inspection tool appears in the host catalog.
 
   ```sh
@@ -41,10 +41,25 @@ contracts, and converter ownership — remain part of the standards review.
   untracked files are excluded. A JSON array selects paths; `[]` is empty. Omitted `inspectionsJson` runs the batch;
   pass IDs such as `J7` or `J13` for a named subset. Set `SCRAPIDER_INSPECTION_SETTINGS` to a JSON
   object only when a repository convention requires a script setting.
-- The runner reads local user/project ZCode or Claude Code MCP configuration, or the active Codex
-  configuration, over HTTP or SSE. Managed and session-injected overrides are outside discovery.
-  Other hosts do not need Codex or manual URL copying. `JETBRAINS_MCP_URL` can explicitly
-  override the discovered endpoint, and `JETBRAINS_MCP_SERVER` can select an alias.
+- Default discovery adapts supported user/project MCP files and environment settings for ZCode,
+  Claude Code, Codex, WorkBuddy, Qoder, or OpenCode over HTTP/SSE. System, managed, and hidden session
+  state are outside this adapter; use an explicit permitted endpoint for those scopes.
+  OpenCode uses V2 configuration discovery and accepts V1/V2 MCP entries.
+  `auto` tries HTTP and retries SSE after 404/405;
+  other hosts need no Codex installation or manual URL copying.
+- If discovery fails, is ambiguous, or is unsupported, retry the same command with `--mcp-url
+  <currently permitted endpoint>` and optional `--mcp-transport <auto|http|sse>`. This explicit second
+  entry overrides discovery. Resolve it only from the current host's effective, permitted config;
+  never read another client's config, guess a port, or bypass disabled, denied, unapproved, or
+  authentication-failed MCP. For a WorkBuddy cross-scope name conflict, request an explicit choice.
+  If no permitted endpoint is available, report the missing information instead of skipping.
+
+  ```sh
+  node /path/to/skill/scripts/run_inspection.mjs /path/to/project --mcp-url http://localhost:PORT/mcp
+  ```
+
+- Equivalent environment overrides are `JETBRAINS_MCP_URL`, `JETBRAINS_MCP_TRANSPORT`, and JSON
+  `JETBRAINS_MCP_HEADERS`. Keep authentication values out of chat and command arguments.
 - Connection metadata is reported as `{host, server, transport}`; URL and header values are omitted.
 - `status: "ok"` means execution completed; findings still require review. Missing PSI files, missing
   targets, and truncation produce `incomplete`; compilation or call failures produce `error`. Both exit nonzero.

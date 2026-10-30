@@ -3,13 +3,13 @@ import { execFile } from 'node:child_process';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { promisify } from 'node:util';
+import { parseArgs, promisify } from 'node:util';
 import { createInspectionClient } from './inspection_mcp.mjs';
 
 const execute = promisify(execFile);
 const inspectionsDirectory = resolve(dirname(fileURLToPath(import.meta.url)), 'inspections');
 const batchSize = 15;
-const usage = 'node run_inspection.mjs <projectPath> [filesJson] [inspectionsJson]';
+const usage = 'node run_inspection.mjs <projectPath> [filesJson] [inspectionsJson] [--mcp-url URL] [--mcp-transport auto|http|sse]';
 
 async function gitJavaFiles(project) {
   const commands = [
@@ -121,7 +121,7 @@ function resultStatus(result) {
     ? 'incomplete' : 'ok';
 }
 
-async function runInspection(projectPath, files = null, inspections = null) {
+async function runInspection(projectPath, files = null, inspections = null, explicit = {}) {
   const report = { status: 'ok', results: [] };
   let client;
   try {
@@ -139,7 +139,7 @@ async function runInspection(projectPath, files = null, inspections = null) {
       throw new Error('SCRAPIDER_INSPECTION_SETTINGS must be an object; select files through the second argument.');
     }
     const scripts = loadScripts(jobs, settings);
-    client = await createInspectionClient(project);
+    client = await createInspectionClient(project, explicit);
     report.connection = client.connection;
     await client.initialize();
     for (const job of jobs) {
@@ -163,18 +163,24 @@ async function runInspection(projectPath, files = null, inspections = null) {
   return report;
 }
 
-const args = process.argv.slice(2);
-if (!args.length || args[0] === '--help') {
-  console.log(`${usage}\nOnly projectPath: inspect changed .java files from Git.\nOptional lists: '["src/A.java"]' '["J7","J13"]'. Use null to keep Git selection.`);
-  process.exitCode = args.length ? 0 : 1;
-} else {
-  let report;
-  try {
+try {
+  const { positionals: args, values } = parseArgs({ allowPositionals: true, options: {
+    help: { type: 'boolean' }, 'mcp-url': { type: 'string' }, 'mcp-transport': { type: 'string' },
+  } });
+  if (!args.length || values.help) {
+    console.log(`${usage}\nDefault: adapt the current host and inspect changed .java files.\nFallback: pass --mcp-url; optional lists select files and inspection IDs.`);
+    process.exitCode = values.help ? 0 : 1;
+  } else {
     if (args.length > 3) throw new Error(usage);
-    report = await runInspection(args[0], args[1] === undefined ? null : JSON.parse(args[1]), args[2] === undefined ? null : JSON.parse(args[2]));
-  } catch (error) {
-    report = { status: 'error', results: [], error: error.message };
+    if (values['mcp-transport'] && !values['mcp-url'] && !process.env.JETBRAINS_MCP_URL) {
+      throw new Error('--mcp-transport requires --mcp-url or JETBRAINS_MCP_URL.');
+    }
+    const report = await runInspection(args[0], args[1] === undefined ? null : JSON.parse(args[1]),
+      args[2] === undefined ? null : JSON.parse(args[2]), { url: values['mcp-url'], type: values['mcp-transport'] });
+    console.log(JSON.stringify(report, null, 2));
+    process.exitCode = ['ok', 'skipped'].includes(report.status) ? 0 : 1;
   }
-  console.log(JSON.stringify(report, null, 2));
-  process.exitCode = ['ok', 'skipped'].includes(report.status) ? 0 : 1;
+} catch (error) {
+  console.log(JSON.stringify({ status: 'error', results: [], error: error.message }, null, 2));
+  process.exitCode = 1;
 }
